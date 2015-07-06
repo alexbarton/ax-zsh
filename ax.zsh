@@ -48,7 +48,7 @@ if [[ -z "$AXZSH" ]]; then
 fi
 
 # Setup list of default plugins if not set already. This allows users to
-# overwrite this list in their "~/.zshrnv" file, for example.
+# overwrite this list in their "~/.zshenv" file, for example.
 typeset -U axzsh_default_plugins
 if ! typeset +m axzsh_default_plugins | fgrep array >/dev/null 2>&1; then
 	axzsh_default_plugins=(

@@ -1,5 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 80_local_config.zshrc: Read local configuration
 
-[[ -r "/var/lib/$HOST/zshrc" ]] \
-	&& source "/var/lib/$HOST/zshrc"
+if [[ -r "/var/lib/$HOST/zshrc" ]]; then
+	[[ -f "$HOME/.axzsh.debug" ]] && echo "» /var/lib/$HOST/zshrc:"
+	source "/var/lib/$HOST/zshrc"
+	[[ -f "$HOME/.axzsh.debug" ]] && echo "» /var/lib/$HOST/zshrc (end)"
+fi

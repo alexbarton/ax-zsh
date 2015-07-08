@@ -55,9 +55,7 @@ if ! typeset +m axzsh_default_plugins | fgrep array >/dev/null 2>&1; then
 		byebye
 		completion
 		correction
-		git
 		history
-		homebrew
 		ls
 		prompt
 		ssh

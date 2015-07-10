@@ -19,11 +19,3 @@ ssh_hostname_prompt() {
 }
 
 ax_hostname_prompt_functions=($ax_hostname_prompt_functions ssh_hostname_prompt)
-
-unset ssh_cmd
-(( $+commands[ssh-q] )) && ssh_cmd="ssh-q"
-(( $+commands[ssh-wrapper] )) && ssh_cmd="ssh-wrapper"
-if [[ -n "$ssh_cmd" ]]; then
-	export GIT_SSH="$ssh_cmd"
-fi
-unset ssh_cmd

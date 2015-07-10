@@ -1,6 +1,9 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # ssh.zshrc: Setup (Open-) SSH
 
+# Make sure that "ssh(1)" is installed
+(( $+commands[ssh] )) || return
+
 ssh_logname_prompt() {
 	[[ -n "$SSH_CLIENT" ]] || return 1
 	echo "$LOGNAME"

@@ -60,6 +60,7 @@ if ! typeset +m axzsh_default_plugins | fgrep array >/dev/null 2>&1; then
 		prompt
 		ssh
 		std_aliases
+		std_env
 	)
 fi
 

@@ -2,27 +2,6 @@ AX-ZSH: Alex' Modular ZSH Configuration
 =======================================
 
 
-Environment Variables
----------------------
-
-Expected to be already set:
-
-* `HOME`
-* `LOGNAME`
-
-Validated and/or set up by core plugins:
-
-* `AXZSH`
-* `HOST`
-* `HOSTNAME` (same as HOST, deprecated)
-* `LOCAL_HOME`
-* `PS1`
-* `SHORT_HOST`
-* `TERM`
-* `XDG_CACHE_HOME`
-* `ZSH_CACHE_DIR`
-
-
 Configuration
 -------------
 
@@ -66,3 +45,24 @@ axzsh_plugins=(
 
 Note: it should *not* be necessary to disable the default plugins! The above
 is an example only!
+
+
+Environment Variables
+---------------------
+
+Expected to be already set:
+
+* `HOME`
+* `LOGNAME`
+
+Validated and/or set up by core plugins:
+
+* `AXZSH`
+* `HOST`
+* `HOSTNAME` (same as HOST, deprecated)
+* `LOCAL_HOME`
+* `PS1`
+* `SHORT_HOST`
+* `TERM`
+* `XDG_CACHE_HOME`
+* `ZSH_CACHE_DIR`

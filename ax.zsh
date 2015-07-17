@@ -36,8 +36,14 @@ function axzsh_load_plugin {
 		fi
 		return 0
 	done
-	[[ -f "$HOME/.axzsh.debug" ]] \
-		&& echo "Plugin \"$plugin\" not found (type \"$type\")!" >/dev/stderr
+	# Plugin not found!
+	if [[ -f "$HOME/.axzsh.debug" ]]; then
+		# Show error message for all stages in "debug mode":
+		echo "AX-ZSH plugin \"$plugin\" not found (type \"$type\")!" >&2
+	elif [[ "$type" == "zshrc" ]]; then
+		# Show error message for the "zshrc" stage:
+		echo "AX-ZSH plugin \"$plugin\" not found, skipped!" >&2
+	fi
 	return 1
 }
 

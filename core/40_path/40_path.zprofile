@@ -15,7 +15,7 @@ for d (/opt/*/sbin /opt/*/bin(N)); do
 done
 
 # Set default MANPATH
-export MANPATH="$(manpath)" 2>/dev/null
+export MANPATH="$(manpath -q)" 2>/dev/null
 if [[ $? -ne 0 ]]; then
 	MANPATH="/usr/share/man"
 	for d (/usr/local/share/man /opt/*/man(N)); do

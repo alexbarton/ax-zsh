@@ -12,7 +12,12 @@ for script (
 			&& PROJECT_HOME="$LOCAL_HOME/Develop"
 		[[ -z "$WORKON_HOME" ]] \
 			&& WORKON_HOME="$XDG_CACHE_HOME/virtualenvs"
+
 		source "$script"
+
+		# pip
+		export PIP_REQUIRE_VIRTUALENV="true"
+
 		break
 	fi
 done

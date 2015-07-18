@@ -1,6 +1,9 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # Copyright (c) 2015 Alexander Barton <alex@barton.de>
 
+script_name="$(basename -- "${(%):-%N}")"
+script_type="$script_name[2,-1]"
+
 # Load plugin code of a given type.
 # - $1: plugin name
 # - $2: plugin type (optional; defaults to "zshrc")
@@ -81,8 +84,6 @@ plugin_list=(
 )
 
 # Read in all the plugins for the current "type":
-script_name="$(basename -- "${(%):-%N}")"
-script_type="$script_name[2,-1]"
 [[ -f "$HOME/.axzsh.debug" ]] && echo "» $script_name:"
 for plugin ($plugin_list); do
 	axzsh_load_plugin "$(basename "$plugin")" "$script_type"

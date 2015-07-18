@@ -5,3 +5,6 @@ alias ".."="cd .."
 
 alias "ll"="ls -hl"
 alias "l"="ll -a"
+
+alias lasth='last | head -n "$((LINES-1))"'
+alias lastf='last | grep -v "^$LOGNAME"'

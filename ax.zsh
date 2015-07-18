@@ -67,7 +67,6 @@ typeset -U axzsh_default_plugins
 if ! typeset +m axzsh_default_plugins | fgrep array >/dev/null 2>&1; then
 	axzsh_default_plugins=(
 		byebye
-		completion
 		correction
 		history
 		ls

@@ -17,7 +17,6 @@ The following configuration variables are supported:
   addition to the core plugins. You can reset this array to disable(!) loading
   of these default plugins. Currently these plugins are loaded by default:
    * byebye
-   * completion
    * correction
    * history
    * ls

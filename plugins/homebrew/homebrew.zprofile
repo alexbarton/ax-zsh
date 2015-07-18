@@ -1,8 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# homebrew.zshrc -- Setup Homebrew Package Manager
+# homebrew.zprofile -- Setup Homebrew Package Manager
 
 # Make sure that "brew(1)" is installed
 (( $+commands[brew] )) || return
 
 [[ -d "/usr/local/share/zsh-completions" ]] \
-	&& fpath=(/usr/local/share/zsh-completions $fpath)
+	&& axzsh_fpath=(/usr/local/share/zsh-completions $axzsh_fpath)

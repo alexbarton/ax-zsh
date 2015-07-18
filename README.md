@@ -35,11 +35,9 @@ Example for a `$HOME/.zshenv` file:
 export AXZSH_PLUGIN_D="/opt/ax-zsh-plugins"
 
 # Disable all default plugins
-typedef -U axzsh_default_plugins
 axzsh_default_plugins=()
 
 # Add additional plugins
-typedef -U axzsh_plugins
 axzsh_plugins=(
 	editor_select
 	homebrew

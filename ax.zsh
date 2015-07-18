@@ -4,6 +4,8 @@
 script_name="$(basename -- "${(%):-%N}")"
 script_type="$script_name[2,-1]"
 
+[[ -f "$HOME/.axzsh.debug" ]] && echo "» $script_name:"
+
 # Load plugin code of a given type.
 # - $1: plugin name
 # - $2: plugin type (optional; defaults to "zshrc")
@@ -53,7 +55,10 @@ function axzsh_load_plugin {
 # Make sure that "AXZSH" variable is set and exported
 if [[ -z "$AXZSH" ]]; then
 	export AXZSH="$HOME/.axzsh"
-	[[ -f "$HOME/.axzsh.debug" ]] && echo "AXZSH=$AXZSH"
+	if [[ -f "$HOME/.axzsh.debug" ]]; then
+		echo "AXZSH=$AXZSH"
+		echo "AXZSH_PLUGIN_D=$AXZSH_PLUGIN_D"
+	fi
 fi
 
 # Setup list of default plugins if not set already. This allows users to
@@ -84,7 +89,6 @@ plugin_list=(
 )
 
 # Read in all the plugins for the current "type":
-[[ -f "$HOME/.axzsh.debug" ]] && echo "» $script_name:"
 for plugin ($plugin_list); do
 	axzsh_load_plugin "$(basename "$plugin")" "$script_type"
 done

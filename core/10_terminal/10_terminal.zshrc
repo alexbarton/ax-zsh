@@ -3,22 +3,17 @@
 
 # Set terminal title
 
-function axzsh_terminal_precmd {
-	printf '\e]1;%s\a' "$LOGNAME@$SHORT_HOST"
-}
-
-precmd_functions+=(axzsh_terminal_precmd)
-
-# Set current working directory
-
-function axzsh_terminal_cwd {
+function axzsh_terminal_title_precmd {
 	if [[ $TERM_PROGRAM == Apple_Terminal ]]; then
-		local url="file://$HOSTNAME${PWD// /%20}"
+		local url=$(echo "file://$HOSTNAME$PWD" | sed -e 's| |%20|g')
 		printf '\e]7;%s\a' "$url"
+		printf '\e]0;%s\a' "$LOGNAME@$SHORT_HOST"
+	else
+		printf '\e]0;%s\a' "$LOGNAME@$SHORT_HOST:$PWD"
 	fi
 }
 
-precmd_functions+=(axzsh_terminal_cwd)
+precmd_functions+=(axzsh_terminal_title_precmd)
 
 # Colors
 

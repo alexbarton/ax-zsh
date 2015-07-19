@@ -69,6 +69,7 @@ if ! typeset +m axzsh_default_plugins | fgrep array >/dev/null 2>&1; then
 	axzsh_default_plugins=(
 		byebye
 		correction
+		grep
 		history
 		less
 		ls

@@ -31,7 +31,7 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 
 # Save the location of the current completion dump file.
 if [[ -z "$ZSH_COMPDUMP" ]]; then
-	ZSH_COMPDUMP="${ZDOTDIR:-$HOME}/.zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
+	ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
 fi
 
 # Initialize ZSH completion system

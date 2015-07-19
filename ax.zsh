@@ -13,11 +13,12 @@ function axzsh_load_plugin {
 	plugin="$1"
 	[[ -z "$2" ]] && type="zshrc" || type="$2"
 
-	for dname in \
-		"$AXZSH_PLUGIN_D/$plugin" \
-		"$AXZSH/plugins/$plugin" \
-		"$AXZSH/core/$plugin" \
-	; do
+	for dname (
+		"$AXZSH_PLUGIN_D/$plugin"
+		"$ZSH_CUSTOM/$plugin"
+		"$AXZSH/plugins/$plugin"
+		"$AXZSH/core/$plugin"
+	); do
 		[[ ! -d "$dname" ]] && continue
 
 		fname="$dname/$plugin.$type"

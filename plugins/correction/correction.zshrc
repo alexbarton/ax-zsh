@@ -1,16 +1,19 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # correction.zshrc: Setup correction
 
-for cmd in \
-	brew \
-	ebuild \
-	gist \
-	man \
-	mkdir \
-	mv \
-	mysql \
-	sudo \
-; do
+for cmd (
+	apt
+	aptitude
+	brew
+	ebuild
+	gist
+	man
+	mkdir
+	mv
+	mysql
+	pkg_add
+	sudo
+); do
 	[[ -n $commands[$cmd] ]] \
 		&& alias $cmd="nocorrect $cmd"
 done

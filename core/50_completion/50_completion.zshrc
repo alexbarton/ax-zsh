@@ -13,6 +13,22 @@ zstyle ':completion:*' special-dirs true
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':completion::complete:*' cache-path "$ZSH_CACHE_DIR"
 
+# Don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+	adm amanda amavis apache arpwatch at avahi avahi-autoipd \
+	beaglidx bin bind cacti canna clamav colord daapd daemon dbus \
+	distcache dnsmasq dovecot dovenull fax fetchmail firebird \
+	ftp games gdm gkrellmd gnats gopher hacluster haldaemon halt \
+	hsqldb ident irc junkbust kdm ldap libuuid libvirt-qemu list \
+	logcheck lp mail mailman mailnull man messagebus mldonkey mysql \
+	nagios named netdump news nfsnobody nobody nscd ntp nut nx \
+	obsrun oident openvpn operator pcap polkitd postfix postgres \
+	postgrey privoxy proxy pvm quagga radvd rpc rpcuser rpm rtkit \
+	rwhod sbuild scard shutdown squid sshd statd stunnel4 svn sync \
+	sys telnetd telnetd-ssl tftp usbmux uucp vcsa www-data wwwrun \
+	xfs xrdp zabbix \
+	'_*' '*$' 'debian-*' 'Debian-*'
+
 # Save the location of the current completion dump file.
 if [[ -z "$ZSH_COMPDUMP" ]]; then
 	ZSH_COMPDUMP="${ZDOTDIR:-$HOME}/.zcompdump-${SHORT_HOST}-${ZSH_VERSION}"

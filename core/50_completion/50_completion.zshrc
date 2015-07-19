@@ -1,17 +1,21 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 50_completion.zshrc: Setup completion
 
-autoload -U compinit
+autoload -Uz compinit
 
 setopt completealiases
 
+zstyle ':completion:*' completer _complete _ignored _correct _approximate
+
+zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select
 zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' squeeze-slashes true
 
 # Use caching so that commands like apt and dpkg completions are useable
-zstyle ':completion::complete:*' use-cache 1
-zstyle ':completion::complete:*' cache-path "$ZSH_CACHE_DIR"
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR"
 
 # Don't complete uninteresting users
 zstyle ':completion:*:*:*:users' ignored-patterns \

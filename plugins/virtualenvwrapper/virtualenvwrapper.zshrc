@@ -2,6 +2,7 @@
 # virtualenvwrapper: Initialize Python "virtualenvwrapper"
 
 for script (
+	/usr/local/bin/virtualenvwrapper_lazy.sh
 	/usr/local/bin/virtualenvwrapper.sh
 	/usr/bin/virtualenvwrapper.sh
 	/etc/bash_completion.d/virtualenvwrapper

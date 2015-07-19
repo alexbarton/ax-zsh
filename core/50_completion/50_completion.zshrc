@@ -29,6 +29,9 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 	xfs xrdp zabbix \
 	'_*' '*$' 'debian-*' 'Debian-*'
 
+# Ignore completion functions
+zstyle ':completion:*:functions' ignored-patterns '_*'
+
 # Save the location of the current completion dump file.
 if [[ -z "$ZSH_COMPDUMP" ]]; then
 	ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump-${SHORT_HOST}-${ZSH_VERSION}"

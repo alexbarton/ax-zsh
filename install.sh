@@ -12,6 +12,8 @@ safe_rm() {
 	rm -f "$1" || exit 1
 }
 
+umask 027
+
 safe_rm ~/.axzsh || exit 1
 ln -sv "$PWD" ~/.axzsh || exit 1
 

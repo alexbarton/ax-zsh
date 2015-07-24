@@ -12,10 +12,10 @@ safe_rm() {
 	rm -f "$1" || exit 1
 }
 
-for f in ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc; do
-	safe_rm "$f" || exit 1
-	ln -sv "$PWD/ax.zsh" "$f" || exit 1
-done
-
 safe_rm ~/.axzsh || exit 1
 ln -sv "$PWD" ~/.axzsh || exit 1
+
+for f in ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc; do
+	safe_rm "$f" || exit 1
+	ln -sv ~/.axzsh/ax.zsh "$f" || exit 1
+done

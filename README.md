@@ -18,12 +18,15 @@ The following configuration variables are supported:
   of these default plugins. Currently these plugins are loaded by default:
    * byebye
    * correction
+   * grep
    * history
+   * less
    * ls
    * prompt
    * ssh
    * std_aliases
    * std_env
+   * std_options
 * `axzsh_plugins`: Optional array of addiutional (non-core and non-default)
   plugins to load.
 

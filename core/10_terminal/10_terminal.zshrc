@@ -49,7 +49,7 @@ preexec_functions+=(axzsh_terminal_title_preexec)
 
 # Colors
 
-autoload -U colors
+autoload -Uz colors
 colors
 
 # Text effects (FX)

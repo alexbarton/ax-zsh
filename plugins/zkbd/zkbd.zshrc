@@ -1,7 +1,7 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # zkbd.zshrc: Initialize ZKBD Keybindings
 
-autoload zkbd
+autoload -Uz zkbd
 
 [[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE ]] && zkbd
 source ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE

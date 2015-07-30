@@ -14,10 +14,12 @@ safe_rm() {
 
 umask 027
 
-safe_rm ~/.axzsh || exit 1
-ln -sv "$PWD" ~/.axzsh || exit 1
+[ -n "$AXZSH" ] || AXZSH="$HOME/.axzsh"
+
+safe_rm "$AXZSH" || exit 1
+ln -sv "$PWD" "$AXZSH" || exit 1
 
 for f in ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc; do
 	safe_rm "$f" || exit 1
-	ln -sv ~/.axzsh/ax.zsh "$f" || exit 1
+	ln -sv "$AXZSH/ax.zsh" "$f" || exit 1
 done

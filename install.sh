@@ -15,6 +15,7 @@ safe_rm() {
 umask 027
 
 [ -n "$AXZSH" ] || AXZSH="$HOME/.axzsh"
+export AXZSH
 
 echo "* Installing AX-ZSH into \"$AXZSH\" ..."
 

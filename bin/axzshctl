@@ -1,0 +1,118 @@
+#!/bin/zsh
+#
+# AX-ZSH: Alex' Modular ZSH Configuration
+# Copyright (c) 2015 Alexander Barton <alex@barton.de>
+#
+
+function Usage {
+	echo "$NAME <command> [...]"
+	echo
+	echo "  enable-plugin <p> [<p> [...]]"
+	echo "    Enable plugin(s)."
+	echo
+	echo "  disable-plugin <p> [<p> [...]]"
+	echo "    Disable plugin(s)."
+	echo
+	echo "  reset-plugins"
+	echo "    Reset active plugins to the default list."
+	echo
+	exit 2
+}
+
+function Verbose {
+	echo "* $@"
+}
+
+function Warning {
+	echo "! $@"
+}
+
+function EnablePlugin {
+	local dir="$AXZSH/active_plugins"
+
+	if [[ -h "$dir/$1" ]]; then
+		Warning "Plugin \"$1\" already active!"
+		return 1
+	fi
+
+	for dname (
+		"$AXZSH_PLUGIN_D/$plugin"
+		"$ZSH_CUSTOM/$plugin"
+		"$AXZSH/plugins/$plugin"
+		"$AXZSH/default_plugins/$plugin"
+		"$AXZSH/core/$plugin"
+	); do
+		[[ ! -d "$dname" ]] && continue
+		mkdir -p "$dir"
+		(
+			cd "$dir" || exit 9
+			ln -sv "$dname" "$PWD"
+		)
+		return $?
+	done
+
+	Warning "Plugin \"$1\" not found!"
+	return 1
+}
+
+function DisablePlugin {
+	local dir="$AXZSH/active_plugins"
+
+	if [[ ! -h "$dir/$1" ]]; then
+		Warning "Plugin \"$1\" not active?"
+		return 1
+	fi
+
+	rm -v "$dir/$1"
+	return $?
+}
+
+function ResetPlugins {
+	local dir="$AXZSH/active_plugins"
+
+	if [[ -e "$dir" ]]; then
+		Verbose "Removing all symbolic links in $dir ..."
+		find "$dir" -type l -print -delete
+	fi
+
+	Verbose "Activating (linking) default plugins ..."
+	mkdir -p "$dir"
+	(
+		cd "$dir" || exit 9
+		ln -sv "$AXZSH/default_plugins/"* "$PWD"
+	)
+	return $?
+}
+
+NAME="$(basename "$0")"
+
+[[ $# -gt 0 ]] || Usage
+
+if [[ -z "$AXZSH" || ! -d "$AXZSH" ]]; then
+	echo "$NAME: Oops, \"AXZSH\" is not set or invalid!"
+	exit 3
+fi
+
+cmd="$1"
+shift
+
+case "$cmd" in
+	"enable-plugin")
+		[[ $# -gt 0 ]] || Usage
+		for plugin in "$@"; do
+			EnablePlugin "$plugin"
+		done
+		;;
+	"disable-plugin")
+		[[ $# -gt 0 ]] || Usage
+		for plugin in "$@"; do
+			DisablePlugin "$plugin"
+		done
+		;;
+	"reset-plugins")
+		[[ $# -eq 0 ]] || Usage
+		ResetPlugins
+		;;
+	*)
+		Usage
+esac

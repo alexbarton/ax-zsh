@@ -10,48 +10,44 @@ script_type="$script_name[2,-1]"
 # - $1: plugin name
 # - $2: plugin type (optional; defaults to "zshrc")
 function axzsh_load_plugin {
-	plugin="$1"
+	dname="$(readlink "$1")" || dname="$1"
+	plugin="$(basename "$dname")"
 	[[ -z "$2" ]] && type="zshrc" || type="$2"
+	fname="$dname/$plugin.$type"
 
-	for dname (
-		"$AXZSH_PLUGIN_D/$plugin"
-		"$ZSH_CUSTOM/$plugin"
-		"$AXZSH/plugins/$plugin"
-		"$AXZSH/default_plugins/$plugin"
-		"$AXZSH/core/$plugin"
-	); do
-		[[ ! -d "$dname" ]] && continue
-
-		fname="$dname/$plugin.$type"
-		if [[ ! -r "$fname" && "$type" == "zshrc" ]]; then
-			if [[ -r "$dname/$plugin.plugin.zsh" ]]; then
-				# Oh My ZSH plugin
-				type="plugin.zsh"
-				fname="$dname/$plugin.plugin.zsh"
-			elif [[ -r "$dname/init.zsh" ]]; then
-				# Prezto module
-				type="init.zsh"
-				fname="$dname/init.zsh"
-			fi
+	if [[ ! -d "$dname" ]]; then
+		# Plugin not found!
+		if [[ -f "$HOME/.axzsh.debug" ]]; then
+			# Show error message for all stages in "debug mode":
+			echo "AX-ZSH plugin \"$plugin\" not found (type \"$type\")!" >&2
+		elif [[ "$type" == "zshrc" ]]; then
+			# Show error message for the "zshrc" stage:
+			echo "AX-ZSH plugin \"$plugin\" not found, skipped!" >&2
 		fi
-
-		if [[ -r "$fname" ]]; then
-			[[ -f "$HOME/.axzsh.debug" ]] \
-				&& echo "   - $plugin ($type) ..."
-			source "$fname"
-			return 0
-		fi
-		return 0
-	done
-	# Plugin not found!
-	if [[ -f "$HOME/.axzsh.debug" ]]; then
-		# Show error message for all stages in "debug mode":
-		echo "AX-ZSH plugin \"$plugin\" not found (type \"$type\")!" >&2
-	elif [[ "$type" == "zshrc" ]]; then
-		# Show error message for the "zshrc" stage:
-		echo "AX-ZSH plugin \"$plugin\" not found, skipped!" >&2
+		return 1
 	fi
-	return 1
+
+	if [[ ! -r "$fname" && "$type" == "zshrc" ]]; then
+		if [[ -r "$dname/$plugin.plugin.zsh" ]]; then
+			# Oh My ZSH plugin
+			type="plugin.zsh"
+			fname="$dname/$plugin.plugin.zsh"
+		elif [[ -r "$dname/init.zsh" ]]; then
+			# Prezto module
+			type="init.zsh"
+			fname="$dname/init.zsh"
+		fi
+	fi
+
+	if [[ -r "$fname" ]]; then
+		[[ -f "$HOME/.axzsh.debug" ]] \
+			&& echo "   - $plugin ($type) ..."
+		source "$fname"
+	fi
+
+	# It is a success, even if only the plugin directory (and no script!)
+	# exists at all! Rationale: The script could be of an other type ...
+	return 0
 }
 
 # Make sure that "AXZSH" variable is set and exported
@@ -63,28 +59,17 @@ if [[ -z "$AXZSH" ]]; then
 	fi
 fi
 
-# Setup list of default plugins if not set already. This allows users to
-# overwrite this list in their "~/.zshenv" file, for example.
-typeset -U axzsh_default_plugins
-if ! typeset +m axzsh_default_plugins | fgrep array >/dev/null 2>&1; then
-	axzsh_default_plugins=(
-		$AXZSH/default_plugins/*
-	)
-fi
-
 # Setup list of plugins to load:
 typeset -U plugin_list
 plugin_list=(
-	$AXZSH/core/[0-5]*
-	$axzsh_default_plugins
-	$axzsh_plugins
-	$plugins
-	$AXZSH/core/[6-9]*
+	"$AXZSH/core/"[0-5]*
+	"$AXZSH/active_plugins/"*
+	"$AXZSH/core/"[6-9]*
 )
 
 # Read in all the plugins for the current "type":
 for plugin ($plugin_list); do
-	axzsh_load_plugin "$(basename "$plugin")" "$script_type"
+	axzsh_load_plugin "$plugin" "$script_type"
 done
 unset script_name script_type plugin
 unset plugin_list

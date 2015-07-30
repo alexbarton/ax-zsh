@@ -19,46 +19,14 @@ Then you have to restart your ZSH session.
 Configuration
 -------------
 
-AX-ZSH can be configured using settings in a `$HOME/.zshenv` file.
+Plugins are loaded when they are linked into the `$AXZSH/active_plugins/`
+directory.
 
-The following configuration variables are supported:
-
-* `AXZSH_PLUGIN_D`: Optional directory for additional plugins.
-* `axzsh_default_plugins`: Array of default plugins, that will be loaded in
-  addition to the core plugins. You can reset this array to disable(!) loading
-  of these default plugins. Currently these plugins are loaded by default:
-   * byebye
-   * correction
-   * grep
-   * history
-   * less
-   * ls
-   * prompt
-   * ssh
-   * std_aliases
-   * std_env
-   * std_options
-* `axzsh_plugins`: Optional array of addiutional (non-core and non-default)
-  plugins to load.
-
-Example for a `$HOME/.zshenv` file:
-
-```
-# Add additinal custom plugin search path
-export AXZSH_PLUGIN_D="/opt/ax-zsh-plugins"
-
-# Disable all default plugins
-axzsh_default_plugins=()
-
-# Add additional plugins
-axzsh_plugins=(
-	editor_select
-	homebrew
-)
-```
-
-Note: it should *not* be necessary to disable the default plugins! The above
-is an example only!
+AX-ZSH doesn't use `~/.zshenv` in any way. So you can use this file for your
+own purposes (for example, to set up some environment variables that AX-ZSH
+relays on). In addition, AX-ZSH reads the optional files `~/.zprofile.local`,
+`~/.zshrc.local`, `~/.zlogin.local`, and `~/.zlogout.local` after its own
+core initialization files when present.
 
 
 Environment Variables

@@ -25,3 +25,10 @@ for f in ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc; do
 	safe_rm "$f" || exit 1
 	ln -sv "$AXZSH/ax.zsh" "$f" || exit 1
 done
+
+if [ ! -d "$AXZSH/active_plugins" ]; then
+	echo "* Initializing plugin directory \"$AXZSH/active_plugins\" ..."
+	zsh "$AXZSH/bin/axzshctl" reset-plugins
+else
+	echo "* Plugin directory \"$AXZSH/active_plugins\" already exists. Ok."
+fi

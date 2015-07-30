@@ -63,7 +63,7 @@ fi
 typeset -U plugin_list
 plugin_list=(
 	"$AXZSH/core/"[0-5]*
-	"$AXZSH/active_plugins/"*
+	"$AXZSH/active_plugins/"*(N)
 	"$AXZSH/core/"[6-9]*
 )
 

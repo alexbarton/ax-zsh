@@ -5,6 +5,17 @@ AX-ZSH is a modular configuration system for the Z shell. If provides sane
 defaults and is extendable by plugins.
 
 
+Installation
+------------
+
+To install AX-ZSH, call the `install.sh` script inside of the source directory.
+This script creates the `~/.axzsh` symbolic link to the source directory and
+creates links for `~/.zprofile`, `~/.zshrc`, `~/.zlogin`, and `~/.zlogout`
+(don't worry, already existing files are backed up).
+
+Then you have to restart your ZSH session.
+
+
 Configuration
 -------------
 

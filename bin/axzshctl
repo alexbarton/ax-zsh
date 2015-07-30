@@ -4,6 +4,24 @@
 # Copyright (c) 2015 Alexander Barton <alex@barton.de>
 #
 
+# Include "ax-common.sh", if available:
+for dir ("$HOME/lib" "$HOME/.ax" /usr/local /opt/ax /usr); do
+	[[ -z "$ax_common_sourced" ]] || break
+	ax_common="${dir}/lib/ax/ax-common.sh"
+	[[ -r "$ax_common" ]] && source "$ax_common"
+done
+if [[ -z "$ax_common_sourced" ]]; then
+	function ax_msg {
+		case "$1" in
+		  "1"|"2") echo -n "! "; ;;
+		  *) echo -n "* "; ;;
+		esac
+		shift
+		echo "$@"
+	}
+fi
+unset dir ax_common ax_common_sourced
+
 function Usage {
 	echo "$NAME <command> [...]"
 	echo
@@ -19,19 +37,11 @@ function Usage {
 	exit 2
 }
 
-function Verbose {
-	echo "* $@"
-}
-
-function Warning {
-	echo "! $@"
-}
-
 function EnablePlugin {
 	local dir="$AXZSH/active_plugins"
 
 	if [[ -h "$dir/$1" ]]; then
-		Warning "Plugin \"$1\" already active!"
+		ax_msg 1 "Plugin \"$1\" already active!"
 		return 1
 	fi
 
@@ -51,7 +61,7 @@ function EnablePlugin {
 		return $?
 	done
 
-	Warning "Plugin \"$1\" not found!"
+	ax_msg 2 "Plugin \"$1\" not found!"
 	return 1
 }
 
@@ -59,7 +69,7 @@ function DisablePlugin {
 	local dir="$AXZSH/active_plugins"
 
 	if [[ ! -h "$dir/$1" ]]; then
-		Warning "Plugin \"$1\" not active?"
+		ax_msg 1 "Plugin \"$1\" not active?"
 		return 1
 	fi
 
@@ -71,11 +81,11 @@ function ResetPlugins {
 	local dir="$AXZSH/active_plugins"
 
 	if [[ -e "$dir" ]]; then
-		Verbose "Removing all symbolic links in $dir ..."
+		ax_msg - "Removing all symbolic links in $dir ..."
 		find "$dir" -type l -print -delete
 	fi
 
-	Verbose "Activating (linking) default plugins ..."
+	ax_msg - "Activating (linking) default plugins ..."
 	mkdir -p "$dir"
 	(
 		cd "$dir" || exit 9
@@ -89,7 +99,7 @@ NAME="$(basename "$0")"
 [[ $# -gt 0 ]] || Usage
 
 if [[ -z "$AXZSH" || ! -d "$AXZSH" ]]; then
-	echo "$NAME: Oops, \"AXZSH\" is not set or invalid!"
+	ax_msg 2 "Oops, \"AXZSH\" is not set or invalid!"
 	exit 3
 fi
 

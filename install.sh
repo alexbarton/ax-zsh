@@ -16,6 +16,8 @@ umask 027
 
 [ -n "$AXZSH" ] || AXZSH="$HOME/.axzsh"
 
+echo "* Installing AX-ZSH into \"$AXZSH\" ..."
+
 safe_rm "$AXZSH" || exit 1
 ln -sv "$PWD" "$AXZSH" || exit 1
 

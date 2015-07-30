@@ -17,6 +17,7 @@ function axzsh_load_plugin {
 		"$AXZSH_PLUGIN_D/$plugin"
 		"$ZSH_CUSTOM/$plugin"
 		"$AXZSH/plugins/$plugin"
+		"$AXZSH/default_plugins/$plugin"
 		"$AXZSH/core/$plugin"
 	); do
 		[[ ! -d "$dname" ]] && continue
@@ -67,17 +68,7 @@ fi
 typeset -U axzsh_default_plugins
 if ! typeset +m axzsh_default_plugins | fgrep array >/dev/null 2>&1; then
 	axzsh_default_plugins=(
-		byebye
-		correction
-		grep
-		history
-		less
-		ls
-		prompt
-		ssh
-		std_aliases
-		std_env
-		std_options
+		$AXZSH/default_plugins/*
 	)
 fi
 

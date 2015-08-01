@@ -25,14 +25,14 @@ unset dir ax_common ax_common_sourced
 function Usage {
 	echo "$NAME <command> [...]"
 	echo
-	echo "  enable-plugin <p> [<p> [...]]"
+	echo "  enable-plugin <name|directory> [<name|directory> [...]]"
 	echo "    Enable plugin(s)."
 	echo
-	echo "  disable-plugin <p> [<p> [...]]"
+	echo "  disable-plugin <name> [<name> [...]]"
 	echo "    Disable plugin(s)."
 	echo
 	echo "  reset-plugins"
-	echo "    Reset active plugins to the default list."
+	echo "    Reset active plugins to the default set."
 	echo
 	exit 2
 }

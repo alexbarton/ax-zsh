@@ -46,11 +46,12 @@ function EnablePlugin {
 	fi
 
 	for dname (
-		"$AXZSH_PLUGIN_D/$plugin:A"
-		"$ZSH_CUSTOM/$plugin:A"
-		"$AXZSH/plugins/$plugin:A"
-		"$AXZSH/default_plugins/$plugin:A"
-		"$AXZSH/core/$plugin:A"
+		"$plugin:A"
+		"$AXZSH_PLUGIN_D/$plugin"
+		"$ZSH_CUSTOM/$plugin"
+		"$AXZSH/plugins/$plugin"
+		"$AXZSH/default_plugins/$plugin"
+		"$AXZSH/core/$plugin"
 	); do
 		[[ ! -d "$dname" ]] && continue
 		mkdir -p "$dir"

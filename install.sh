@@ -13,7 +13,7 @@ done
 if [ -z "$ax_common_sourced" ]; then
 	ax_msg() {
 		shift
-		echo "1" "$@"
+		echo "$@"
 	}
 fi
 unset dir ax_common ax_common_sourced

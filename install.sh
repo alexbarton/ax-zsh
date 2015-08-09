@@ -43,7 +43,14 @@ done
 
 if [ ! -d "$AXZSH/active_plugins" ]; then
 	ax_msg - "Initializing plugin directory \"$AXZSH/active_plugins\" ..."
-	zsh "$AXZSH/bin/axzshctl" reset-plugins
+	type zsh >/dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		zsh "$AXZSH/bin/axzshctl" reset-plugins
+		exit $?
+	else
+		ax_msg 2 "Oops, \"zsh\" not found!?"
+		exit 1
+	fi
 else
 	ax_msg - "Plugin directory \"$AXZSH/active_plugins\" already exists. Ok."
 fi

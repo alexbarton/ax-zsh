@@ -7,6 +7,6 @@ if (( $+commands[gpg2] )); then
 
 	if ! (( $+commands[gpg])); then
 		# gpg2 is available, but no gpg: alias it!
-		alias "gpg"="gpg2"
+		alias gpg="gpg2"
 	fi
 fi

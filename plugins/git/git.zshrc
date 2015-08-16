@@ -44,8 +44,8 @@ git_prompt() {
 
 ax_vcs_prompt_functions=($ax_vcs_prompt_functions git_prompt)
 
-alias "ga"="git add"
-alias "gc"="git commit"
-alias "gd"="git diff"
-alias "gdc"="git diff --cached"
-alias "gst"="git status --short --branch --untracked"
+alias ga="git add"
+alias gc="git commit"
+alias gd="git diff"
+alias gdc="git diff --cached"
+alias gst="git status --short --branch --untracked"

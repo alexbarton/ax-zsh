@@ -34,7 +34,7 @@ function axzsh_terminal_title_preexec {
 	local cmd="${1[(w)1]}"
 	local remote=""
 	case "$cmd" in
-	  "mosh"*|"ssh"*|"telnet"*)
+	  "mosh"*|"root"*|"ssh"*|"telnet"*)
 		remote=1
 		;;
 	esac

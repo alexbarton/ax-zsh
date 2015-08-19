@@ -32,17 +32,24 @@ precmd_functions+=(axzsh_terminal_title_precmd)
 # Update terminal titles befor executing a command
 function axzsh_terminal_title_preexec {
 	local cmd="${1[(w)1]}"
+	local remote=""
+	case "$cmd" in
+	  "mosh"*|"ssh"*|"telnet"*)
+		remote=1
+		;;
+	esac
 	if [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
 		# Apple Terminal.app ...
-		case "$cmd" in
-		  "mosh"*|"ssh"*|"telnet"*)
+		if [[ -n "$remote" ]]; then
 			# Reset CWD for remote commands
 			printf '\e]7;%s\a' ''
-			;;
-		esac
+		fi
 	fi
 	axzsh_terminal_set_icon_title "$cmd"
-	axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST"
+
+	[[ -z "$remote" ]] \
+		&& axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST$TITLE_ADD" \
+		|| axzsh_terminal_set_window_title "$1"
 }
 
 preexec_functions+=(axzsh_terminal_title_preexec)

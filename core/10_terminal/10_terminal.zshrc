@@ -45,6 +45,11 @@ function axzsh_terminal_title_preexec {
 			printf '\e]7;%s\a' ''
 		fi
 	fi
+	if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+		# iTerm.app ...
+		[[ -n "$cmd" ]] && TITLE_ADD=" – $cmd"
+	fi
+
 	axzsh_terminal_set_icon_title "$cmd"
 
 	[[ -z "$remote" ]] \

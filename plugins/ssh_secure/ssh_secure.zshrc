@@ -5,6 +5,6 @@
 (( $+commands[ssh] )) || return
 
 # Enforce "strict host key checking"
-alias ssh="\ssh -o 'StrictHostKeyChecking yes'"
+#alias ssh="\ssh -o 'StrictHostKeyChecking yes'"
 alias sshnew="\ssh -o 'StrictHostKeyChecking no'"
 alias sshtmp="\ssh -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null'"

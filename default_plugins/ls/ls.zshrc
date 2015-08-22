@@ -18,3 +18,8 @@ if $cmd -G -d . >/dev/null 2>&1; then
 	alias ls="$cmd -FG"
 	return 0
 fi
+
+# Use LS_COLORS for completion too, when available
+if [[ -n "$LS_COLORS" ]]; then
+	zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+fi

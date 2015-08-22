@@ -10,3 +10,6 @@ setopt pushdignoredups
 
 # Recognize comments in interactive mode, too
 setopt interactivecomments
+
+# Display PID when suspending processes as well
+setopt longlistjobs

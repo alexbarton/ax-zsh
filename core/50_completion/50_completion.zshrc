@@ -17,6 +17,9 @@ zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR"
 
+# Manual pages
+zstyle ':completion:*:manuals.*' insert-sections true
+
 # Don't complete uninteresting users
 zstyle ':completion:*:*:*:users' ignored-patterns \
 	adm amanda amavis apache arpwatch at avahi avahi-autoipd \

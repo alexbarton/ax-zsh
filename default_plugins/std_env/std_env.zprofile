@@ -1,4 +1,4 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # std_env: Setup standard environment variables
 
-export MANWIDTH="80"
+export MANWIDTH=${MANWIDTH:-80}

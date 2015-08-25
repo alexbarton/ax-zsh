@@ -12,6 +12,6 @@ if (( $+commands[gpg-agent] )); then
 	[[ -z "$agents" ]] && agents="gpg" || agents="$agents,gpg"
 fi
 
-eval `keychain --agents "$agents" --eval --quick --quiet`
+eval `keychain --agents "$agents" --eval --inherit any-once --quick --quiet`
 
 unset agents

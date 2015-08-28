@@ -34,6 +34,9 @@ function Usage {
 	echo "  reset-plugins"
 	echo "    Reset active plugins to the default set."
 	echo
+	echo "  enable-default-plugins"
+	echo "    Enable all default plugins."
+	echo
 	exit 2
 }
 
@@ -85,12 +88,17 @@ function ResetPlugins {
 		ax_msg - "Removing all symbolic links in $dir ..."
 		find "$dir" -type l -print -delete
 	fi
+	return $?
+}
+
+function EnableDefaultPlugins {
+	local dir="$AXZSH/active_plugins"
 
 	ax_msg - "Activating (linking) default plugins ..."
 	mkdir -p "$dir"
 	(
 		cd "$dir" || exit 9
-		ln -sv "$AXZSH/default_plugins/"* "$PWD"
+		ln -sfv "$AXZSH/default_plugins/"* "$PWD"
 	)
 	return $?
 }
@@ -123,6 +131,11 @@ case "$cmd" in
 	"reset-plugins")
 		[[ $# -eq 0 ]] || Usage
 		ResetPlugins
+		EnableDefaultPlugins
+		;;
+	"enable-default-plugins")
+		[[ $# -eq 0 ]] || Usage
+		EnableDefaultPlugins
 		;;
 	*)
 		Usage

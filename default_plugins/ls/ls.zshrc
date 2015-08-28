@@ -12,11 +12,8 @@ fi
 
 if $cmd --color -d . >/dev/null 2>&1; then
 	alias ls="$cmd -F --color=tty"
-	return 0
-fi
-if $cmd -G -d . >/dev/null 2>&1; then
+elif $cmd -G -d . >/dev/null 2>&1; then
 	alias ls="$cmd -FG"
-	return 0
 fi
 
 # Use LS_COLORS for completion too, when available

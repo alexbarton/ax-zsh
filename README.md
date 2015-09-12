@@ -8,10 +8,21 @@ defaults and is extendable by plugins.
 Installation
 ------------
 
-To install AX-ZSH, call the `install.sh` script inside of the source directory.
-This script creates the `~/.axzsh` symbolic link to the source directory and
-creates links for `~/.zprofile`, `~/.zshrc`, `~/.zlogin`, and `~/.zlogout`
-(don't worry, already existing files are backed up).
+To install AX-ZSH, either download a source archive or use Git to clone it.
+Afterwards use the `install.sh` script inside of the source directory to set
+up the `~/.axzsh` directory.
+
+When using Git it is best to directly clone the AX-ZSH repository into the
+`~/.axzsh` directory and call `install.sh` from this location:
+
+  $ git clone git://arthur.barton.de/ax-zsh.git ~/.axzsh
+  $ ~/.axzsh/install.sh
+
+You can use `cd ~/.axzsh && git pull --ff-only` to upgrade this installation.
+
+The `install.sh` script creates symbolic links for `~/.zprofile`, `~/.zshrc`,
+`~/.zlogin`, and `~/.zlogout` (don't worry, already existing files are backed
+up).
 
 Then you have to restart your ZSH session.
 

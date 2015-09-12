@@ -31,10 +31,37 @@ umask 027
 [ -n "$AXZSH" ] || AXZSH="$HOME/.axzsh"
 export AXZSH
 
-ax_msg - "Installing AX-ZSH into \"$AXZSH\" ..."
+S=$(dirname "$0")
 
-safe_rm "$AXZSH" || exit 1
-ln -sv "$PWD" "$AXZSH" || exit 1
+if [ "$S" = "$AXZSH" -o "$PWD" = "$AXZSH" ]; then
+	ax_msg 1 "Initializing \"$AXZSH\":"
+else
+	ax_msg 1 "Install AX-ZSH into \"$AXZSH\":"
+
+	[ -L "$AXZSH" ] && rm -f "$AXZSH"
+	mkdir -p "$AXZSH" || exit 1
+
+	ax_msg - "Copying binaries and scripts ..."
+	cp -pRv "$S/ax.zsh"* "$AXZSH/" || exit 1
+	mkdir -p "$AXZSH/bin" || exit 1
+	cp -pRv "$S/bin/"* "$AXZSH/bin/" || exit 1
+
+	for f in AUTHORS LICENSE.md README.md; do
+		cp -pRv "$S/$f" "$AXZSH/" || exit 1
+	done
+
+	ax_msg - "Copying plugins ..."
+	for plugin_type in core default_plugins plugins; do
+		mkdir -p "$AXZSH/$plugin_type" || exit 1
+		for p in "$S/$plugin_type/"*; do
+			echo "$p -> $AXZSH/$p"
+			rm -fr "${AXZSH:?}/$p" || exit 1
+			cp -pR "$S/$p" "$AXZSH/$p" || exit 1
+		done
+	done
+fi
+
+ax_msg - "Linking ZSH startup files ..."
 
 for f in ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc; do
 	safe_rm "$f" || exit 1

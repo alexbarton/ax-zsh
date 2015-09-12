@@ -70,7 +70,7 @@ done
 
 if [ ! -d "$AXZSH/active_plugins" ]; then
 	ax_msg - "Initializing plugin directory \"$AXZSH/active_plugins\" ..."
-	type zsh >/dev/null 2>&1
+	which zsh >/dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		zsh "$AXZSH/bin/axzshctl" reset-plugins
 		exit $?

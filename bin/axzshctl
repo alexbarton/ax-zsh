@@ -37,6 +37,9 @@ function Usage {
 	echo "  enable-default-plugins"
 	echo "    Enable all default plugins."
 	echo
+	echo "  upgrade"
+	echo "    Upgrade AX-ZSH installation (requires Git)."
+	echo
 	exit 2
 }
 
@@ -104,6 +107,20 @@ function EnableDefaultPlugins {
 	return $?
 }
 
+function UpgradeAXZSH {
+	if [[ $+commands[git] -eq 0 ]]; then
+		ax_msg 2 "The git(1) command is not available!"
+		return 1
+	fi
+	if [[ ! -d "$AXZSH/.git" ]]; then
+		ax_msg 2 "AX-ZSH seems not to be installed using Git. Can't upgrade!"
+		return 1
+	fi
+
+	ax_msg - "Upgrading AX-ZSH in \"$AXZSH\" using git(1) ..."
+	( cd "$AXZSH" && git pull --ff-only )
+}
+
 NAME="$(basename "$0")"
 
 [[ $# -gt 0 ]] || Usage
@@ -137,6 +154,10 @@ case "$cmd" in
 	"enable-default-plugins")
 		[[ $# -eq 0 ]] || Usage
 		EnableDefaultPlugins
+		;;
+	"upgrade")
+		[[ $# -eq 0 ]] || Usage
+		UpgradeAXZSH
 		;;
 	*)
 		Usage

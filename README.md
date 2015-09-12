@@ -40,6 +40,18 @@ relays on). In addition, AX-ZSH reads the optional files `~/.zprofile.local`,
 core initialization files when present.
 
 
+Customization
+-------------
+
+Use the `axzshctl` tool to enable, disable, and reset plugins. AXZSH
+initializes an alias which points to the actual location in `~/.axzsh/bin/`.
+
+See `axzshctl --help` for details.
+
+In addition you can set the `AXZSH_PLUGIN_D` variable (and `ZSH_CUSTOM` like
+"OhMyZsh") to specify additional plugin search directories.
+
+
 Environment Variables
 ---------------------
 

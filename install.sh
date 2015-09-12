@@ -66,6 +66,8 @@ else
 	done
 fi
 
+mkdir -p "$AXZSH/custom_plugins" || abort
+
 ax_msg - "Linking ZSH startup files ..."
 
 for f in ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc; do

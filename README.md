@@ -48,6 +48,11 @@ initializes an alias which points to the actual location in `~/.axzsh/bin/`.
 
 See `axzshctl --help` for details.
 
+You can link custom plugins stored in arbitrary directories using `axzshctl`
+by specifying the complete path name. Or you can place additional plugins into
+the `~/.axzsh/custom_plugins` folder which is searched by the `axzshctl` tool
+by default.
+
 In addition you can set the `AXZSH_PLUGIN_D` variable (and `ZSH_CUSTOM` like
 "OhMyZsh") to specify additional plugin search directories.
 

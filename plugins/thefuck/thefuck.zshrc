@@ -4,4 +4,4 @@
 # Make sure that "thefuck(1)" is installed
 (( $+commands[thefuck] )) || return
 
-alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+eval "$(thefuck --alias)"

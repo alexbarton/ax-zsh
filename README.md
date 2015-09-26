@@ -1,8 +1,8 @@
 AX-ZSH: Alex' Modular ZSH Configuration
 =======================================
 
-AX-ZSH is a modular configuration system for the Z shell. If provides sane
-defaults and is extendable by plugins.
+AX-ZSH is a modular configuration system for the Z shell (ZSH).
+If provides sane defaults and is extendable by plugins.
 
 
 Installation

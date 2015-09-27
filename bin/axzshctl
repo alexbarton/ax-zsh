@@ -23,7 +23,7 @@ fi
 unset dir ax_common ax_common_sourced
 
 function Usage {
-	echo "$NAME <command> [...]"
+	echo "Usage: $NAME <command> [...]"
 	echo
 	echo "  enable-plugin <name|directory> [<name|directory> [...]]"
 	echo "    Enable plugin(s)."

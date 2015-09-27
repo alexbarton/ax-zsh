@@ -1,6 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # ax.axzshtheme: Default AX-ZSH Theme
 
+ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING=") "
+
 ax_logname_prompt_functions=($ax_logname_prompt_functions ax_logname_prompt_root)
 ax_hostname_prompt_functions=($ax_hostname_prompt_functions ax_hostname_prompt_root)
 

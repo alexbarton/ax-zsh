@@ -3,10 +3,12 @@
 
 # Logname ("user name")
 
+ZSH_THEME_LOGNAME_PROMPT_PREFIX_SPACING=""
 (( $UID == 0 )) \
 	&& ZSH_THEME_LOGNAME_PROMPT_PREFIX="%{$fg_no_bold[red]%}" \
 	|| ZSH_THEME_LOGNAME_PROMPT_PREFIX=""
-ZSH_THEME_LOGNAME_PROMPT_SUFFIX="%{$reset_color%}@"
+ZSH_THEME_LOGNAME_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_LOGNAME_PROMPT_SUFFIX_SPACING="@"
 
 function ax_logname_prompt_root() {
 	(( $UID == 0 )) || return 1
@@ -17,7 +19,7 @@ function ax_logname_prompt_yn() {
 	local func
 	for func ($ax_logname_prompt_functions); do
 		$func || continue
-		echo "${ZSH_THEME_LOGNAME_PROMPT_PREFIX}${1:-$LOGNAME}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX}"
+		echo "${ZSH_THEME_LOGNAME_PROMPT_PREFIX_SPACING}${ZSH_THEME_LOGNAME_PROMPT_PREFIX}${1:-$LOGNAME}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX_SPACING}"
 		return
 	done
 }
@@ -26,8 +28,10 @@ ax_logname_prompt_functions=()
 
 # Hostname
 
+ZSH_THEME_HOSTNAME_PROMPT_PREFIX_SPACING=""
 ZSH_THEME_HOSTNAME_PROMPT_PREFIX=""
 ZSH_THEME_HOSTNAME_PROMPT_SUFFIX="%{$reset_color%}:"
+ZSH_THEME_HOSTNAME_PROMPT_SUFFIX_SPACING=""
 
 function ax_hostname_prompt_root() {
 	(( $UID == 0 )) || return 1
@@ -38,7 +42,7 @@ function ax_hostname_prompt_yn() {
 	local func
 	for func ($ax_hostname_prompt_functions); do
 		$func || continue
-		echo "${ZSH_THEME_HOSTNAME_PROMPT_PREFIX}${1:-$SHORT_HOST}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX}"
+		echo "${ZSH_THEME_HOSTNAME_PROMPT_PREFIX_SPACING}${ZSH_THEME_HOSTNAME_PROMPT_PREFIX}${1:-$SHORT_HOST}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX_SPACING}"
 		return
 	done
 }
@@ -47,8 +51,10 @@ ax_hostname_prompt_functions=()
 
 # VCS
 
-ZSH_THEME_VCS_PROMPT_PREFIX="(%{$fg_no_bold[yellow]%}"
-ZSH_THEME_VCS_PROMPT_SUFFIX="%{$reset_color%}) "
+ZSH_THEME_VCS_PROMPT_PREFIX_SPACING="("
+ZSH_THEME_VCS_PROMPT_PREFIX="%{$fg_no_bold[yellow]%}"
+ZSH_THEME_VCS_PROMPT_SUFFIX="%{$reset_color%}"
+ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING=")"
 
 ZSH_THEME_VCS_PROMPT_CLEAN="%{$fg_no_bold[green]%}✔"
 ZSH_THEME_VCS_PROMPT_DIRTY="%{$fg_no_bold[red]%}✘"
@@ -60,7 +66,7 @@ function ax_vcs_prompt() {
 	local p
 	for func ($ax_vcs_prompt_functions); do
 		p=$( $func ) || continue
-		echo "${ZSH_THEME_VCS_PROMPT_PREFIX}${p}${ZSH_THEME_VCS_PROMPT_SUFFIX}"
+		echo "${ZSH_THEME_VCS_PROMPT_PREFIX_SPACING}${ZSH_THEME_VCS_PROMPT_PREFIX}${p}${ZSH_THEME_VCS_PROMPT_SUFFIX}${ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING}"
 		return
 	done
 }

@@ -16,7 +16,6 @@ function ax_logname_prompt_root() {
 
 function ax_logname_prompt_yn() {
 	local func
-	local p
 	for func ($ax_logname_prompt_functions); do
 		$func || continue
 		echo "${ZSH_THEME_LOGNAME_PROMPT_PREFIX}${1:-$LOGNAME}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX}"
@@ -38,7 +37,6 @@ function ax_hostname_prompt_root() {
 
 function ax_hostname_prompt_yn() {
 	local func
-	local p
 	for func ($ax_hostname_prompt_functions); do
 		$func || continue
 		echo "${ZSH_THEME_HOSTNAME_PROMPT_PREFIX}${1:-$SHORT_HOST}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX}"

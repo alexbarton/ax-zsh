@@ -10,7 +10,6 @@ ZSH_THEME_LOGNAME_PROMPT_SUFFIX="%{$reset_color%}@"
 
 function ax_logname_prompt_root() {
 	(( $UID == 0 )) || return 1
-	echo "$LOGNAME"
 	return 0
 }
 

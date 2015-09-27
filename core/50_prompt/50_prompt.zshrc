@@ -4,10 +4,13 @@
 # Logname ("user name")
 
 ZSH_THEME_LOGNAME_PROMPT_PREFIX_SPACING=""
-(( $UID == 0 )) \
-	&& ZSH_THEME_LOGNAME_PROMPT_PREFIX="%{$fg_no_bold[red]%}" \
-	|| ZSH_THEME_LOGNAME_PROMPT_PREFIX=""
-ZSH_THEME_LOGNAME_PROMPT_SUFFIX="%{$reset_color%}"
+if (( $UID == 0 )); then
+	ZSH_THEME_LOGNAME_PROMPT_PREFIX="%{$fg_no_bold[red]%}" \
+	ZSH_THEME_LOGNAME_PROMPT_SUFFIX="%{$reset_color%}"
+else
+	ZSH_THEME_LOGNAME_PROMPT_PREFIX=""
+	ZSH_THEME_LOGNAME_PROMPT_SUFFIX=""
+fi
 ZSH_THEME_LOGNAME_PROMPT_SUFFIX_SPACING="@"
 
 function ax_logname_prompt_root() {
@@ -30,8 +33,8 @@ ax_logname_prompt_functions=()
 
 ZSH_THEME_HOSTNAME_PROMPT_PREFIX_SPACING=""
 ZSH_THEME_HOSTNAME_PROMPT_PREFIX=""
-ZSH_THEME_HOSTNAME_PROMPT_SUFFIX="%{$reset_color%}:"
-ZSH_THEME_HOSTNAME_PROMPT_SUFFIX_SPACING=""
+ZSH_THEME_HOSTNAME_PROMPT_SUFFIX=""
+ZSH_THEME_HOSTNAME_PROMPT_SUFFIX_SPACING=":"
 
 function ax_hostname_prompt_root() {
 	(( $UID == 0 )) || return 1

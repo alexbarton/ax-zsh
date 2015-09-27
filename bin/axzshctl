@@ -37,6 +37,9 @@ function Usage {
 	echo "  enable-default-plugins"
 	echo "    Enable all default plugins."
 	echo
+	echo "  set-theme <name>|-"
+	echo "    Set active theme to <name>, or to the default."
+	echo
 	echo "  upgrade"
 	echo "    Upgrade AX-ZSH installation (requires Git)."
 	echo
@@ -107,6 +110,35 @@ function EnableDefaultPlugins {
 	return $?
 }
 
+function SetTheme {
+	local link_name="$AXZSH/active_theme"
+
+	if [ $# -ne 1 ]; then
+		echo "Usage: axzsh_set_theme <name|->"
+		return 1
+	fi
+
+	rm -f "$link_name" || return 1
+
+	if [ "$1" = "-" ]; then
+		echo "Theme settings have been reset."
+		return 0
+	fi
+
+	if [ -r "$1" ]; then
+		theme="$1"
+	elif [ -r "$AXZSH/custom_themes/$1.axzshtheme" ]; then
+		theme="$AXZSH/custom_themes/$1.axzshtheme"
+	elif [ -r "$AXZSH/themes/$1.axzshtheme" ]; then
+		theme="$AXZSH/themes/$1.axzshtheme"
+	else
+		echo "Theme \"$1\" not found!"
+		return 1
+	fi
+	ln -sv "$theme" "$link_name" || return 1
+	return $?
+}
+
 function UpgradeAXZSH {
 	if [[ $+commands[git] -eq 0 ]]; then
 		ax_msg 2 "The git(1) command is not available!"
@@ -154,6 +186,10 @@ case "$cmd" in
 	"enable-default-plugins")
 		[[ $# -eq 0 ]] || Usage
 		EnableDefaultPlugins
+		;;
+	"set-theme")
+		[[ $# -eq 1 ]] || Usage
+		SetTheme "$1"
 		;;
 	"upgrade")
 		[[ $# -eq 0 ]] || Usage

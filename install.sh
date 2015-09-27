@@ -67,6 +67,7 @@ else
 fi
 
 mkdir -p "$AXZSH/custom_plugins" || abort
+mkdir -p "$AXZSH/custom_themes" || abort
 
 ax_msg - "Linking ZSH startup files ..."
 

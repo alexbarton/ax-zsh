@@ -14,17 +14,17 @@ function ax_logname_prompt_root() {
 	return 0
 }
 
-ax_logname_prompt_functions=($ax_logname_prompt_functions ax_logname_prompt_root)
-
-function ax_logname_prompt() {
+function ax_logname_prompt_yn() {
 	local func
 	local p
 	for func ($ax_logname_prompt_functions); do
-		p=$( $func ) || continue
-		echo "${ZSH_THEME_LOGNAME_PROMPT_PREFIX}${p}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX}"
+		$func || continue
+		echo "${ZSH_THEME_LOGNAME_PROMPT_PREFIX}${1:-$LOGNAME}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX}"
 		return
 	done
 }
+
+ax_logname_prompt_functions=()
 
 # Hostname
 
@@ -33,21 +33,20 @@ ZSH_THEME_HOSTNAME_PROMPT_SUFFIX="%{$reset_color%}:"
 
 function ax_hostname_prompt_root() {
 	(( $UID == 0 )) || return 1
-	echo "$SHORT_HOST"
 	return 0
 }
 
-ax_hostname_prompt_functions=($ax_hostname_prompt_functions ax_hostname_prompt_root)
-
-function ax_hostname_prompt() {
+function ax_hostname_prompt_yn() {
 	local func
 	local p
 	for func ($ax_hostname_prompt_functions); do
-		p=$( $func ) || continue
-		echo "${ZSH_THEME_HOSTNAME_PROMPT_PREFIX}${p}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX}"
+		$func || continue
+		echo "${ZSH_THEME_HOSTNAME_PROMPT_PREFIX}${1:-$SHORT_HOST}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX}"
 		return
 	done
 }
+
+ax_hostname_prompt_functions=()
 
 # VCS
 
@@ -68,6 +67,8 @@ function ax_vcs_prompt() {
 		return
 	done
 }
+
+ax_vcs_prompt_functions=()
 
 # Options and defaults
 

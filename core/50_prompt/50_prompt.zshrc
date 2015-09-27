@@ -72,4 +72,5 @@ ax_vcs_prompt_functions=()
 
 setopt PROMPT_SUBST
 
-export PS1 RPS1
+export PS1 PS2 PS3 PS4
+export RPS1 RPS2

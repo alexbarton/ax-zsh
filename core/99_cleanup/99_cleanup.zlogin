@@ -6,6 +6,7 @@ for func (
 	ax_hostname_prompt_yn
 	ax_logname_prompt_root
 	ax_logname_prompt_yn
+	ax_prompt
 ); do
 	unfunction $func
 done

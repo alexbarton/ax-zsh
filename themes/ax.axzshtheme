@@ -1,17 +1,19 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # ax.axzshtheme: Default AX-ZSH Theme
 
-ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING=") "
+ZSH_THEME_VCS_PROMPT_PREFIX_SPACING=" ("
 
+ZSH_THEME_PROMPT_PREFIX_SPACING=" "
 ZSH_THEME_PROMPT_PREFIX="%{$fg_no_bold[green]%}%B"
 ZSH_THEME_PROMPT_ROOT_PREFIX="%{$fg_no_bold[red]%}%B"
 ZSH_THEME_PROMPT_SUFFIX="%b%{$reset_color%}"
+ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
 
 ax_logname_prompt_functions=($ax_logname_prompt_functions ax_logname_prompt_root)
 ax_hostname_prompt_functions=($ax_hostname_prompt_functions ax_hostname_prompt_root)
 
 # Default prompt
-PS1="$(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b "'$(ax_vcs_prompt)'"$(ax_prompt) "
+PS1="$(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
 
 # Prompt on right side
 RPS1="%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})"

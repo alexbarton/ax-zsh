@@ -71,5 +71,6 @@ plugin_list=(
 for plugin ($plugin_list); do
 	axzsh_load_plugin "$plugin" "$script_type"
 done
+unfunction axzsh_load_plugin
 unset script_name script_type plugin
 unset plugin_list

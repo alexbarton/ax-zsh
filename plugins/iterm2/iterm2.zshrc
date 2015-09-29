@@ -1,7 +1,6 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # iterm2.zshrc: iTerm2 Shell Integration
 
-[[ "$TERM_PROGRAM" = "iTerm.app" ]] || return
 [[ "$TERM" != "screen" && "$TERM" != "screen-256color" ]] || return
 
 # Indicates start of command output. Runs just before command executes.

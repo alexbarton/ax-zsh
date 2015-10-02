@@ -11,7 +11,7 @@ unset PS1
 
 [[ -f "$HOME/.axzsh.debug" ]] && echo "» 01_zprofile.zsh:"
 for plugin ($plugin_list); do
-	axzsh_load_plugin "$(basename "$plugin")" "zprofile"
+	axzsh_load_plugin "$plugin" "zprofile"
 done
 AXZSH_ZPROFILE_READ=2
 [[ -f "$HOME/.axzsh.debug" ]] && echo "» 01_zprofile.zsh (end)"

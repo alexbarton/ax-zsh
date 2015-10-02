@@ -8,7 +8,7 @@
 
 [[ -f "$HOME/.axzsh.debug" ]] && echo "» 99_zlogin.zsh:"
 for plugin ($plugin_list); do
-	axzsh_load_plugin "$(basename "$plugin")" "zlogin"
+	axzsh_load_plugin "$plugin" "zlogin"
 done
 AXZSH_ZLOGIN_READ=2
 [[ -f "$HOME/.axzsh.debug" ]] && echo "» 99_zlogin.zsh (end)"

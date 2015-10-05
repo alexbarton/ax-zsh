@@ -1,0 +1,17 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# ohmyzsh.axzshtheme: OhMyZSH "robbyrussell" theme
+
+ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
+PS1='${ret_status} %{$fg[cyan]%}%c%b $(ax_vcs_prompt)%b '
+
+ZSH_THEME_VCS_PROMPT_PREFIX_SPACING="%{$fg_bold[blue]%}vcs:("
+ZSH_THEME_VCS_PROMPT_PREFIX="%{$fg[red]%}"
+ZSH_THEME_VCS_PROMPT_SUFFIX=""
+ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING=""
+
+ZSH_THEME_VCS_PROMPT_CLEAN="%{$fg[blue]%})%{$reset_color%}"
+ZSH_THEME_VCS_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗%{$reset_color%}"
+
+# No VCS ahed and behind markers
+ZSH_THEME_VCS_PROMPT_AHEAD=""
+ZSH_THEME_VCS_PROMPT_BEHIND=""

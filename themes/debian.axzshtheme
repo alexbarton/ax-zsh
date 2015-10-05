@@ -1,0 +1,6 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# debian.axzshtheme: Debian theme
+
+ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
+
+PS1="%{$fg_no_bold[green]%}%B%n@%m%{$reset_color%}:%{$fg_no_bold[blue]%}%B%~%{$reset_color%}"'$(ax_vcs_prompt)'"$(ax_prompt)"

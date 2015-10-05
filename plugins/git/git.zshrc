@@ -38,7 +38,7 @@ git_prompt_behind() {
 
 git_prompt() {
 	ref=$(git symbolic-ref HEAD 2>/dev/null) || return 1
-	echo "${ref#refs/heads/} $(git_parse_dirty)$(git_prompt_ahead)$(git_prompt_behind)"
+	echo "${ref#refs/heads/}$(git_parse_dirty)$(git_prompt_ahead)$(git_prompt_behind)"
 	return 0
 }
 

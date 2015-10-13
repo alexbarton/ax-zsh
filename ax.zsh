@@ -39,6 +39,11 @@ function axzsh_load_plugin {
 		fi
 	fi
 
+	if [[ "$type" == "zprofile" && -d "$dname/functions" ]]; then
+		# Add plugin function path when folder exists
+		axzsh_fpath+=("$dname/functions")
+	fi
+
 	if [[ -r "$fname" ]]; then
 		[[ -f "$HOME/.axzsh.debug" ]] \
 			&& echo "   - $plugin ($type) ..."

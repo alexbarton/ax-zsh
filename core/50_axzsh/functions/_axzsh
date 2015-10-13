@@ -1,0 +1,30 @@
+#compdef axzshctl
+
+_axzshctl() {
+	_arguments \
+		'1: :((
+			enable-plugin\:"Enable plugin(s)."
+			disable-plugin\:"Disable plugin(s)."
+			reset-plugins\:"Reset active plugins to the default set."
+			enable-default-plugins\:"Enable all default plugins."
+			set-theme\:"Set active theme."
+			upgrade\:"Upgrade AX-ZSH installation (requires Git)."
+		))' \
+		'*: :->args'
+#
+	case "$state" in
+	  'args')
+		case "$words[2]" in
+		  "enable-plugin"|"disable-plugin")
+			compadd "$@" $(ls -1 "$AXZSH"/plugins)
+			;;
+		  "set-theme")
+			[[ -z $words[3] ]] \
+				&& compadd "$@" -- "-" $(ls -1 "$AXZSH"/themes | cut -d'.' -f1)
+			;;
+		esac
+		;;
+	esac
+}
+
+_axzshctl "$@"

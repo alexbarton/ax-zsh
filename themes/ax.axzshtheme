@@ -1,7 +1,7 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # ax.axzshtheme: Default AX-ZSH Theme
 
-ZSH_THEME_VCS_PROMPT_PREFIX_SPACING=" ("
+ZSH_THEME_VCS_PROMPT_PREFIX_SPACING="("
 
 ZSH_THEME_PROMPT_PREFIX_SPACING=" "
 ZSH_THEME_PROMPT_PREFIX="%{$fg_no_bold[green]%}%B"

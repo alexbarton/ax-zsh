@@ -98,6 +98,3 @@ function ax_prompt() {
 # Options and defaults
 
 setopt PROMPT_SUBST
-
-export PS1 PS2 PS3 PS4
-export RPS1 RPS2

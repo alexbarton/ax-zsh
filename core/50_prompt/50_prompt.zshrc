@@ -27,7 +27,7 @@ function ax_logname_prompt_yn() {
 	done
 }
 
-ax_logname_prompt_functions=()
+ax_logname_prompt_functions=(ax_logname_prompt_root)
 
 # Hostname
 

@@ -8,7 +8,7 @@ for func (
 	ax_logname_prompt_yn
 	ax_prompt
 ); do
-	unfunction $func
+	unfunction $func 2>/dev/null
 done
 
 for func ($ax_logname_prompt_functions); do

@@ -14,8 +14,17 @@ function axzsh_terminal_set_window_title {
 	printf '\e]2;%s\a' "$1"
 }
 
+# Test for "modern" terminal
+function axzsh_is_modern_terminal {
+	[[ "$TERM" = screen* ]] && return 0
+	[[ "$TERM" = tmux* ]] && return 0
+	[[ "$TERM" = xterm* ]] && return 0
+	return 1
+}
+
 # Update terminal titles befor echoing the shell prompt
 function axzsh_terminal_title_precmd {
+	axzsh_is_modern_terminal || return
 	axzsh_terminal_set_icon_title 'zsh'
 	if [[ "$TERM_PROGRAM" == "Apple_Terminal" && "$TERM" != "screen"* ]]; then
 		axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST"
@@ -31,8 +40,11 @@ precmd_functions+=(axzsh_terminal_title_precmd)
 
 # Update terminal titles befor executing a command
 function axzsh_terminal_title_preexec {
+	axzsh_is_modern_terminal || return
+
 	local cmd="${1[(w)1]}"
 	local remote=""
+
 	case "$cmd" in
 	  "mosh"*|"root"*|"ssh"*|"telnet"*)
 		remote=1

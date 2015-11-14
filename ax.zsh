@@ -1,7 +1,7 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # Copyright (c) 2015 Alexander Barton <alex@barton.de>
 
-script_name="$(basename -- "${(%):-%N}")"
+script_name="${${(%):-%N}:t}"
 script_type="$script_name[2,-1]"
 
 [[ -f "$HOME/.axzsh.debug" ]] && echo "» $script_name:"
@@ -10,8 +10,8 @@ script_type="$script_name[2,-1]"
 # - $1: plugin name
 # - $2: plugin type (optional; defaults to "zshrc")
 function axzsh_load_plugin {
-	dname="$(readlink "$1")" || dname="$1"
-	plugin="$(basename "$dname")"
+	dname="$1:A"
+	plugin="$dname:t"
 	[[ -z "$2" ]] && type="zshrc" || type="$2"
 	fname="$dname/$plugin.$type"
 

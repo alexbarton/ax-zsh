@@ -11,7 +11,7 @@ if [[ -z "$EDITOR" ]]; then
 	unset editor
 fi
 
-case "$(basename "$EDITOR")" in
+case "$EDITOR:t" in
 	"atom"|"mate"|"subl")
 		EDITOR="$EDITOR --wait"
 		;;

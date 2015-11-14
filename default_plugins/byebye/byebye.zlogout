@@ -12,4 +12,5 @@ case `tty` in
 	;;
     *)
 	echo "Bye, bye, $LOGNAME!"
+	echo
 esac

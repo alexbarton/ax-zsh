@@ -4,8 +4,6 @@
 script_name="${${(%):-%N}:t}"
 script_type="$script_name[2,-1]"
 
-[[ -f "$HOME/.axzsh.debug" ]] && echo "» $script_name:"
-
 # Load plugin code of a given type.
 # - $1: plugin name
 # - $2: plugin type (optional; defaults to "zshrc")
@@ -17,7 +15,7 @@ function axzsh_load_plugin {
 
 	if [[ ! -d "$dname" ]]; then
 		# Plugin not found!
-		if [[ -f "$HOME/.axzsh.debug" ]]; then
+		if [[ -n "$AXZSH_DEBUG" ]]; then
 			# Show error message for all stages in "debug mode":
 			echo "AX-ZSH plugin \"$plugin\" not found (type \"$type\")!" >&2
 		elif [[ "$type" == "zshrc" ]]; then
@@ -45,7 +43,7 @@ function axzsh_load_plugin {
 	fi
 
 	if [[ -r "$fname" ]]; then
-		[[ -f "$HOME/.axzsh.debug" ]] \
+		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - $plugin ($type) ..."
 		source "$fname"
 	fi
@@ -59,10 +57,14 @@ function axzsh_load_plugin {
 if [[ -z "$AXZSH" ]]; then
 	export AXZSH="$HOME/.axzsh"
 	if [[ -f "$HOME/.axzsh.debug" ]]; then
+		export AXZSH_DEBUG=1
 		echo "AXZSH=$AXZSH"
+		echo "AXZSH_DEBUG=$AXZSH_DEBUG"
 		echo "AXZSH_PLUGIN_D=$AXZSH_PLUGIN_D"
 	fi
 fi
+
+[[ -n "$AXZSH_DEBUG" ]] && echo "» $script_name:"
 
 # Setup list of plugins to load:
 typeset -U plugin_list

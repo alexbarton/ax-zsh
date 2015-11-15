@@ -64,6 +64,14 @@ else
 			cp -pR "$S/$p" "$AXZSH/$p" || abort
 		done
 	done
+
+	ax_msg - "Copying themes ..."
+	mkdir -p "$AXZSH/themes" || abort
+	for p in "$S/themes/"*; do
+		echo "$p -> $AXZSH/$p"
+		rm -fr "${AXZSH:?}/$p" || abort
+		cp -pR "$S/$p" "$AXZSH/$p" || abort
+	done
 fi
 
 mkdir -p "$AXZSH/custom_plugins" || abort

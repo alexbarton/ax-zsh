@@ -2,7 +2,7 @@ AX-ZSH: Alex' Modular ZSH Configuration
 =======================================
 
 AX-ZSH is a modular configuration system for the Z shell (ZSH).
-If provides sane defaults and is extendable by plugins.
+It provides sane defaults and is extendable by plugins.
 
 
 Installation
@@ -13,31 +13,43 @@ Afterwards use the `install.sh` script inside of the source directory to set
 up the `~/.axzsh` directory.
 
 When using Git it is best to directly clone the AX-ZSH repository into the
-`~/.axzsh` directory and call `install.sh` from this location:
+`~/.axzsh` directory and call `install.sh` from this location.
 
-  $ git clone git://arthur.barton.de/ax-zsh.git ~/.axzsh
-  $ ~/.axzsh/install.sh
+Clone repository from _GitHub_ (https://github.com/alexbarton/ax-zsh):
 
-You can use `cd ~/.axzsh && git pull --ff-only` to upgrade this installation.
+    $ git clone https://github.com/alexbarton/ax-zsh.git ~/.axzsh
+
+Then run the installer script:
+
+    $ ~/.axzsh/install.sh
 
 The `install.sh` script creates symbolic links for `~/.zprofile`, `~/.zshrc`,
 `~/.zlogin`, and `~/.zlogout` (don't worry, already existing files are backed
 up).
 
-Then you have to restart your ZSH session.
+Now close and restart all your running ZSH session to activate AX-ZSH.
+
+To update AX-ZSH run `axzshctl upgrade`.
 
 
-Configuration
--------------
+AX-ZSH & Local ZSH Configuration
+--------------------------------
 
 Plugins are loaded when they are linked into the `$AXZSH/active_plugins/`
-directory.
+directory; see the _Customization_ section below for how to activate them.
 
-AX-ZSH doesn't use `~/.zshenv` in any way. So you can use this file for your
-own purposes (for example, to set up some environment variables that AX-ZSH
-relays on). In addition, AX-ZSH reads the optional files `~/.zprofile.local`,
-`~/.zshrc.local`, `~/.zlogin.local`, and `~/.zlogout.local` after its own
-core initialization files when present.
+Don't modify `~/.zprofile`, `~/.zshrc`, `~/.zlogin`, or `~/.zlogout`! These
+are links to "AX-ZSH"-private files that can become overwritten when updating.
+
+You can use the following files for local ZSH configuration:
+
+1. AX-ZSH doesn't use `~/.zshenv` in any way. So you can use this file for your
+   own purposes (for example, to set up some environment variables that AX-ZSH
+   relays on).
+
+2. AX-ZSH reads the optional files `~/.zprofile.local`, `~/.zshrc.local`,
+   `~/.zlogin.local`, and `~/.zlogout.local` after its own core initialization
+   files when present.
 
 
 Customization

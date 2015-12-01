@@ -10,3 +10,9 @@ if (( $+commands[gpg2] )); then
 		alias gpg="gpg2"
 	fi
 fi
+
+if [[ -z "$GPG_AGENT_INFO" && -r ~/.gpg-agent-info ]]; then
+	# Read environment file
+	source ~/.gpg-agent-info 2>/dev/null
+	[[ -n "$GPG_AGENT_INFO" ]] && export GPG_AGENT_INFO
+fi

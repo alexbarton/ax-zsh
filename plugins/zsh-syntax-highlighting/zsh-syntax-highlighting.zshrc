@@ -2,6 +2,7 @@
 # zsh-syntax-highlighting.zshrc: Initialize "ZSH Syntax Highlighting"
 
 for script (
+	"/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 	"/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 ); do
 	if [[ -r "$script" ]]; then

@@ -11,6 +11,8 @@ for script (
 		# Found virtualenvwrapper
 		[[ -z "$PROJECT_HOME" && -r "$LOCAL_HOME/Develop" ]] \
 			&& PROJECT_HOME="$LOCAL_HOME/Develop"
+		[[ -z "$PROJECT_HOME" && -r "$HOME/Develop" ]] \
+			&& PROJECT_HOME="$HOME/Develop"
 		[[ -z "$WORKON_HOME" ]] \
 			&& WORKON_HOME="$XDG_CACHE_HOME/virtualenvs"
 

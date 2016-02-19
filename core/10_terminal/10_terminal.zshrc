@@ -1,6 +1,19 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 10_terminal.zshrc: Initialize terminal settings
 
+# Common helper functions
+
+# Check if terminal supports Unicode.
+# <https://wiki.grml.org/doku.php?id=utf8>
+function axzsh_is_utf_terminal {
+	case "$LANG $CHARSET $LANGUAGE" in
+		(*utf*) return 0 ;;
+		(*UTF*) return 0 ;;
+		(*) return 1 ;;
+	esac
+}
+alias isutfenv=axzsh_is_utf_terminal
+
 # Set terminal title
 
 # Set terminal "hardstatus" and "icon title"

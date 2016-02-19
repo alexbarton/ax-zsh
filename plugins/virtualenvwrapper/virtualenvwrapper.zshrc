@@ -15,6 +15,7 @@ for script (
 			&& WORKON_HOME="$XDG_CACHE_HOME/virtualenvs"
 
 		source "$script"
+		unset script
 
 		# pip
 		export PIP_REQUIRE_VIRTUALENV="true"

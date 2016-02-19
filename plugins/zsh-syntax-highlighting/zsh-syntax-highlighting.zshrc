@@ -9,6 +9,8 @@ for script (
 		[[ -n "$ZSH_HIGHLIGHT_HIGHLIGHTERS" ]] \
 			&& ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 		source "$script"
+		unset script
 		return
 	fi
 done
+unset script

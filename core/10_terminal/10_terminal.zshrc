@@ -22,6 +22,11 @@ function axzsh_is_modern_terminal {
 	return 1
 }
 
+# Resize terminal window (when possible)
+function axzsh_resize_terminal {
+	printf '\e[8;%d;%dt' "$2" "$1"
+}
+
 # Set terminal title
 
 # Set terminal "hardstatus" and "icon title"

@@ -14,6 +14,14 @@ function axzsh_is_utf_terminal {
 }
 alias isutfenv=axzsh_is_utf_terminal
 
+# Test for "modern" terminal
+function axzsh_is_modern_terminal {
+	[[ "$TERM" = screen* ]] && return 0
+	[[ "$TERM" = tmux* ]] && return 0
+	[[ "$TERM" = xterm* ]] && return 0
+	return 1
+}
+
 # Set terminal title
 
 # Set terminal "hardstatus" and "icon title"
@@ -25,14 +33,6 @@ function axzsh_terminal_set_icon_title {
 # Set terminal window title
 function axzsh_terminal_set_window_title {
 	printf '\e]2;%s\a' "$1"
-}
-
-# Test for "modern" terminal
-function axzsh_is_modern_terminal {
-	[[ "$TERM" = screen* ]] && return 0
-	[[ "$TERM" = tmux* ]] && return 0
-	[[ "$TERM" = xterm* ]] && return 0
-	return 1
 }
 
 # Update terminal titles befor echoing the shell prompt

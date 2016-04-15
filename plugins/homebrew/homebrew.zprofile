@@ -6,11 +6,3 @@
 
 [[ -d "/usr/local/share/zsh-completions" ]] \
 	&& axzsh_fpath=(/usr/local/share/zsh-completions $axzsh_fpath)
-
-completion_file="$(brew --prefix)/Library/Contributions/brew_zsh_completion.zsh"
-target_file="$(dirname "$0")/functions/_brew"
-
-[[ -r "$completion_file" && ! -r "$target_file" ]] \
-	&& ln -fs "$completion_file" "$target_file"
-
-unset completion_file target_file

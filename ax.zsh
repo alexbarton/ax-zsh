@@ -26,7 +26,10 @@ function axzsh_load_plugin {
 	fi
 
 	if [[ ! -r "$fname" && "$type" == "zshrc" ]]; then
-		if [[ -r "$dname/$plugin.plugin.zsh" ]]; then
+		if [[ -r "$dname/$plugin.zprofile" || -r "$dname/$plugin.zlogout" ]]; then
+			# Native AX-ZSH plugin, but for different stage. Skip it!
+			:
+		elif [[ -r "$dname/$plugin.plugin.zsh" ]]; then
 			# Oh My ZSH plugin
 			type="plugin.zsh"
 			fname="$dname/$plugin.plugin.zsh"
@@ -34,6 +37,8 @@ function axzsh_load_plugin {
 			# Prezto module
 			type="init.zsh"
 			fname="$dname/init.zsh"
+		else
+			echo "AX-ZSH plugin type of \"$plugin\" unknown, skipped!" >&2
 		fi
 	fi
 

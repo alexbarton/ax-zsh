@@ -46,12 +46,27 @@ function Usage {
 	exit 2
 }
 
+function NormalizedPluginName {
+	echo "$1" | sed -e 's|/|#|g'
+}
+
 function EnablePlugin {
+	local plugin=$(NormalizedPluginName "$1")
 	local dir="$AXZSH/active_plugins"
 
-	if [[ -h "$dir/$1" ]]; then
+	if [[ -h "$dir/$plugin" ]]; then
 		ax_msg 1 "Plugin \"$1\" already active!"
 		return 1
+	fi
+
+	if [[ "$1" =~ "/" ]]; then
+		# GitHub plugin
+		mkdir -p "$AXZSH/repos"
+		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then
+			ax_msg - "Cloning plugin from GitHub ..."
+			git clone "https://github.com/$1.git" \
+			 "$AXZSH/repos/$plugin"
+		fi
 	fi
 
 	for dname (
@@ -59,6 +74,7 @@ function EnablePlugin {
 		"$AXZSH_PLUGIN_D/$plugin"
 		"$ZSH_CUSTOM/$plugin"
 		"$AXZSH/custom_plugins/$plugin"
+		"$AXZSH/repos/$plugin"
 		"$AXZSH/plugins/$plugin"
 		"$AXZSH/default_plugins/$plugin"
 		"$AXZSH/core/$plugin"
@@ -77,15 +93,17 @@ function EnablePlugin {
 }
 
 function DisablePlugin {
+	local plugin=$(NormalizedPluginName "$1")
 	local dir="$AXZSH/active_plugins"
 
-	if [[ ! -h "$dir/$1" ]]; then
+	if [[ ! -h "$dir/$plugin" ]]; then
 		ax_msg 1 "Plugin \"$1\" not active?"
 		return 1
 	fi
 
-	rm -v "$dir/$1"
-	return $?
+	rm -v "$dir/$plugin"; r=$?
+	[ $r -eq 0 ] && rm -fr "$AXZSH/repos/$plugin"
+	return $r
 }
 
 function ResetPlugins {
@@ -153,6 +171,26 @@ function UpgradeAXZSH {
 	( cd "$AXZSH" && git pull --ff-only )
 }
 
+function UpgradeForeignPlugins {
+	if [[ $+commands[git] -eq 0 ]]; then
+		ax_msg 2 "The git(1) command is not available!"
+		return 1
+	fi
+
+	for dir ($AXZSH/repos/*(N)); do
+		name=$(basename "$dir" | sed -e 's|#|/|g')
+		if [ -d "$dir/.git" ]; then
+			ax_msg - "Upgrading \"$name\" [git] ..."
+			(
+				cd "$dir"
+				git pull --ff-only || ax_msg 2 "Pull failed!"
+			)
+		else
+			ax_msg 2 "Unknown repository type!"
+		fi
+	done
+}
+
 NAME="$0:t"
 
 [[ $# -gt 0 ]] || Usage
@@ -194,6 +232,7 @@ case "$cmd" in
 	"upgrade")
 		[[ $# -eq 0 ]] || Usage
 		UpgradeAXZSH
+		UpgradeForeignPlugins
 		;;
 	*)
 		Usage

@@ -13,6 +13,8 @@ function axzsh_load_plugin {
 	[[ -z "$2" ]] && type="zshrc" || type="$2"
 	fname="$dname/$plugin.$type"
 
+	[[ "$plugin" =~ "#" ]] && plugin=$(echo $plugin | cut -d'#' -f2-)
+
 	if [[ ! -d "$dname" ]]; then
 		# Plugin not found!
 		if [[ -n "$AXZSH_DEBUG" ]]; then

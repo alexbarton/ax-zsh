@@ -47,7 +47,13 @@ function Usage {
 }
 
 function NormalizedPluginName {
-	echo "$1" | sed -e 's|/|#|g'
+	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_-]+$" ]]; then
+		echo "$1" | sed -e 's|/|#|g'
+	elif [[ "$1" =~ "/" ]]; then
+		basename "$1"
+	else
+		echo "$1"
+	fi
 }
 
 function EnablePlugin {
@@ -59,7 +65,7 @@ function EnablePlugin {
 		return 1
 	fi
 
-	if [[ "$1" =~ "/" ]]; then
+	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_-]+$" ]]; then
 		# GitHub plugin
 		mkdir -p "$AXZSH/repos"
 		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then

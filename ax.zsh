@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2016 Alexander Barton <alex@barton.de>
 
 script_name="${${(%):-%N}:t}"
 script_type="$script_name[2,-1]"

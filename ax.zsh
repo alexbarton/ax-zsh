@@ -13,8 +13,10 @@ function axzsh_load_plugin {
 	[[ -z "$2" ]] && type="zshrc" || type="$2"
 	fname="$dname/$plugin.$type"
 
+	# Strip repository prefix (like "alexbarton#test-plugin"):
 	[[ "$plugin" =~ "#" ]] && plugin=$(echo $plugin | cut -d'#' -f2-)
 
+	# "short plugin name": strip ".zsh" suffix:
 	plugin_short=${plugin%.zsh}
 
 	if [[ ! -d "$dname" ]]; then
@@ -48,10 +50,13 @@ function axzsh_load_plugin {
 
 	if [[ "$type" == "zprofile" && -d "$dname/functions" ]]; then
 		# Add plugin function path when folder exists
+		[[ -n "$AXZSH_DEBUG" ]] \
+			&& echo "   - $plugin ($type): functions ..."
 		axzsh_fpath+=("$dname/functions")
 	fi
 
 	if [[ -r "$fname" ]]; then
+		# Read plugin ...
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - $plugin ($type) ..."
 		source "$fname"
@@ -87,6 +92,8 @@ plugin_list=(
 for plugin ($plugin_list); do
 	axzsh_load_plugin "$plugin" "$script_type"
 done
+
+# Clean up ...
 unfunction axzsh_load_plugin
 unset script_name script_type plugin
 unset plugin_list

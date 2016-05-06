@@ -45,6 +45,7 @@ function axzsh_load_plugin {
 			fname="$dname/init.zsh"
 		else
 			echo "AX-ZSH plugin type of \"$plugin\" unknown, skipped!" >&2
+			return 0
 		fi
 	fi
 

@@ -15,6 +15,8 @@ function axzsh_load_plugin {
 
 	[[ "$plugin" =~ "#" ]] && plugin=$(echo $plugin | cut -d'#' -f2-)
 
+	plugin_short=${plugin%.zsh}
+
 	if [[ ! -d "$dname" ]]; then
 		# Plugin not found!
 		if [[ -n "$AXZSH_DEBUG" ]]; then
@@ -31,10 +33,10 @@ function axzsh_load_plugin {
 		if [[ -r "$dname/$plugin.zprofile" || -r "$dname/$plugin.zlogout" ]]; then
 			# Native AX-ZSH plugin, but for different stage. Skip it!
 			:
-		elif [[ -r "$dname/$plugin.plugin.zsh" ]]; then
+		elif [[ -r "$dname/${plugin_short}.plugin.zsh" ]]; then
 			# Oh My ZSH plugin
 			type="plugin.zsh"
-			fname="$dname/$plugin.plugin.zsh"
+			fname="$dname/${plugin_short}.plugin.zsh"
 		elif [[ -r "$dname/init.zsh" ]]; then
 			# Prezto module
 			type="init.zsh"

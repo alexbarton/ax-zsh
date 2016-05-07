@@ -16,7 +16,9 @@ ax_hostname_prompt_functions=($ax_hostname_prompt_functions ax_hostname_prompt_r
 PS1="$(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
 
 # Prompt on right side
-RPS1="%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})"
+axzsh_is_utf_terminal \
+	&& RPS1="%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})" \
+	|| RPS1="%(?..%{$fg_no_bold[red]%}<%?>%{$reset_color%})"
 
 # Execution trace prompt.
 PS4="$fg_no_bold[yellow]->$reset_color "

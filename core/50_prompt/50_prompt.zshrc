@@ -54,15 +54,27 @@ ax_hostname_prompt_functions=()
 
 # VCS
 
+if axzsh_is_utf_terminal; then
+	ZSH_THEME_BULLET_VCS_CLEAN="✔"
+	ZSH_THEME_BULLET_VCS_DIRTY="✘"
+	ZSH_THEME_BULLET_VCS_AHEAD="→"
+	ZSH_THEME_BULLET_VCS_BEHIND="←"
+else
+	ZSH_THEME_BULLET_VCS_CLEAN="+"
+	ZSH_THEME_BULLET_VCS_DIRTY="X"
+	ZSH_THEME_BULLET_VCS_AHEAD=">"
+	ZSH_THEME_BULLET_VCS_BEHIND="<"
+fi
+
 ZSH_THEME_VCS_PROMPT_PREFIX_SPACING="("
 ZSH_THEME_VCS_PROMPT_PREFIX="%{$fg_no_bold[yellow]%}"
 ZSH_THEME_VCS_PROMPT_SUFFIX="%{$reset_color%}"
 ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING=")"
 
-ZSH_THEME_VCS_PROMPT_CLEAN=" %{$fg_no_bold[green]%}✔"
-ZSH_THEME_VCS_PROMPT_DIRTY=" %{$fg_no_bold[red]%}✘"
-ZSH_THEME_VCS_PROMPT_AHEAD="%{$fg_no_bold[cyan]%}→"
-ZSH_THEME_VCS_PROMPT_BEHIND="%{$fg_no_bold[blue]%}←"
+ZSH_THEME_VCS_PROMPT_CLEAN=" %{$fg_no_bold[green]%}${ZSH_THEME_BULLET_VCS_CLEAN}"
+ZSH_THEME_VCS_PROMPT_DIRTY=" %{$fg_no_bold[red]%}${ZSH_THEME_BULLET_VCS_DIRTY}"
+ZSH_THEME_VCS_PROMPT_AHEAD="%{$fg_no_bold[cyan]%}${ZSH_THEME_BULLET_VCS_AHEAD}"
+ZSH_THEME_VCS_PROMPT_BEHIND="%{$fg_no_bold[blue]%}${ZSH_THEME_BULLET_VCS_BEHIND}"
 
 function ax_vcs_prompt() {
 	local func

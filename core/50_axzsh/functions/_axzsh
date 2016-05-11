@@ -7,6 +7,7 @@ _axzshctl() {
 			disable-plugin\:"Disable plugin(s)."
 			reset-plugins\:"Reset active plugins to the default set."
 			enable-default-plugins\:"Enable all default plugins."
+			check-plugins\:"Check \"useful\" plugins."
 			set-theme\:"Set active theme."
 			upgrade\:"Upgrade AX-ZSH installation (requires Git)."
 		))' \

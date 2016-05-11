@@ -37,6 +37,9 @@ function Usage {
 	echo "  enable-default-plugins"
 	echo "    Enable all default plugins."
 	echo
+	echo "  check-plugins"
+	echo "    Detect plugins which are \"useful\" on this system."
+	echo
 	echo "  set-theme <name>|-"
 	echo "    Set active theme to <name>, or to the default."
 	echo
@@ -202,6 +205,70 @@ function UpgradeForeignPlugins {
 	done
 }
 
+function CheckPlugins {
+	missing_plugins=()
+	invalid_plugins=()
+
+	ax_msg - "Checking plugins ..."
+	for dir ($AXZSH/plugins/*(N)); do
+		plugin=$(basename "$dir")
+
+		# Check plugin blacklist
+		case "$plugin" in
+			"ssh_secure"|"zkbd")
+				continue
+				;;
+		esac
+
+		# Test if plugin is already enabled
+		[[ -e "$AXZSH/active_plugins/$plugin" ]] \
+			&& enabled=" (enabled)" \
+			|| unset enabled
+
+		# Test plugin ...
+		printf " - \"%s\"%s ... " "$plugin" "$enabled"
+		new_plugin=""
+		for script ($AXZSH/plugins/$plugin/$plugin.{zshrc,zprofile}); do
+			[[ -r "$script" ]] || continue
+			zsh -i -c "source $script"; r=$?
+			if [[ $r -eq 0 ]]; then
+				new_plugin=$plugin
+				break
+			fi
+		done
+		if [[ -n "$new_plugin" ]]; then
+			detected_plugins+=($new_plugin)
+			[[ -n "$enabled" ]] || missing_plugins+=($new_plugin)
+			ax_msg 0 "OK."
+		else
+			[[ -n "$enabled" ]] && invalid_plugins+=($plugin)
+			ax_msg 2 "failed."
+		fi
+	done
+	echo
+
+	result=0
+	if [[ -n "$missing_plugins" ]]; then
+		ax_msg 1 "Run the following command to enable all missing plugins:"
+		echo "$AXZSH/bin/axzshctl enable-plugin" $missing_plugins
+		echo
+		result=1
+	else
+		ax_msg 0 "All detected plugins are already enabled."
+	fi
+
+	if [[ -n "$invalid_plugins" ]]; then
+		ax_msg 1 "Run the following command to disable all failed plugins:"
+		echo "$AXZSH/bin/axzshctl disable-plugin" $invalid_plugins
+		result=1
+	else
+		ax_msg 0 "No failed plugins are enabled."
+	fi
+
+	echo
+	return $result
+}
+
 NAME="$0:t"
 
 [[ $# -gt 0 ]] || Usage
@@ -235,6 +302,10 @@ case "$cmd" in
 	"enable-default-plugins")
 		[[ $# -eq 0 ]] || Usage
 		EnableDefaultPlugins
+		;;
+	"check-plugins")
+		[[ $# -eq 0 ]] || Usage
+		CheckPlugins
 		;;
 	"set-theme")
 		[[ $# -eq 1 ]] || Usage

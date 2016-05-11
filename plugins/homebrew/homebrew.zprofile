@@ -5,4 +5,4 @@
 (( $+commands[brew] )) || return
 
 [[ -d "/usr/local/share/zsh-completions" ]] \
-	&& axzsh_fpath=(/usr/local/share/zsh-completions $axzsh_fpath)
+	&& axzsh_fpath+=(/usr/local/share/zsh-completions)

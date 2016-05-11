@@ -14,10 +14,8 @@ if [[ -z "$POWERLINE_SHELL" ]]; then
 	done
 	unset p
 fi
-if [[ ! -r "$POWERLINE_SHELL" ]]; then
-	echo "Powerline shell extension not found/readable!"
-	return
-fi
+
+[[ -r "$POWERLINE_SHELL" ]] || return
 
 function powerline_precmd() {
 	PS1="$(

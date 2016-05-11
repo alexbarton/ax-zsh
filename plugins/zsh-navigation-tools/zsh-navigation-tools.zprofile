@@ -8,7 +8,8 @@ for dir (
 	if [[ -d "$dir" ]]; then
 		fpath+=($dir)
 		unset dir
-		return
+		return 0
 	fi
 done
 unset dir
+return 1

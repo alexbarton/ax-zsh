@@ -8,7 +8,8 @@ for script (
 	if [[ -r "$script" ]]; then
 		source "$script"
 		unset script
-		return
+		return 0
 	fi
 done
 unset script
+return 1

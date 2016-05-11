@@ -10,7 +10,8 @@ for script (
 			&& ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 		source "$script"
 		unset script
-		return
+		return 0
 	fi
 done
 unset script
+return 1

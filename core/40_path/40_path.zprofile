@@ -5,7 +5,7 @@
 if [[ -x /usr/libexec/path_helper ]]; then
 	eval "$(/usr/libexec/path_helper)"
 else
-	PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+	PATH="/usr/sbin:/usr/bin:/sbin:/bin"
 fi
 typeset -Ux PATH
 
@@ -16,8 +16,8 @@ for d (
 	/usr/pkg/bin
 	/usr/local/bin
 	/usr/local/sbin
-	/opt/*/sbin(N)
-	/opt/*/bin(N)
+	/opt/*/bin(NOn)
+	/opt/*/sbin(NOn)
 	~/Applications(N)
 ); do
 	[ -d "$d" ] && path=("$d" $path)

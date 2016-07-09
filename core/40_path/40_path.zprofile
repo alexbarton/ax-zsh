@@ -18,6 +18,7 @@ for d (
 	/usr/local/sbin
 	/opt/*/bin(NOn)
 	/opt/*/sbin(NOn)
+	~/.local/bin
 	~/Applications(N)
 ); do
 	[ -d "$d" ] && path=("$d" $path)
@@ -26,6 +27,7 @@ done
 # Append additional search paths
 for d (
 	/usr/X11/bin
+	/usr/local/games
 	/usr/games
 ); do
 	[ -d "$d" ] && path=($path "$d")

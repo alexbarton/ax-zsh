@@ -11,4 +11,8 @@ if [[ -r "/var/lib/$HOST/zprofile" ]]; then
 	[[ -f "$HOME/.axzsh.debug" ]] && echo "» /var/lib/$HOST/zprofile:"
 	source "/var/lib/$HOST/zprofile"
 	[[ -f "$HOME/.axzsh.debug" ]] && echo "» /var/lib/$HOST/zprofile (end)"
+elif [[ -r "/var/lib/$HOST/profile" ]]; then
+	[[ -f "$HOME/.axzsh.debug" ]] && echo "» /var/lib/$HOST/profile:"
+	source "/var/lib/$HOST/profile"
+	[[ -f "$HOME/.axzsh.debug" ]] && echo "» /var/lib/$HOST/profile (end)"
 fi

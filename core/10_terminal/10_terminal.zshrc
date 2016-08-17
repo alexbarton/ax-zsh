@@ -22,6 +22,14 @@ function axzsh_is_modern_terminal {
 	return 1
 }
 
+# Test for "dumb" terminal
+function axzsh_is_dumb_terminal {
+	axzsh_is_modern_terminal && return 1
+	[[ "$TERM" = dumb* ]] && return 0
+	[[ "$TERM" = "vt52" ]] && return 0
+	return 1
+}
+
 # Resize terminal window (when possible)
 function axzsh_resize_terminal {
 	printf '\e[8;%d;%dt' "$2" "$1"
@@ -88,6 +96,8 @@ function axzsh_terminal_title_preexec {
 }
 
 preexec_functions+=(axzsh_terminal_title_preexec)
+
+axzsh_is_dumb_terminal && return 0
 
 # Colors
 

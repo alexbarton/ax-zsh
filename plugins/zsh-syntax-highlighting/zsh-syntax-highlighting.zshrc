@@ -1,6 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # zsh-syntax-highlighting.zshrc: Initialize "ZSH Syntax Highlighting"
 
+axzsh_is_dumb_terminal && return 1
+
 for script (
 	"/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 	"/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

@@ -1,6 +1,13 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 10_terminal.zshrc: Initialize terminal settings
 
+# Fix up TERM. Do this here (and not in zprofile), because terminal emulators
+# often don't start a new login shell but "only" a new interactive shell.
+
+# VTE based terminals (like GNOME Terminal) support 256 colors, but old(er)
+# versions of GNOME Terminal (at least) set TERM=xterm ...
+[[ "$TERM" = "xterm" && "$VTE_VERSION" != "" ]] && TERM="xterm-256color"
+
 # Common helper functions
 
 # Check if terminal supports Unicode.

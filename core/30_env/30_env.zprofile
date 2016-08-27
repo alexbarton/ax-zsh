@@ -9,7 +9,7 @@ mkdir -p "$XDG_CACHE_HOME"
 # Setup XDG runtime directory
 [[ -z "$XDG_RUNTIME_DIR" ]] && XDG_RUNTIME_DIR="${TMPDIR:-/tmp/${UID}-runtime-dir}"
 export XDG_RUNTIME_DIR
-mkdir -p "$XDG_CACHE_HOME"
+mkdir -p "$XDG_RUNTIME_DIR"
 
 # Setup ZSH cache directory
 [[ -z "$ZSH_CACHE_DIR" ]] && ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"

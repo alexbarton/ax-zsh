@@ -12,10 +12,6 @@ for dir ("$HOME/lib" "$HOME/.ax" /usr/local /opt/ax /usr); do
 done
 if [[ -z "$ax_common_sourced" ]]; then
 	function ax_msg {
-		case "$1" in
-		  "1"|"2") echo -n "! "; ;;
-		  *) echo -n "* "; ;;
-		esac
 		shift
 		echo "$@"
 	}

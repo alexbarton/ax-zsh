@@ -2,16 +2,25 @@
 # 30_env.zprofile: Setup environment
 
 # Setup XDG cache directory
-[[ -z "$XDG_CACHE_HOME" ]] && XDG_CACHE_HOME="$LOCAL_HOME/.cache"
+if [[ -z "$XDG_CACHE_HOME" ]]; then
+	XDG_CACHE_HOME="$LOCAL_HOME/.cache"
+	mkdir -p "$XDG_CACHE_HOME"
+	chmod 0700 "$XDG_CACHE_HOME"
+fi
 export XDG_CACHE_HOME
-mkdir -p "$XDG_CACHE_HOME"
 
 # Setup XDG runtime directory
-[[ -z "$XDG_RUNTIME_DIR" ]] && XDG_RUNTIME_DIR="${TMPDIR:-/tmp/${UID}-runtime-dir}"
+if [[ -z "$XDG_RUNTIME_DIR" ]]; then
+	XDG_RUNTIME_DIR="${TMPDIR:-/tmp/${UID}-runtime-dir}"
+	mkdir -p "$XDG_RUNTIME_DIR"
+	chmod 0700 "$XDG_RUNTIME_DIR"
+fi
 export XDG_RUNTIME_DIR
-mkdir -p "$XDG_RUNTIME_DIR"
 
 # Setup ZSH cache directory
-[[ -z "$ZSH_CACHE_DIR" ]] && ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
+if [[ -z "$ZSH_CACHE_DIR" ]]; then
+	ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
+	mkdir -p "$ZSH_CACHE_DIR"
+	chmod 0700 "$ZSH_CACHE_DIR"
+fi
 export ZSH_CACHE_DIR
-mkdir -p "$ZSH_CACHE_DIR"

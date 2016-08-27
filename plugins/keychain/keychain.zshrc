@@ -12,14 +12,7 @@ fi
 (( $+commands[keychain] )) || return
 
 function axzsh_keychain_update() {
-	local agents
-	if (( $+commands[ssh-agent] )); then
-		[[ -z "$agents" ]] && agents="ssh" || agents="$agents,ssh"
-	fi
-	if (( $+commands[gpg-agent] )); then
-		[[ -z "$agents" ]] && agents="gpg" || agents="$agents,gpg"
-	fi
-	eval `keychain --agents "$agents" --eval --inherit any-once "$@"`
+	eval `keychain --eval --inherit any-once "$@"`
 }
 
 [[ "$type" == "zshrc" ]] \

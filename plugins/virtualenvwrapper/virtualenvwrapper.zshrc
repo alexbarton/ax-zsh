@@ -26,3 +26,4 @@ for script (
 	fi
 done
 unset script
+[[ -n "$VIRTUALENVWRAPPER_SCRIPT" ]] || return 1

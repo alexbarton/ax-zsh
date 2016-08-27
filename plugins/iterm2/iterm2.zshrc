@@ -1,8 +1,11 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # iterm2.zshrc: iTerm2 Shell Integration
 
-axzsh_is_dumb_terminal && return
-[[ "$TERM" != "screen" && "$TERM" != "screen-256color" ]] || return
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
+
+# Check prerequisites ...
+axzsh_is_dumb_terminal && return 91
+[[ "$TERM" != "screen" && "$TERM" != "screen-256color" ]] || return 91
 
 ITERM2_SHOULD_DECORATE_PROMPT="1"
 

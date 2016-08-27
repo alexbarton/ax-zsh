@@ -1,6 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # ssh_secure.zshrc: Make SSH operations more secure
 
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
+
 # Make sure that "ssh(1)" is installed
 (( $+commands[ssh] )) || return
 

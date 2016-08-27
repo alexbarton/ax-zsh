@@ -1,6 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # zkbd.zshrc: Initialize ZKBD Keybindings
 
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
+
 autoload -Uz zkbd
 
 [[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE ]] && zkbd

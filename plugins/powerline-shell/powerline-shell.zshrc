@@ -1,7 +1,7 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # powerline-shell.zshrc: "powerline-shell" integration.
 
-[[ "$TERM" = "linux" ]] && return
+[[ "$TERM" = "linux" ]] && return 911
 
 if [[ -z "$POWERLINE_SHELL" ]]; then
 	for p (
@@ -15,7 +15,7 @@ if [[ -z "$POWERLINE_SHELL" ]]; then
 	unset p
 fi
 
-[[ -r "$POWERLINE_SHELL" ]] || return
+[[ -r "$POWERLINE_SHELL" ]] || return 1
 
 function powerline_precmd() {
 	PS1="$(

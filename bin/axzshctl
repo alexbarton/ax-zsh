@@ -209,13 +209,6 @@ function CheckPlugins {
 	for dir ($AXZSH/plugins/*(N)); do
 		plugin=$(basename "$dir")
 
-		# Check plugin blacklist
-		case "$plugin" in
-			"ssh_secure"|"zkbd")
-				continue
-				;;
-		esac
-
 		# Test if plugin is already enabled
 		[[ -e "$AXZSH/active_plugins/$plugin" ]] \
 			&& enabled=" (enabled)" \
@@ -226,7 +219,7 @@ function CheckPlugins {
 		new_plugin=""
 		for script ($AXZSH/plugins/$plugin/$plugin.{zshrc,zprofile}); do
 			[[ -r "$script" ]] || continue
-			zsh -i -c "source $script"; r=$?
+			zsh -i -c "AXZSH_PLUGIN_CHECK=1 source $script"; r=$?
 			if [[ $r -eq 0 ]]; then
 				new_plugin=$plugin
 				break
@@ -236,6 +229,10 @@ function CheckPlugins {
 			detected_plugins+=($new_plugin)
 			[[ -n "$enabled" ]] || missing_plugins+=($new_plugin)
 			ax_msg 0 "OK."
+		elif [[ $r -eq 91 ]]; then
+			ax_msg 1 "ignored."
+		elif [[ $r -eq 92 ]]; then
+			ax_msg 1 "optional."
 		else
 			[[ -n "$enabled" ]] && invalid_plugins+=($plugin)
 			ax_msg 2 "failed."

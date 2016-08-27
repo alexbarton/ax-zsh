@@ -8,14 +8,6 @@
 	&& export LOCAL_HOME="/usr/local/home/$LOGNAME" \
 	|| export LOCAL_HOME="$HOME"
 
-# Setup XDG cache directory
-export XDG_CACHE_HOME="$LOCAL_HOME/.cache"
-mkdir -p "$XDG_CACHE_HOME"
-
-# Setup ZSH cache directory
-export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
-mkdir -p "$ZSH_CACHE_DIR"
-
 # Update PATH to include directories inside of the $HOME directory
 typeset -U path
 for dir in ~/bin ~/sbin ~/Applications; do

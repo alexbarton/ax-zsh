@@ -45,7 +45,7 @@ You can use the following files for local ZSH configuration:
 
 1. AX-ZSH doesn't use `~/.zshenv` in any way. So you can use this file for your
    own purposes (for example, to set up some environment variables that AX-ZSH
-   relays on).
+   relies on).
 
 2. AX-ZSH reads the optional files `~/.zprofile.local`, `~/.zshrc.local`,
    `~/.zlogin.local`, and `~/.zlogout.local` after its own core initialization

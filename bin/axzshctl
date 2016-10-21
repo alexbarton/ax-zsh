@@ -266,9 +266,12 @@ NAME="$0:t"
 
 [[ $# -gt 0 ]] || Usage
 
-if [[ -z "$AXZSH" || ! -d "$AXZSH" ]]; then
-	ax_msg 2 "Oops, \"AXZSH\" is not set or invalid!"
-	exit 3
+if [[ -z "$AXZSH" || ! -r "$AXZSH/ax.zsh" ]]; then
+	[[ -r "$HOME/.axzsh/ax.zsh" ]] && AXZSH="$HOME/.axzsh"
+	if [[ ! -r "$AXZSH/ax.zsh" ]]; then
+		ax_msg 2 "Oops, \"AXZSH\" is not set or invalid and can't be autodetected!"
+		exit 3
+	fi
 fi
 
 cmd="$1"

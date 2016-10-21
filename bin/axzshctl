@@ -21,6 +21,12 @@ unset dir ax_common ax_common_sourced
 function Usage {
 	echo "Usage: $NAME <command> [...]"
 	echo
+	echo "  enable"
+	echo "    Enable AX-ZSH altogether."
+	echo
+	echo "  disable"
+	echo "    Disable AX-ZSH altogether."
+	echo
 	echo "  enable-plugin <name|directory> [<name|directory> [...]]"
 	echo "    Enable plugin(s)."
 	echo
@@ -53,6 +59,25 @@ function NormalizedPluginName {
 	else
 		echo "$1"
 	fi
+}
+
+function EnableAXZSH {
+	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
+		ln -sv "$AXZSH/ax.zsh" "$f" \
+			|| ax_msg 2 "Failed to create symbolic link for \"$f\"!"
+	done
+}
+
+function DisableAXZSH {
+	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
+		if [ -h "$f" ]; then
+			rm -v "$f" || ax_msg 2 "Failed to remove \"$f\"!"
+		elif [ -e "$f" ]; then
+			ax_msg 2 "Error: Not removing \"$f\", it is not a symbolic link!"
+		else
+			ax_msg 1 "Warning: \"$f\" already does not exist. Ok."
+		fi
+	done
 }
 
 function EnablePlugin {
@@ -278,6 +303,14 @@ cmd="$1"
 shift
 
 case "$cmd" in
+	"enable")
+		[[ $# -eq 0 ]] || Usage
+		EnableAXZSH
+		;;
+	"disable")
+		[[ $# -eq 0 ]] || Usage
+		DisableAXZSH
+		;;
 	"enable-plugin")
 		[[ $# -gt 0 ]] || Usage
 		for plugin in "$@"; do

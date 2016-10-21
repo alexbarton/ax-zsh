@@ -3,6 +3,8 @@
 _axzshctl() {
 	_arguments \
 		'1: :((
+			enable\:"Enable AX-ZSH."
+			disable\:"Disable AX-ZSH."
 			enable-plugin\:"Enable plugin(s)."
 			disable-plugin\:"Disable plugin(s)."
 			reset-plugins\:"Reset active plugins to the default set."

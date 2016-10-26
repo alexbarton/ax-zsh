@@ -7,6 +7,7 @@ _axzshctl() {
 			disable\:"Disable AX-ZSH."
 			enable-plugin\:"Enable plugin(s)."
 			disable-plugin\:"Disable plugin(s)."
+			list-enabled\:"List enabled plugin(s)."
 			reset-plugins\:"Reset active plugins to the default set."
 			enable-default-plugins\:"Enable all default plugins."
 			check-plugins\:"Check \"useful\" plugins."

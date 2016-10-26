@@ -23,22 +23,20 @@ function Usage {
 	echo
 	echo "  enable"
 	echo "    Enable AX-ZSH altogether."
-	echo
 	echo "  disable"
 	echo "    Disable AX-ZSH altogether."
 	echo
 	echo "  enable-plugin <name|directory> [<name|directory> [...]]"
 	echo "    Enable plugin(s)."
-	echo
 	echo "  disable-plugin <name> [<name> [...]]"
 	echo "    Disable plugin(s)."
+	echo "  list-enabled"
+	echo "    List enabled plugins."
 	echo
 	echo "  reset-plugins"
 	echo "    Reset active plugins to the default set."
-	echo
 	echo "  enable-default-plugins"
 	echo "    Enable all default plugins."
-	echo
 	echo "  check-plugins"
 	echo "    Detect plugins which are \"useful\" on this system."
 	echo
@@ -134,6 +132,13 @@ function DisablePlugin {
 	rm -v "$dir/$plugin"; r=$?
 	[ $r -eq 0 ] && rm -fr "$AXZSH/repos/$plugin"
 	return $r
+}
+
+function ListEnabledPlugins {
+	for plugin ($AXZSH/active_plugins/*(N)); do
+		print ${plugin:t:s/#/\//}
+	done
+	return 0
 }
 
 function ResetPlugins {
@@ -322,6 +327,10 @@ case "$cmd" in
 		for plugin in "$@"; do
 			DisablePlugin "$plugin"
 		done
+		;;
+	"list-enabled")
+		[[ $# -eq 0 ]] || Usage
+		ListEnabledPlugins
 		;;
 	"reset-plugins")
 		[[ $# -eq 0 ]] || Usage

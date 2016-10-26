@@ -53,9 +53,9 @@ function Usage {
 
 function NormalizedPluginName {
 	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_-]+$" ]]; then
-		echo "$1" | sed -e 's|/|#|g'
+		echo "${1:gs/\//#}"
 	elif [[ "$1" =~ "/" ]]; then
-		basename "$1"
+		echo "${1:t}"
 	else
 		echo "$1"
 	fi
@@ -213,7 +213,7 @@ function UpgradeForeignPlugins {
 	fi
 
 	for dir ($AXZSH/repos/*(N)); do
-		name=$(basename "$dir" | sed -e 's|#|/|g')
+		name=${dir:t:s/#/\//}
 		if [ -d "$dir/.git" ]; then
 			ax_msg - "Upgrading \"$name\" [git] ..."
 			(
@@ -232,7 +232,7 @@ function CheckPlugins {
 
 	ax_msg - "Checking plugins ..."
 	for dir ($AXZSH/plugins/*(N)); do
-		plugin=$(basename "$dir")
+		plugin=${dir:t}
 
 		# Test if plugin is already enabled
 		[[ -e "$AXZSH/active_plugins/$plugin" ]] \

@@ -68,6 +68,14 @@ function axzsh_load_plugin {
 	return 0
 }
 
+# Make sure that "my" (=ZSH) directory is in the search path ...
+_p="${0:h}"
+[[ "$_p" != "." ]] && PATH="${0:h}:$PATH"
+unset _p
+
+# Make sure that "SHELL" variable is set and exported
+[[ -n "$SHELL" ]] || export SHELL=$(command -v zsh)
+
 # Make sure that "AXZSH" variable is set and exported
 if [[ -z "$AXZSH" ]]; then
 	export AXZSH="$HOME/.axzsh"

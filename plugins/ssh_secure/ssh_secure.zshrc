@@ -1,10 +1,11 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # ssh_secure.zshrc: Make SSH operations more secure
 
-[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
-
 # Make sure that "ssh(1)" is installed
 (( $+commands[ssh] )) || return
+
+# This plugin is optional.
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
 # Enforce "strict host key checking"
 #alias ssh="\ssh -o 'StrictHostKeyChecking yes'"

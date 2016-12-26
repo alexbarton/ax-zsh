@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# ssh_macos.zshrc: Additional configuration for SSH on Apple macOS X
+# ssh_macos.zprofile: Additional configuration for SSH on Apple macOS X
 
 # Make sure that "ssh(1)" is installed.
 (( $+commands[ssh] )) || return 1

@@ -2,7 +2,7 @@
 # fzf.zshrc: Setup Git
 
 # Make sure that "fzf(1)" is installed
-(( $+commands[fzf] )) || return
+(( $+commands[fzf] )) || return 1
 
 # Search for and read in FZF ZSH integration files
 for dir (
@@ -11,5 +11,6 @@ for dir (
 	[[ -d "$dir" ]] || continue
 	source "$dir/completion.zsh"
 	source "$dir/key-bindings.zsh"
-	break
+	return 0
 done
+return 1

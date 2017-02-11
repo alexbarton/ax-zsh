@@ -4,6 +4,16 @@
 # Make sure that "ssh(1)" is installed
 (( $+commands[ssh] )) || return
 
+# Load SSH keys into the SSH agent, when one is running and doesn't have
+# any keys already. Not having an SSH agent running at all is ok as well and
+# results in an "success" exit code (0) as well.
+ssh-autoadd() {
+	[[ -z "$SSH_AUTH_SOCK" ]] && return 0
+	ssh-add -l >/dev/null && return 0
+	[[ $? -eq 2 ]] && return 2
+	ssh-add
+}
+
 _ax_ssh_prompt() {
 	[[ -n "$SSH_CLIENT" ]] || return 1
 	return 0

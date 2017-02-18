@@ -8,5 +8,6 @@
 [[ $(uname -s) = "Darwin" ]] || return 1
 [[ $(uname -r | cut -d'.' -f1) -ge 16 ]] || return 1
 
-# Load SSH keys from Keychain into SSH agent when the agent has no keys.
-ssh-add -l >/dev/null || ssh-add -A >/dev/null 2>&1
+# Start a backgroud job that tries to load the SSH keys from Keychain into
+# the SSH agent, when the agent has no keys.
+ssh-add -l >/dev/null || ssh-add -A >/dev/null 2>&1 &!

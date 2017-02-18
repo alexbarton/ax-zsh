@@ -8,6 +8,9 @@
 [[ $(uname -s) = "Darwin" ]] || return 1
 [[ $(uname -r | cut -d'.' -f1) -ge 16 ]] || return 1
 
+# Make sure that an SSH agent is available (but ignore failure):
+[[ -n "$SSH_AUTH_SOCK" ]] || return 0
+
 # Start a backgroud job that tries to load the SSH keys from Keychain into
 # the SSH agent, when the agent has no keys.
 ssh-add -l >/dev/null || ssh-add -A >/dev/null 2>&1 &!

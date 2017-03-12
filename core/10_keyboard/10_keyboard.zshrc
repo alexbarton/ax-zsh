@@ -11,3 +11,11 @@ bindkey "\e[3~" delete-char
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
+
+# Move to where the arguments belong.
+after-first-word() {
+	zle beginning-of-line
+	zle forward-word
+}
+zle -N after-first-word
+bindkey "\C-x1" after-first-word

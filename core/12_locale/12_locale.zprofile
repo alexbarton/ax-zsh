@@ -38,5 +38,14 @@ while true; do
 		unset LANGUAGE LC_ALL LC_MESSAGES
 	fi
 done
-
 unset lc_messages locale encoding
+
+case "$LANG" in
+	*_*)
+		# LANG contains at least one "_" ("aa_BB" form).
+		if [[ -z "$LANGUAGE" ]]; then
+			# But LANGUAGE isn't set, so set it automatically to
+			# "aa_BB:aa" form.
+			export LANGUAGE=${LANG%.*}:${${LANG%.*}%_*}
+		fi
+esac

@@ -11,7 +11,9 @@ while true; do
 	lc_messages=$(locale 2>/dev/null | fgrep LC_MESSAGES | cut -d'=' -f2)
 	lc_messages=$lc_messages:gs/\"//
 	locale=$lc_messages:r
-	encoding=$lc_messages:e:l:gs/-//
+	[[ "$OSTYPE" = 'linux-gnu' && $locale != 'C' ]] \
+		&& encoding=$lc_messages:e:l:gs/-// \
+		|| encoding=$lc_messages:e
 	[[ -n "$encoding" ]] && locale="$locale.$encoding"
 	[[ -z "$LANG$LANGUAGE$LC_ALL$LC_MESSAGES" ]] && unset lc_messages
 

@@ -9,6 +9,7 @@
 # tset(1) behaviour.
 while true; do
 	lc_messages=$(locale 2>/dev/null | fgrep LC_MESSAGES | cut -d'=' -f2)
+	[[ "$lc_messages" = '"C"' && "$LANG" != 'C' && "$LC_ALL" != 'C' ]] && lc_messages=$LANG
 	lc_messages=$lc_messages:gs/\"//
 	locale=$lc_messages:r
 	[[ "$OSTYPE" = 'linux-gnu' && $locale != 'C' ]] \

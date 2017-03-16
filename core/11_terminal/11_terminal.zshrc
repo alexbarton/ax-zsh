@@ -26,6 +26,7 @@ function axzsh_is_modern_terminal {
 	[[ "$TERM" = screen* ]] && return 0
 	[[ "$TERM" = tmux* ]] && return 0
 	[[ "$TERM" = xterm* ]] && return 0
+	[[ "$TERM" = cygwin ]] && return 0
 	return 1
 }
 

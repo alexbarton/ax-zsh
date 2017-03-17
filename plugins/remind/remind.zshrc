@@ -4,6 +4,9 @@
 # Make sure that "remind(1)" is installed.
 (( $+commands[remind] )) || return 1
 
+# Don't run this plugin on "check-plugins"!
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
+
 # Some handy alias.
 alias remindcal='remind -ccu+3 -m -w$COLUMNS,4,0 $HOME/.remind'
 

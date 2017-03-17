@@ -249,7 +249,7 @@ function CheckPlugins {
 		new_plugin=""
 		for script ($AXZSH/plugins/$plugin/$plugin.{zshrc,zprofile}); do
 			[[ -r "$script" ]] || continue
-			zsh -i -c "AXZSH_PLUGIN_CHECK=1 source $script"; r=$?
+			AXZSH_PLUGIN_CHECK=1 zsh -i -c "source $script"; r=$?
 			if [[ $r -eq 0 ]]; then
 				new_plugin=$plugin
 				break

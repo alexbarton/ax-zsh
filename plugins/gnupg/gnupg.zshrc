@@ -20,7 +20,6 @@ agent_info_file="$HOME/.gnupg/agent.info-${HOST}"
 
 # Validate agent info ...
 if [[ -n "$GPG_AGENT_INFO" ]]; then
-	echo " *** Testing agent environment ..."
 	gpg-agent >/dev/null 2>&1 || unset GPG_AGENT_INFO
 fi
 

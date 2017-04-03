@@ -49,6 +49,12 @@ function Usage {
 	exit 2
 }
 
+function DropCache {
+	[[ -r "$AXZSH/cache" ]] \
+		&& echo "Dropping caches ..."
+	rm -rf "$AXZSH/cache"
+}
+
 function NormalizedPluginName {
 	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_-]+$" ]]; then
 		echo "${1:gs/\//#}"
@@ -321,12 +327,14 @@ case "$cmd" in
 		for plugin in "$@"; do
 			EnablePlugin "$plugin"
 		done
+		DropCache
 		;;
 	"disable-plugin")
 		[[ $# -gt 0 ]] || Usage
 		for plugin in "$@"; do
 			DisablePlugin "$plugin"
 		done
+		DropCache
 		;;
 	"list-enabled")
 		[[ $# -eq 0 ]] || Usage
@@ -336,10 +344,12 @@ case "$cmd" in
 		[[ $# -eq 0 ]] || Usage
 		ResetPlugins
 		EnableDefaultPlugins
+		DropCache
 		;;
 	"enable-default-plugins")
 		[[ $# -eq 0 ]] || Usage
 		EnableDefaultPlugins
+		DropCache
 		;;
 	"check-plugins")
 		[[ $# -eq 0 ]] || Usage
@@ -348,11 +358,13 @@ case "$cmd" in
 	"set-theme")
 		[[ $# -eq 1 ]] || Usage
 		SetTheme "$1"
+		DropCache
 		;;
 	"upgrade")
 		[[ $# -eq 0 ]] || Usage
 		UpgradeAXZSH
 		UpgradeForeignPlugins
+		DropCache
 		;;
 	*)
 		Usage

@@ -7,11 +7,13 @@ script_type="$script_name[2,-1]"
 # Load plugin code of a given type.
 # - $1: plugin name
 # - $2: plugin type (optional; defaults to "zshrc")
+# - $3: cache file (optional)
 function axzsh_load_plugin {
 	dname="$1:A"
 	plugin="$dname:t"
 	[[ -z "$2" ]] && type="zshrc" || type="$2"
 	fname="$dname/$plugin.$type"
+	cache_file="$3"
 
 	# Strip repository prefix (like "alexbarton#test-plugin"):
 	[[ "$plugin" =~ "#" ]] && plugin=$(echo $plugin | cut -d'#' -f2-)
@@ -61,6 +63,21 @@ function axzsh_load_plugin {
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - $plugin ($type) ..."
 		source "$fname"
+
+		if [[ -n "$cache_file" ]]; then
+			# Add plugin data to cache
+			printf "# BEGIN: %s\ninit()\n{\n" "$fname" >>"$cache_file"
+			case "$fname" in
+				*"/repos/"*)
+					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type): \"$fname\" ...'" >>$cache_file
+					echo "source '$fname'" >>$cache_file
+					;;
+				*)
+					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type, cached) ...'" >>$cache_file
+					"$cat_cmd" "$fname" >>"$cache_file"
+			esac
+			printf "}\ninit\n# END: %s\n\n" "$fname" >>"$cache_file"
+		fi
 	fi
 
 	# It is a success, even if only the plugin directory (and no script!)
@@ -91,20 +108,43 @@ fi
 
 [[ -n "$AXZSH_DEBUG" ]] && echo "» $script_name:"
 
-# Setup list of plugins to load:
-typeset -U plugin_list
-plugin_list=(
-	"$AXZSH/core/"[0-5]*
-	"$AXZSH/active_plugins/"*(N)
-	"$AXZSH/core/"[6-9]*
-)
+# Initialize cache
+mkdir -p "$AXZSH/cache"
+cache_file="$AXZSH/cache/$script_type.cache"
 
-# Read in all the plugins for the current "type":
-for plugin ($plugin_list); do
-	axzsh_load_plugin "$plugin" "$script_type"
-done
+cat_cmd=${commands[cat]:-cat}
+
+if [[ -r "$cache_file" ]]; then
+	# Cache file exists, use it!
+	[[ -n "$AXZSH_DEBUG" ]] \
+		&& echo "   - Reading cache file \"$cache_file\" ..."
+	source "$cache_file"
+else
+	# No cache file available.
+	# Setup list of plugins to load:
+	typeset -U plugin_list
+	plugin_list=(
+		"$AXZSH/core/"[0-5]*
+		"$AXZSH/active_plugins/"*(N)
+		"$AXZSH/core/"[6-9]*
+	)
+
+	# Create new cache file:
+	if [[ -n "$cache_file" ]]; then
+		[[ -n "$AXZSH_DEBUG" ]] \
+			&& echo "   (Writing new cache file to \"$cache_file\" ...)"
+		printf "# %s\n\n" "$(LC_ALL=C date)" >"$cache_file"
+	fi
+
+	# Read in all the plugins for the current "type":
+	for plugin ($plugin_list); do
+		axzsh_load_plugin "$plugin" "$script_type" "$cache_file"
+	done
+fi
 
 # Clean up ...
 unfunction axzsh_load_plugin
 unset script_name script_type plugin
 unset plugin_list
+unset cache_file
+unset cat_cmd

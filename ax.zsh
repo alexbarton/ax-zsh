@@ -9,11 +9,11 @@ script_type="$script_name[2,-1]"
 # - $2: plugin type (optional; defaults to "zshrc")
 # - $3: cache file (optional)
 function axzsh_load_plugin {
-	dname="$1:A"
-	plugin="$dname:t"
-	[[ -z "$2" ]] && type="zshrc" || type="$2"
-	fname="$dname/$plugin.$type"
-	cache_file="$3"
+	local dname="$1:A"
+	local plugin="$dname:t"
+	[[ -z "$2" ]] && local type="zshrc" || local type="$2"
+	local fname="$dname/$plugin.$type"
+	local cache_file="$3"
 
 	# Strip repository prefix (like "alexbarton#test-plugin"):
 	[[ "$plugin" =~ "#" ]] && plugin=$(echo $plugin | cut -d'#' -f2-)

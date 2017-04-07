@@ -9,10 +9,10 @@ if (( $+commands[gpg2] )); then
 		# gpg2 is available, but no gpg: alias it!
 		alias gpg="gpg2"
 	fi
+else
+	# Make sure that "gpg(1)" is available.
+	(( $+commands[gpg] )) || return 1
 fi
-
-# Make sure that "gpg(1)" is available.
-(( $+commands[gpg] )) || return
 
 export GPG_TTY=$(tty)
 

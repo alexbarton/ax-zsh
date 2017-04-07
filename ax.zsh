@@ -116,6 +116,13 @@ cat_cmd=${commands[cat]:-cat}
 
 if [[ -r "$cache_file" ]]; then
 	# Cache file exists, use it!
+	# But when in the "zshrc" stage, make sure that the "zprofile" stage
+	# has already been handled (this uses the "01_zprofile" plugin which
+	# is used in the "zshrc.cache" as well, but can't be used successfully
+	# there because it becomes sourced inside of a ZSH function; so we have
+	# to source it here in the global context manually ...):
+	[[ -z "$AXZSH_ZPROFILE_READ" && "$script_type" = "zshrc" ]] \
+		&& source "$AXZSH/core/01_zprofile/01_zprofile.zshrc"
 	[[ -n "$AXZSH_DEBUG" ]] \
 		&& echo "   - Reading cache file \"$cache_file\" ..."
 	source "$cache_file"

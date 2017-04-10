@@ -1,0 +1,15 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# axemoji.axzshtheme: More fancy AX-ZSH Theme
+
+ZSH_THEME_PROMPT_PREFIX_SPACING=" "
+ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
+
+ZSH_THEME_VCS_PROMPT_CLEAN="👌 "
+ZSH_THEME_VCS_PROMPT_DIRTY="👻 "
+
+PS1="🍀  $(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
+
+# Prompt on right side
+axzsh_is_utf_terminal \
+	&& RPS1="%(?..%{$fg_no_bold[red]%}❌ %? ↵%{$reset_color%})" \
+	|| RPS1="%(?..%{$fg_no_bold[red]%}<%?>%{$reset_color%})"

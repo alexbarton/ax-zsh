@@ -66,7 +66,7 @@ function axzsh_load_plugin {
 
 		if [[ -n "$cache_file" ]]; then
 			# Add plugin data to cache
-			printf "# BEGIN: %s\ninit()\n{\n" "$fname" >>"$cache_file"
+			printf "# BEGIN: %s\nax_plugin_init()\n{\n" "$fname" >>"$cache_file"
 			case "$fname" in
 				*"/repos/"*)
 					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type): \"$fname\" ...'" >>$cache_file
@@ -76,7 +76,7 @@ function axzsh_load_plugin {
 					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type, cached) ...'" >>$cache_file
 					"$cat_cmd" "$fname" >>"$cache_file"
 			esac
-			printf "}\ninit\n# END: %s\n\n" "$fname" >>"$cache_file"
+			printf "}\nax_plugin_init\n# END: %s\n\n" "$fname" >>"$cache_file"
 		fi
 	fi
 
@@ -126,6 +126,7 @@ if [[ -r "$cache_file" ]]; then
 	[[ -n "$AXZSH_DEBUG" ]] \
 		&& echo "   - Reading cache file \"$cache_file\" ..."
 	source "$cache_file"
+	unfunction ax_plugin_init
 else
 	# No cache file available.
 	# Setup list of plugins to load:

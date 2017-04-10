@@ -56,6 +56,10 @@ function axzsh_load_plugin {
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - $plugin ($type): functions ..."
 		axzsh_fpath+=("$dname/functions")
+
+		# Add function path to cache file.
+		[[ -n "$cache_file" ]] \
+			&& echo "axzsh_fpath+=('$dname/functions')" >>$cache_file
 	fi
 
 	if [[ -r "$fname" ]]; then

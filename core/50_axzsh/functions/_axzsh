@@ -21,11 +21,10 @@ _axzshctl() {
 	  'args')
 		case "$words[2]" in
 		  "enable-plugin"|"disable-plugin")
-			compadd "$@" $(ls -1 "$AXZSH"/plugins)
+			compadd "$@" -- $(ls -1 "$AXZSH"/plugins)
 			;;
 		  "set-theme")
-			[[ -z $words[3] ]] \
-				&& compadd "$@" -- "-" $(ls -1 "$AXZSH"/themes | cut -d'.' -f1)
+			compadd "$@" -- "-" $(ls -1 "$AXZSH"/themes | cut -d'.' -f1)
 			;;
 		esac
 		;;

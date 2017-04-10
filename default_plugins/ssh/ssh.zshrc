@@ -27,7 +27,7 @@ ax_hostname_prompt_functions=($ax_hostname_prompt_functions _ax_ssh_prompt)
 [[ ! -r "$SSH_AUTH_SOCK" ]] && unset SSH_AUTH_SOCK
 
 # Save SSH environment when available:
-if [[ -n "$SSH_AUTH_SOCK" ]]; then
+if [[ -n "$SSH_AUTH_SOCK" && -d "$XDG_RUNTIME_DIR" ]]; then
 	# Save current environment when no state exists or is invalid.
 	if [[ -r "$XDG_RUNTIME_DIR/ssh-env.sh" ]]; then
 		(

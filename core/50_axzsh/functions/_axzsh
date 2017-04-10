@@ -13,6 +13,7 @@ _axzshctl() {
 			check-plugins\:"Check \"useful\" plugins."
 			set-theme\:"Set active theme."
 			upgrade\:"Upgrade AX-ZSH installation (requires Git)."
+			update-caches\:"Force rebuild of all cache files."
 		))' \
 		'*: :->args'
 #

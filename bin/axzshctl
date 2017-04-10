@@ -45,6 +45,8 @@ function Usage {
 	echo
 	echo "  upgrade"
 	echo "    Upgrade AX-ZSH installation (requires Git)."
+	echo "  update-caches"
+	echo "    Force rebuild of all cache files."
 	echo
 	exit 2
 }
@@ -372,6 +374,10 @@ case "$cmd" in
 		[[ $# -eq 0 ]] || Usage
 		UpgradeAXZSH
 		UpgradeForeignPlugins
+		UpdatePluginCache
+		;;
+	"update-caches")
+		[[ $# -eq 0 ]] || Usage
 		UpdatePluginCache
 		;;
 	*)

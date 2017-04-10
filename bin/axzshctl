@@ -49,10 +49,18 @@ function Usage {
 	exit 2
 }
 
-function DropCache {
-	[[ -r "$AXZSH/cache" ]] \
-		&& echo "Dropping caches ..."
-	rm -rf "$AXZSH/cache"
+function UpdatePluginCache {
+	[[ -r "$AXZSH/cache" ]] || return 0
+
+	ax_msg - "Updating plugin cache ..."
+	rm -rf \
+		$AXZSH/cache/zlogin.cache \
+		$AXZSH/cache/zlogout.cache \
+		$AXZSH/cache/zprofile.cache \
+		$AXZSH/cache/zshrc.cache \
+		|| return 1
+	echo "Regenerating cache files ..."
+	zsh -ilc '' >/dev/null
 }
 
 function NormalizedPluginName {
@@ -327,14 +335,14 @@ case "$cmd" in
 		for plugin in "$@"; do
 			EnablePlugin "$plugin"
 		done
-		DropCache
+		UpdatePluginCache
 		;;
 	"disable-plugin")
 		[[ $# -gt 0 ]] || Usage
 		for plugin in "$@"; do
 			DisablePlugin "$plugin"
 		done
-		DropCache
+		UpdatePluginCache
 		;;
 	"list-enabled")
 		[[ $# -eq 0 ]] || Usage
@@ -344,12 +352,12 @@ case "$cmd" in
 		[[ $# -eq 0 ]] || Usage
 		ResetPlugins
 		EnableDefaultPlugins
-		DropCache
+		UpdatePluginCache
 		;;
 	"enable-default-plugins")
 		[[ $# -eq 0 ]] || Usage
 		EnableDefaultPlugins
-		DropCache
+		UpdatePluginCache
 		;;
 	"check-plugins")
 		[[ $# -eq 0 ]] || Usage
@@ -358,13 +366,13 @@ case "$cmd" in
 	"set-theme")
 		[[ $# -eq 1 ]] || Usage
 		SetTheme "$1"
-		DropCache
+		UpdatePluginCache
 		;;
 	"upgrade")
 		[[ $# -eq 0 ]] || Usage
 		UpgradeAXZSH
 		UpgradeForeignPlugins
-		DropCache
+		UpdatePluginCache
 		;;
 	*)
 		Usage

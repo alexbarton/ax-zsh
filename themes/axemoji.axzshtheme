@@ -4,12 +4,30 @@
 ZSH_THEME_PROMPT_PREFIX_SPACING=" "
 ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
 
-ZSH_THEME_VCS_PROMPT_CLEAN="👌 "
-ZSH_THEME_VCS_PROMPT_DIRTY="👻 "
+if axzsh_is_utf_terminal; then
+	# UTF8 capable terminal:
+	if [[ -r "$HOME/.system_emoji-$SHORT_HOST" ]]; then
+		system_emoji=$(<"$HOME/.system_emoji-$SHORT_HOST")
+	elif [[ -r "$HOME/.system_emoji" ]]; then
+		system_emoji=$(<"$HOME/.system_emoji")
+	else
+		system_emoji="🍀"
+	fi
+	emoji_spacing=" "
 
-PS1="🍀  $(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
+	ZSH_THEME_VCS_PROMPT_CLEAN="👌$emoji_spacing"
+	ZSH_THEME_VCS_PROMPT_DIRTY="👻$emoji_spacing"
 
-# Prompt on right side
-axzsh_is_utf_terminal \
-	&& RPS1="%(?..%{$fg_no_bold[red]%}❌ %? ↵%{$reset_color%})" \
-	|| RPS1="%(?..%{$fg_no_bold[red]%}<%?>%{$reset_color%})"
+	# Prompt on right side
+	RPS1="%(?..%{$fg_no_bold[red]%}❌ %? ↵%{$reset_color%})"
+else
+	# Non-UTF8 terminal
+	system_emoji=">"
+	emoji_spacing=""
+
+	RPS1="%(?..%{$fg_no_bold[red]%}<%?>%{$reset_color%})"
+fi
+
+PS1="${system_emoji}${emoji_spacing} $(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
+
+unset system_emoji emoji_spacing

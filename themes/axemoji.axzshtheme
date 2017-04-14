@@ -13,7 +13,9 @@ if axzsh_is_utf_terminal; then
 	else
 		system_emoji="🍀"
 	fi
-	emoji_spacing=" "
+	[[ -n "$VTE_VERSION" ]] \
+		&& emoji_spacing="" \
+		|| emoji_spacing=" "
 
 	ZSH_THEME_VCS_PROMPT_CLEAN="👌$emoji_spacing"
 	ZSH_THEME_VCS_PROMPT_DIRTY="👻$emoji_spacing"

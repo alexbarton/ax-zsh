@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# axemoji.axzshtheme: More fancy AX-ZSH Theme
+# axemoji.axzshtheme: Fancier AX-ZSH Theme
 
 ZSH_THEME_PROMPT_PREFIX_SPACING=" "
 ZSH_THEME_PROMPT_SUFFIX_SPACING=" "

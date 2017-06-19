@@ -5,6 +5,26 @@
 # manually enter data when the validation fails):
 [[ -z "$PS1" ]] && return 0
 
+# Make sure that LANG and LC_MESSAGES are either unset or set to something sane,
+# that is, follow the "xx_ZZ.*" syntax.
+fix_locale() {
+	local encoding locale
+
+	locale="$1:r"
+	encoding="$1:e"
+
+	if [[ -z "$1" || "$locale" =~ '.*_.*' || ${#locale%%_*} -ne 2 ]]; then
+		echo "$1"
+	else
+		locale="${locale:0:2}_${locale:0:2:u}"
+		[[ -n "$encoding" ]] && locale="$locale.$encoding"
+		echo "$locale"
+	fi
+}
+[[ -n "$LANG" ]] && LANG=$(fix_locale "$LANG")
+[[ -n "$LC_MESSAGES" ]] && LANG=$(fix_locale "$LC_MESSAGES")
+unfunction fix_locale
+
 # Validate the locale(7) settings in interactive shells and try to mimic the
 # tset(1) behaviour.
 while true; do

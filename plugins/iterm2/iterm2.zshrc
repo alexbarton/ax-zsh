@@ -5,8 +5,11 @@
 
 # Check prerequisites ...
 axzsh_is_dumb_terminal && return 91
+[[ -o interactive ]] || return 91
+[[ -n "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 91
 [[ "$TERM" != "screen" && "$TERM" != "screen-256color" ]] || return 91
 
+ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
 ITERM2_SHOULD_DECORATE_PROMPT="1"
 
 # Indicates start of command output. Runs just before command executes.
@@ -15,7 +18,7 @@ iterm2_before_cmd_executes() {
 }
 
 iterm2_set_user_var() {
-	printf "\033]1337;SetUserVar=%s=%s\007" "$1" "$(printf "%s" "$2" | base64)"
+	printf "\033]1337;SetUserVar=%s=%s\007" "$1" $(printf "%s" "$2" | base64 | tr -d '\n')
 }
 
 # Users can write their own version of this method. It should call
@@ -43,7 +46,7 @@ iterm2_after_cmd_executes() {
 }
 
 # Mark start of prompt
-iterm2_prompt_start() {
+iterm2_prompt_mark() {
 	printf "\033]133;A\007"
 }
 
@@ -97,7 +100,12 @@ iterm2_decorate_prompt() {
 	ITERM2_SHOULD_DECORATE_PROMPT=""
 
 	# Add our escape sequences just before the prompt is shown.
-	PS1="%{$(iterm2_prompt_start)%}$PS1%{$(iterm2_prompt_end)%}"
+	if [[ $PS1 == *'$(iterm2_prompt_mark)'* ]]
+	then
+		PS1="$PS1%{$(iterm2_prompt_end)%}"
+	else
+		PS1="%{$(iterm2_prompt_mark)%}$PS1%{$(iterm2_prompt_end)%}"
+	fi
 }
 
 iterm2_precmd() {
@@ -129,4 +137,10 @@ precmd_functions+=(iterm2_precmd)
 preexec_functions+=(iterm2_preexec)
 
 iterm2_print_state_data
-printf "\033]1337;ShellIntegrationVersion=2;shell=zsh\007"
+printf "\033]1337;ShellIntegrationVersion=5;shell=zsh\007"
+
+# Setup iTerm2 command aliases
+for cmd (~/.iterm2/*); do
+	[[ -x "$cmd" ]] && alias "$(basename "$cmd")=$cmd"
+done
+unset cmd

@@ -98,9 +98,11 @@ function axzsh_terminal_title_preexec {
 
 	axzsh_terminal_set_icon_title "$cmd"
 
-	[[ -z "$remote" ]] \
-		&& axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST$TITLE_ADD" \
-		|| axzsh_terminal_set_window_title "$1"
+	if [[ -z "$remote" ]]; then
+		axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST$TITLE_ADD"
+	else
+		axzsh_terminal_set_window_title "$1"
+	fi
 }
 
 preexec_functions+=(axzsh_terminal_title_preexec)

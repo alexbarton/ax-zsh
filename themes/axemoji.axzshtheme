@@ -4,11 +4,7 @@
 ZSH_THEME_PROMPT_PREFIX_SPACING=" "
 ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
 
-enable_emoji=1
-
-[[ "$TERM_PROGRAM" = "Hyper" ]] && unset enable_emoji
-
-if [[ -n "$enable_emoji" ]] && axzsh_is_utf_terminal; then
+if axzsh_is_widechar_terminal; then
 	# UTF8 capable terminal:
 	if [[ -r "$HOME/.system_emoji-$SHORT_HOST" ]]; then
 		system_emoji=$(<"$HOME/.system_emoji-$SHORT_HOST")
@@ -36,4 +32,4 @@ fi
 
 PS1="${system_emoji}${emoji_spacing} $(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
 
-unset enable_emoji system_emoji emoji_spacing
+unset system_emoji emoji_spacing

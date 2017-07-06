@@ -21,6 +21,18 @@ function axzsh_is_utf_terminal {
 }
 alias isutfenv=axzsh_is_utf_terminal
 
+# Check if terminal supports "wide" characters.
+# <https://unix.stackexchange.com/questions/184345/detect-how-much-of-unicode-my-terminal-supports-even-through-screen>
+function axzsh_is_widechar_terminal {
+	[[ -t 1 ]] || return 1
+	axzsh_is_utf_terminal || return 1
+	echo -ne "🍀\033[6n\033[1K\r"
+	read -s -d\[ garbage
+	read -s -d R pos
+	[[ "${pos#*;}" -eq 2 ]] || return 1
+	return 0
+}
+
 # Test for "modern" terminal
 function axzsh_is_modern_terminal {
 	[[ "$TERM" = screen* ]] && return 0

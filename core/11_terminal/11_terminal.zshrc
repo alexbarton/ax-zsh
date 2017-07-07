@@ -26,9 +26,10 @@ alias isutfenv=axzsh_is_utf_terminal
 function axzsh_is_widechar_terminal {
 	[[ -t 1 ]] || return 1
 	axzsh_is_utf_terminal || return 1
-	echo -ne "🍀\033[6n\033[1K\r"
+	echo -ne "🍀\033[6n"
 	read -s -d\[ garbage
 	read -s -d R pos
+	echo -ne "\033[1K\r"
 	[[ "${pos#*;}" -eq 2 ]] || return 1
 	return 0
 }

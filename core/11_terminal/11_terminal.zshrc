@@ -25,6 +25,7 @@ alias isutfenv=axzsh_is_utf_terminal
 # <https://unix.stackexchange.com/questions/184345/detect-how-much-of-unicode-my-terminal-supports-even-through-screen>
 function axzsh_is_widechar_terminal {
 	[[ -t 1 ]] || return 1
+	[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 1
 	axzsh_is_utf_terminal || return 1
 	echo -ne "🍀\033[6n"
 	read -s -d\[ garbage

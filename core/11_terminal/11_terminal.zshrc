@@ -120,6 +120,8 @@ function axzsh_terminal_title_preexec {
 
 preexec_functions+=(axzsh_terminal_title_preexec)
 
+alias axttyinfo="nocorrect zsh $AXZSH/bin/axttyinfo"
+
 axzsh_is_dumb_terminal && return 0
 
 # Colors

@@ -1,0 +1,52 @@
+#!/usr/bin/env zsh
+#
+# AX-ZSH: Alex' Modular ZSH Configuration
+# Copyright (c) 2015-2017 Alexander Barton <alex@barton.de>
+#
+
+source "$AXZSH/core/11_terminal/11_terminal.zshrc" || exit 1
+
+unset VERBOSE
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		"-v")
+			VERBOSE=1
+			;;
+		*)
+			echo "Usage: ttyinfo [-v]" >&2
+			exit 1
+	esac
+	shift
+done
+
+printf "$fg[white]$fx[bold]$(hostname)$fx[no-bold] "
+printf "$fg[yellow]$(tty)$fx[reset], "
+printf "$fg[green]$fx[underline]${TERM:-?}$fx[reset] "
+printf "(${COLUMNS:-?}x${LINES:-?}); "
+printf "$fg[white]LANG=${LANG:-?}$fx[reset]"
+echo
+
+[[ -z "$VERBOSE" ]] && return 0
+
+check_function_result() {
+	"$1"; r=$?
+	printf " - $fg[white]$1$fx[reset]() = "
+	if [[ $r -eq 0 ]]; then
+		echo "$fg[green]yes$fx[reset]"
+	else
+		echo "$fg[red]NO$fx[reset]"
+	fi
+	return $r
+}
+
+echo
+for f (
+	axzsh_is_dumb_terminal
+	axzsh_is_modern_terminal
+	axzsh_is_utf_terminal
+	axzsh_is_widechar_terminal
+); do
+	check_function_result "$f"
+done
+echo

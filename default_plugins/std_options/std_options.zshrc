@@ -14,5 +14,5 @@ setopt interactivecomments
 # Display PID when suspending processes as well
 setopt longlistjobs
 
-# Watch for logins of everyone but me and root
-watch=(notme root)
+# Watch for logins of everyone but me
+watch=(notme)

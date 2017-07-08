@@ -32,4 +32,9 @@ fi
 
 PS1="${system_emoji}${emoji_spacing} $(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
 
+# Default execution trace prompt.
+PS4="$fg_no_bold[yellow]->$reset_color "
+# This prompt is compatible with sh(1) and bash(1), too, so export it!
+export PS4
+
 unset system_emoji emoji_spacing

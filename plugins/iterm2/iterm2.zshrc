@@ -140,7 +140,7 @@ iterm2_print_state_data
 printf "\033]1337;ShellIntegrationVersion=5;shell=zsh\007"
 
 # Setup iTerm2 command aliases
-for cmd (~/.iterm2/*); do
+for cmd (~/.iterm2/*(N)); do
 	[[ -x "$cmd" ]] && alias "$(basename "$cmd")=$cmd"
 done
 unset cmd

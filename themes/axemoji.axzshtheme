@@ -20,16 +20,18 @@ if axzsh_is_widechar_terminal; then
 	ZSH_THEME_VCS_PROMPT_CLEAN="👌$emoji_spacing"
 	ZSH_THEME_VCS_PROMPT_DIRTY="👻$emoji_spacing"
 
-	# Prompt on right side
+	# Primary prompt on the right-hand side.
 	RPS1="%(?..%{$fg_no_bold[red]%}❌$emoji_spacing%? ↵%{$reset_color%})"
 else
 	# Non-UTF8 or incompatible terminal
 	system_emoji=">"
 	emoji_spacing=""
 
+	# Primary prompt on the right-hand side.
 	RPS1="%(?..%{$fg_no_bold[red]%}<%?>%{$reset_color%})"
 fi
 
+# The primary prompt string, printed before a command is read.
 PS1="${system_emoji}${emoji_spacing} $(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
 
 # Default execution trace prompt.

@@ -19,3 +19,5 @@ for cmd (
 done
 
 setopt correct_all
+
+SPROMPT="$ZSH_NAME: Correct \"$fg[yellow]%R$reset_color\" to \"$fg[green]%r$reset_color\" [$fg_bold[white]nyae$reset_color]? "

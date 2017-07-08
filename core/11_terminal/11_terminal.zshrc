@@ -23,7 +23,16 @@ alias isutfenv=axzsh_is_utf_terminal
 
 # Check if terminal supports "wide" characters.
 # <https://unix.stackexchange.com/questions/184345/detect-how-much-of-unicode-my-terminal-supports-even-through-screen>
+typeset -g _axzsh_is_widechar_terminal_cache
 function axzsh_is_widechar_terminal {
+	if [[ -z "$_axzsh_is_widechar_terminal_cache" ]]; then
+		# No cached result, call test function ...
+		_axzsh_is_widechar_terminal
+		_axzsh_is_widechar_terminal_cache=$?
+	fi
+	return $_axzsh_is_widechar_terminal_cache
+}
+function _axzsh_is_widechar_terminal {
 	[[ -t 1 ]] || return 1
 	[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 1
 	axzsh_is_utf_terminal || return 1

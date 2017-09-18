@@ -20,6 +20,8 @@ for d (
 	/opt/*/sbin(NOn)
 	~/.gem/ruby/*/bin(NOn)
 	~/.local/bin
+	~/bin
+	~/sbin
 	~/Applications
 ); do
 	[ -d "$d" ] && path=("$d" $path)

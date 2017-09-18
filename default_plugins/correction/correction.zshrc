@@ -2,17 +2,24 @@
 # correction.zshrc: Setup correction
 
 for cmd (
+	alias
 	apt
 	aptitude
 	brew
+	command
 	ebuild
+	echo
 	gist
 	man
 	mkdir
 	mv
 	mysql
 	pkg_add
+	print
+	printf
 	sudo
+	type
+	which
 ); do
 	[[ -n $commands[$cmd] ]] \
 		&& alias $cmd="nocorrect $cmd"

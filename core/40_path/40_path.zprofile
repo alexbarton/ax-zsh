@@ -39,8 +39,14 @@ done
 # Set default MANPATH
 MANPATH="$(manpath -q)" 2>/dev/null
 if [[ $? -ne 0 ]]; then
-	MANPATH="/usr/share/man"
-	for d (/usr/local/share/man /opt/*/man(N)); do
+	for d (
+		~/share/man
+		~/man
+		/opt/*/share/man(NOn)
+		/opt/*/man(NOn)
+		/usr/share/man
+		/usr/local/share/man
+	); do
 		[ -d "$d" ] && manpath=($manpath "$d")
 	done
 fi

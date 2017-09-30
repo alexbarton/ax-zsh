@@ -26,7 +26,9 @@ for cmd (
 	mkdir
 	mv
 	mysql
+	pgrep
 	pkg_add
+	pkill
 	sudo
 ); do
 	[[ -n $commands[$cmd] ]] \

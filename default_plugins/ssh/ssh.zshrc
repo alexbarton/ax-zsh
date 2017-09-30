@@ -11,6 +11,7 @@ ssh-autoadd() {
 	[[ -z "$SSH_AUTH_SOCK" ]] && return 0
 	ssh-add -l >/dev/null && return 0
 	[[ $? -eq 2 ]] && return 2
+	[[ "$1" = "-v" ]] && echo "SSH agent is running, but has no identities."
 	ssh-add
 }
 

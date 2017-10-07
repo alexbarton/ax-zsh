@@ -1,6 +1,11 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 30_env.zprofile: Setup environment
 
+# Setup time zone
+if [[ -z "$TZ" && -r "/etc/timezone" ]]; then
+	TZ=$(<"/etc/timezone") export TZ
+fi
+
 # Setup XDG cache directory
 if [[ -z "$XDG_CACHE_HOME" ]]; then
 	XDG_CACHE_HOME="$LOCAL_HOME/.cache"

@@ -46,7 +46,7 @@ ax_vcs_prompt_functions=($ax_vcs_prompt_functions git_prompt)
 
 alias ga="git add"
 alias gc="git commit"
-alias gd="git diff"
-alias gdc="git diff --cached"
+alias gd="git diff --patch-with-stat"
+alias gdc="git diff --patch-with-stat --cached"
 alias gst="git status --short --branch --untracked"
 alias fix="git diff --name-only | uniq | xargs $EDITOR"

@@ -16,25 +16,7 @@ fi
 
 export GPG_TTY=$(tty)
 
-agent_info_file="$HOME/.gnupg/agent.info-${HOST}"
-
-# Validate agent info ...
-if [[ -n "$GPG_AGENT_INFO" ]]; then
-	gpg-agent >/dev/null 2>&1 || unset GPG_AGENT_INFO
+if (( $+commands[gpg-connect-agent] )); then
+	# Try to start/connect the agent ...
+	gpg-connect-agent /bye
 fi
-
-# Read environment file, when available and agent info not already set.
-if [[ -z "$GPG_AGENT_INFO" && -r "$agent_info_file" ]]; then
-	source "$agent_info_file" 2>/dev/null
-	[[ -n "$GPG_AGENT_INFO" ]] && export GPG_AGENT_INFO
-fi
-
-# Setup GnuPG agent when installed.
-if (( $+commands[gpg-agent] )); then
-	# Start up a new GnuPP agent, when none is running/accessible:
-	if ! gpg-agent >/dev/null 2>&1; then
-		eval $(gpg-agent --daemon --write-env-file "$agent_info_file")
-	fi
-fi
-
-unset agent_info_file

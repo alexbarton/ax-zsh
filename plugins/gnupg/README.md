@@ -6,7 +6,6 @@ starting a new one.
 
 - `gpg2`: use the same completions than for `gpg`.
 - When `gpg` isn't installed but `gpg2` is, alias it to `gpg`, too.
-- Store "agent information" in `$HOME/.gnupg/agent.info-$HOST:$DISPLAY`.
 
 ### Command Aliases
 

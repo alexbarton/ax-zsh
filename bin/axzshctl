@@ -10,7 +10,7 @@ for dir ("$HOME/lib" "$HOME/.ax" /usr/local /opt/ax /usr); do
 	ax_common="${dir}/lib/ax/ax-common.sh"
 	[[ -r "$ax_common" ]] && source "$ax_common"
 done
-if [[ -z "$ax_common_sourced" ]]; then
+if [[ -z "$ax_common_sourced" || axzsh_is_dumb_terminal ]]; then
 	function ax_msg {
 		shift
 		echo "$@"

@@ -18,5 +18,5 @@ export GPG_TTY=$(tty)
 
 if (( $+commands[gpg-connect-agent] )); then
 	# Try to start/connect the agent ...
-	gpg-connect-agent /bye
+	( gpg-connect-agent /bye >/dev/null 2>&1 )
 fi

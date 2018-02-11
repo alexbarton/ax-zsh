@@ -110,6 +110,10 @@ function EnablePlugin {
 			ax_msg - "Cloning plugin from GitHub ..."
 			git clone "https://github.com/$1.git" \
 			 "$AXZSH/repos/$plugin"
+			# Try to enable a theme in this "foreign" plugin, but
+			# ignore errors: we don't know if this plugin provides
+			# a theme at all ...
+			SetTheme "${plugin#*#}" 2>/dev/null
 		fi
 	fi
 
@@ -206,8 +210,23 @@ function SetTheme {
 	elif [ -r "$AXZSH/themes/$1.axzshtheme" ]; then
 		theme="$AXZSH/themes/$1.axzshtheme"
 	else
-		echo "Theme \"$1\" not found!"
-		return 1
+		# Look for theme inside of installed plugins:
+		for dname (
+			"$AXZSH/custom_plugins/"*(N)
+			"$AXZSH/repos/"*(N)
+		); do
+			if [[ -r "$dname/$1.axzshtheme" ]]; then
+				theme="$dname/$1.axzshtheme"
+				break
+			elif [[ -r "$dname/$1.zsh-theme" ]]; then
+				theme="$dname/$1.zsh-theme"
+				break
+			fi
+		done
+		if [[ -z "$theme" ]]; then
+			echo "Theme \"$1\" not found!"
+			return 1
+		fi
 	fi
 	ln -sv "$theme" "$link_name" || return 1
 	return $?

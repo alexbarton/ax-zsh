@@ -49,6 +49,9 @@ function axzsh_load_plugin {
 			# Prezto module
 			type="init.zsh"
 			fname="$dname/init.zsh"
+		elif [[ -r "$dname/$plugin.zsh-theme" ]]; then
+			# ZSH "theme plugin", ignore here!
+			:
 		else
 			echo "AX-ZSH plugin type of \"$plugin\" unknown, skipped!" >&2
 			return 0

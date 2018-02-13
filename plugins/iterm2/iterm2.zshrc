@@ -9,6 +9,11 @@ axzsh_is_dumb_terminal && return 91
 [[ -z "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 91
 [[ "$TERM" != "screen" && "$TERM" != "screen-256color" ]] || return 91
 
+# Try to source user-local shell integration installed by iTerm2 itself,
+# and only fall back to the implementation here when not found.
+[[ -e "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
+[[ -z "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 0
+
 ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
 ITERM2_SHOULD_DECORATE_PROMPT="1"
 

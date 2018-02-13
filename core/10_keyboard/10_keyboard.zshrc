@@ -19,3 +19,6 @@ after-first-word() {
 }
 zle -N after-first-word
 bindkey "\C-x1" after-first-word
+
+# Push back current line.
+bindkey '\C-x\C-p' push-line

@@ -377,8 +377,7 @@ case "$cmd" in
 		;;
 	"enable-default-plugins")
 		[[ $# -eq 0 ]] || Usage
-		EnableDefaultPlugins
-		UpdatePluginCache
+		EnableDefaultPlugins && UpdatePluginCache
 		;;
 	"check-plugins")
 		[[ $# -eq 0 ]] || Usage
@@ -386,8 +385,7 @@ case "$cmd" in
 		;;
 	"set-theme")
 		[[ $# -eq 1 ]] || Usage
-		SetTheme "$1"
-		UpdatePluginCache
+		SetTheme "$1" && UpdatePluginCache
 		;;
 	"upgrade")
 		[[ $# -eq 0 ]] || Usage

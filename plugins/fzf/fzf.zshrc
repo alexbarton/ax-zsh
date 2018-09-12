@@ -10,6 +10,13 @@ fi
 # Make sure that "fzf(1)" is installed
 (( $+commands[fzf] )) || return 1
 
+# Test for Debian-specific keybinding location ...
+if [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+	source /usr/share/zsh/vendor-completions/_fzf
+	source /usr/share/doc/fzf/examples/key-bindings.zsh
+	return 0
+fi
+
 # Search for and read in FZF ZSH integration files
 for dir (
 	/usr/local/lib/fzf/shell

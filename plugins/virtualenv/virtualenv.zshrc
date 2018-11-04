@@ -1,6 +1,9 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # virtualenv: Activate an "virtual environment"
 
+# This plugin is optional.
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
+
 function activate() {
 	for d (
 		./bin

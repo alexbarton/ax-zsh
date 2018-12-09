@@ -18,6 +18,10 @@ for d (
 	/usr/local/sbin
 	/opt/*/bin(NOn)
 	/opt/*/sbin(NOn)
+	/home/linuxbrew/.linuxbrew/bin
+	/home/linuxbrew/.linuxbrew/sbin
+	~/.linuxbrew/bin
+	~/.linuxbrew/sbin
 	~/.gem/ruby/*/bin(NOn)
 	~/.local/bin
 	~/bin
@@ -42,6 +46,8 @@ if [[ $? -ne 0 ]]; then
 	for d (
 		~/share/man
 		~/man
+		~/.linuxbrew/share/man
+		/home/linuxbrew/.linuxbrew/share/man
 		/opt/*/share/man(NOn)
 		/opt/*/man(NOn)
 		/usr/share/man

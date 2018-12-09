@@ -7,10 +7,3 @@
 [[ -w "/usr/local/home/$LOGNAME" ]] \
 	&& export LOCAL_HOME="/usr/local/home/$LOGNAME" \
 	|| export LOCAL_HOME="$HOME"
-
-# Update PATH to include directories inside of the $HOME directory
-typeset -U path
-for dir in ~/bin ~/sbin ~/Applications; do
-	[[ -d "$dir" ]] && path[1,0]="$dir"
-done
-unset dir

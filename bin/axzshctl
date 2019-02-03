@@ -191,14 +191,8 @@ function EnableDefaultPlugins {
 function SetTheme {
 	local link_name="$AXZSH/active_theme"
 
-	if [ $# -ne 1 ]; then
-		echo "Usage: axzsh_set_theme <name|->"
-		return 1
-	fi
-
-	rm -f "$link_name" || return 1
-
 	if [ "$1" = "-" ]; then
+		rm -f "$link_name" || return 1
 		echo "Theme settings have been reset."
 		return 0
 	fi
@@ -228,7 +222,7 @@ function SetTheme {
 			return 1
 		fi
 	fi
-	ln -sv "$theme" "$link_name" || return 1
+	ln -fsv "$theme" "$link_name" || return 1
 	return $?
 }
 

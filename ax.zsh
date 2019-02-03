@@ -177,6 +177,19 @@ else
 	for plugin ($plugin_list); do
 		axzsh_load_plugin "$plugin" "$script_type" "$cache_file"
 	done
+
+	# Read the "theme file", if any and in "zshrc" stage:
+	if [[ "$script_type" = "zshrc" ]]; then
+		if [[ -r "$AXZSH_THEME" ]]; then
+			source "$AXZSH_THEME"
+			if [[ -n "$cache_file" ]]; then
+				# Include the theme into the new cache file:
+				echo "# BEGIN Theme" >>"$cache_file"
+				"$cat_cmd" "$AXZSH_THEME" >>"$cache_file"
+				echo "# END Theme" >>"$cache_file"
+			fi
+		fi
+	fi
 fi
 
 # Clean up ...

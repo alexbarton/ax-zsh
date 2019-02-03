@@ -45,6 +45,7 @@ git_prompt() {
 # OhMyZsh compatibility functions
 alias git_prompt_info=git_prompt
 alias parse_git_dirty=git_parse_dirty
+alias git_prompt_status=git_prompt
 
 ax_vcs_prompt_functions=($ax_vcs_prompt_functions git_prompt)
 

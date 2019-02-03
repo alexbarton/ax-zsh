@@ -139,19 +139,43 @@ axzsh_is_dumb_terminal && return 0
 autoload -Uz colors
 colors
 
+# Foreground (FG) and background (BG) colors.
+typeset -Ag FG BG
+for color in {000..255}; do
+	FG[$color]="%{[38;5;${color}m%}"
+	BG[$color]="%{[48;5;${color}m%}"
+done
+
 # Text effects (FX)
 
-typeset -Ag fx
-fx=(
-	reset		"\e[00m"
-	bold		"\e[01m"
-	no-bold		"\e[22m"
-	italic		"\e[03m"
-	no-italic	"\e[23m"
-	underline	"\e[04m"
-	no-underline	"\e[24m"
-	blink		"\e[05m"
-	no-blink	"\e[25m"
-	reverse		"\e[07m"
-	no-reverse	"\e[27m"
+typeset -Ag FX
+FX=(
+	reset     "%{[00m%}"
+	bold      "%{[01m%}"	no-bold      "%{[22m%}"
+	italic    "%{[03m%}"	no-italic    "%{[23m%}"
+	underline "%{[04m%}"	no-underline "%{[24m%}"
+	blink     "%{[05m%}"	no-blink     "%{[25m%}"
+	reverse   "%{[07m%}"	no-reverse   "%{[27m%}"
 )
+
+ZSH_SPECTRUM_TEXT=${ZSH_SPECTRUM_TEXT:-The quick brown fox jumps over the lazy dog}
+
+# Show all 256 foreground colors with color number
+function spectrum_ls() {
+	for code in {000..255}; do
+		print -P -- "$code: %{$FG[$code]%}$ZSH_SPECTRUM_TEXT%{$reset_color%}"
+	done
+}
+
+# Show all 256 background colors with color number
+function spectrum_bls() {
+	for code in {000..255}; do
+		print -P -- "$code: %{$BG[$code]%}$ZSH_SPECTRUM_TEXT%{$reset_color%}"
+	done
+}
+
+# NOTE for FG, BG and FX arrays, and spectrum_ls() and spectrum_bls() functions:
+# Based on a script to make using 256 colors in zsh less painful, written by
+# P.C. Shyamshankar <sykora@lucentbeing.com>.
+# Copied from OhMyZsh https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/spectrum.zsh
+# which was copied from https://github.com/sykora/etc/blob/master/zsh/functions/spectrum/ :-)

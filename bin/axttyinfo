@@ -20,22 +20,22 @@ while [[ $# -gt 0 ]]; do
 	shift
 done
 
-printf "$fg[white]$fx[bold]$(hostname)$fx[no-bold] "
-printf "$fg[yellow]$(tty)$fx[reset], "
-printf "$fg[green]$fx[underline]${TERM:-?}$fx[reset] "
-printf "(${COLUMNS:-?}x${LINES:-?}); "
-printf "$fg[white]LANG=${LANG:-?}$fx[reset]"
+print -Pn -- "$fg[white]$FX[bold]$(hostname)$FX[no-bold] "
+print -Pn -- "$fg[yellow]$(tty)$FX[reset], "
+print -Pn -- "$fg[green]$FX[underline]${TERM:-?}$FX[reset] "
+print -Pn -- "(${COLUMNS:-?}x${LINES:-?}); "
+print -Pn -- "$fg[white]LANG=${LANG:-?}$FX[reset]"
 echo
 
 [[ -z "$VERBOSE" ]] && return 0
 
 check_function_result() {
 	"$1"; r=$?
-	printf " - $fg[white]$1$fx[reset]() = "
+	print -Pn -- " - $fg[white]$1$FX[reset]() = "
 	if [[ $r -eq 0 ]]; then
-		echo "$fg[green]yes$fx[reset]"
+		print -P -- "$fg[green]yes$FX[reset]"
 	else
-		echo "$fg[red]NO$fx[reset]"
+		print -P -- "$fg[red]NO$FX[reset]"
 	fi
 	return $r
 }

@@ -185,7 +185,7 @@ else
 			if [[ -n "$cache_file" ]]; then
 				# Include the theme into the new cache file:
 				echo "# BEGIN Theme" >>"$cache_file"
-				"$cat_cmd" "$AXZSH_THEME" >>"$cache_file"
+				echo 'source "$AXZSH_THEME"' >>"$cache_file"
 				echo "# END Theme" >>"$cache_file"
 			fi
 		fi

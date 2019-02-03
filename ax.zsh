@@ -34,6 +34,7 @@ function axzsh_load_plugin {
 	fi
 
 	if [[ ! -r "$fname" && "$type" == "zshrc" ]]; then
+		zsh_themes=("$dname/"*.zsh-theme(NY1))
 		if [[ -r "$dname/$plugin.zprofile" || -r "$dname/$plugin.zlogout" ]]; then
 			# Native AX-ZSH plugin, but for different stage. Skip it!
 			:
@@ -49,11 +50,13 @@ function axzsh_load_plugin {
 			# Prezto module
 			type="init.zsh"
 			fname="$dname/init.zsh"
-		elif [[ -r "$dname/$plugin.zsh-theme" ]]; then
+		elif [[ ${#zsh_themes} -gt 0 ]]; then
 			# ZSH "theme plugin", ignore here!
 			:
 		else
 			echo "AX-ZSH plugin type of \"$plugin\" unknown, skipped!" >&2
+			echo "Contents of \"$dname\":" >&2
+			ls -lh "$dname/" >&2
 			return 0
 		fi
 	fi

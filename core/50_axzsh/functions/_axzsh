@@ -28,6 +28,7 @@ _axzshctl() {
 		  "set-theme")
 			compadd "$@" -- "-" \
 				$(ls -1 "$AXZSH"/themes | cut -d'.' -f1) \
+				$(ls -1 "$AXZSH"/custom_themes | cut -d'.' -f1) \
 				$(find "$AXZSH/custom_plugins" "$AXZSH/repos" -maxdepth 2 -iname '*.zsh-theme' -exec basename {} \; | cut -d'.' -f1)
 			;;
 		esac

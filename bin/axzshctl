@@ -206,6 +206,7 @@ function SetTheme {
 	else
 		# Look for theme inside of installed plugins:
 		for dname (
+			"$AXZSH/custom_themes"
 			"$AXZSH/custom_plugins/"*(N)
 			"$AXZSH/repos/"*(N)
 		); do

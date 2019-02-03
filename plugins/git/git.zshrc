@@ -42,6 +42,10 @@ git_prompt() {
 	return 0
 }
 
+# OhMyZsh compatibility functions
+alias git_prompt_info=git_prompt
+alias parse_git_dirty=git_parse_dirty
+
 ax_vcs_prompt_functions=($ax_vcs_prompt_functions git_prompt)
 
 alias ga="git add"

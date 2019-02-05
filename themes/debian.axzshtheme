@@ -3,4 +3,4 @@
 
 ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
 
-PS1="%{$fg_no_bold[green]%}%B%n@%m%{$reset_color%}:%{$fg_no_bold[blue]%}%B%~%{$reset_color%}"'$(ax_vcs_prompt)'"$(ax_prompt)"
+PS1="%{$fg_bold[green]%}%n@%m%{$reset_color%}:%{$fg_bold[blue]%}%~%{$reset_color%}"'$(ax_vcs_prompt)'"$(ax_prompt)"

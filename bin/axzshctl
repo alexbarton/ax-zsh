@@ -380,7 +380,7 @@ case "$cmd" in
 		;;
 	"set-theme")
 		[[ $# -eq 1 ]] || Usage
-		SetTheme "$1" && UpdatePluginCache
+		SetTheme "$1"
 		;;
 	"upgrade")
 		[[ $# -eq 0 ]] || Usage

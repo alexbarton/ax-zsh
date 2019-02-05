@@ -1,6 +1,11 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 50_prompt.zshrc: Setup default prompts
 
+# Some dummy functions (used by some OhMyZsh themes, for example) ...
+git_prompt_info(){ true; }
+git_prompt_status(){ true; }
+rvm_prompt_info(){ true; }
+
 # Logname ("user name")
 
 ZSH_THEME_LOGNAME_PROMPT_PREFIX_SPACING=""

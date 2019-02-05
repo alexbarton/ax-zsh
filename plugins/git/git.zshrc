@@ -38,15 +38,18 @@ git_prompt_behind() {
 
 git_prompt_info() {
 	local ref=$(git symbolic-ref HEAD 2>/dev/null) || return 1
+	[[ -n "$ref" ]] || return 1
 	echo "${ref#refs/heads/}"
 }
 git_prompt_status() {
+	local ref=$(git symbolic-ref HEAD 2>/dev/null) || return 1
+	[[ -n "$ref" ]] || return 1
 	echo "$(git_parse_dirty)$(git_prompt_ahead)$(git_prompt_behind)"
 }
 
 git_prompt() {
 	local prompt=$(git_prompt_info)
-	[[ -n "$prompt" ]] || return 0
+	[[ -n "$prompt" ]] || return 1
 	echo "$prompt$(git_prompt_status)"
 	return 0
 }

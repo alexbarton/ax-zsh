@@ -82,7 +82,7 @@ function ax_vcs_prompt() {
 	local p
 	for func ($ax_vcs_prompt_functions); do
 		p=$( $func ) || continue
-		echo "${ZSH_THEME_VCS_PROMPT_PREFIX_SPACING}${ZSH_THEME_VCS_PROMPT_PREFIX}${p}${ZSH_THEME_VCS_PROMPT_SUFFIX}${ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING}"
+		echo "${ZSH_THEME_VCS_PROMPT_PREFIX_SPACING}${p}${ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING}"
 		return
 	done
 }

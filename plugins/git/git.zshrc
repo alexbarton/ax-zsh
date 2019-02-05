@@ -39,7 +39,7 @@ git_prompt_behind() {
 git_prompt_info() {
 	local ref=$(git symbolic-ref HEAD 2>/dev/null) || return 1
 	[[ -n "$ref" ]] || return 1
-	echo "${ref#refs/heads/}"
+	echo "${ZSH_THEME_VCS_PROMPT_PREFIX}${ref#refs/heads/}${ZSH_THEME_VCS_PROMPT_SUFFIX}"
 }
 git_prompt_status() {
 	local ref=$(git symbolic-ref HEAD 2>/dev/null) || return 1

@@ -38,12 +38,10 @@ export AXZSH
 
 S=$(dirname "$0")
 
-if [ "$S" = "$AXZSH" -o "$PWD" = "$AXZSH" ]; then
+if [ "$S" = "$AXZSH" ] || [ "$PWD" = "$AXZSH" ] || [ -L "$AXZSH" ]; then
 	ax_msg 1 "Initializing \"$AXZSH\":"
 else
 	ax_msg 1 "Install AX-ZSH into \"$AXZSH\":"
-
-	[ -L "$AXZSH" ] && rm -f "$AXZSH"
 	mkdir -p "$AXZSH" || abort
 
 	ax_msg - "Copying binaries and scripts ..."

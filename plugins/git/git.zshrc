@@ -36,16 +36,23 @@ git_prompt_behind() {
 		&& echo "$ZSH_THEME_VCS_PROMPT_BEHIND"
 }
 
+git_prompt_info() {
+	local ref=$(git symbolic-ref HEAD 2>/dev/null) || return 1
+	echo "${ref#refs/heads/}"
+}
+git_prompt_status() {
+	echo "$(git_parse_dirty)$(git_prompt_ahead)$(git_prompt_behind)"
+}
+
 git_prompt() {
-	ref=$(git symbolic-ref HEAD 2>/dev/null) || return 1
-	echo "${ref#refs/heads/}$(git_parse_dirty)$(git_prompt_ahead)$(git_prompt_behind)"
+	local prompt=$(git_prompt_info)
+	[[ -n "$prompt" ]] || return 0
+	echo "$prompt$(git_prompt_status)"
 	return 0
 }
 
 # OhMyZsh compatibility functions
-alias git_prompt_info=git_prompt
 alias parse_git_dirty=git_parse_dirty
-alias git_prompt_status=git_prompt
 
 ax_vcs_prompt_functions=($ax_vcs_prompt_functions git_prompt)
 

@@ -5,6 +5,18 @@
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
 function activate() {
+	local d r
+
+	# Make sure no "virtual environment" is already active!
+	if [[ -n "$VIRTUAL_ENV" ]]; then
+		echo "Oops, looks like a virtual environment is already active!" >&2
+		return 1
+	fi
+
+	if [[ -r Pipfile ]]; then
+		pipenv run "$SHELL"; r=$?
+		return $r
+	fi
 	for d (
 		./bin
 		./env/bin
@@ -20,6 +32,11 @@ function activate() {
 		echo "Failed to read script \"$script\"!" >&2
 		return 1
 	done
+
 	echo "No virtual environment found!" >&2
 	return 1
 }
+
+if [[ -n "$PIPENV_ACTIVE" ]]; then
+	alias deactivate=exit
+fi

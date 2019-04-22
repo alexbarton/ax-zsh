@@ -46,10 +46,10 @@ function _axzsh_is_widechar_terminal {
 
 # Test for "modern" terminal
 function axzsh_is_modern_terminal {
+	[[ "$TERM" = cygwin ]] && return 0
 	[[ "$TERM" = screen* ]] && return 0
 	[[ "$TERM" = tmux* ]] && return 0
 	[[ "$TERM" = xterm* ]] && return 0
-	[[ "$TERM" = cygwin ]] && return 0
 	return 1
 }
 
@@ -135,6 +135,7 @@ alias axttyinfo="nocorrect zsh $AXZSH/bin/axttyinfo"
 axzsh_is_dumb_terminal && return 0
 
 # Colors
+# See <https://en.wikipedia.org/wiki/ANSI_escape_code#Colors>, for exmaple.
 
 autoload -Uz colors
 colors
@@ -149,36 +150,56 @@ fi
 
 # Foreground (FG) and background (BG) colors.
 typeset -Ag FG BG
-for color in {000..255}; do
-	FG[$color]="%{[38;5;${color}m%}"
-	BG[$color]="%{[48;5;${color}m%}"
-done
+case "$TERM" in
+	*-256color)
+		TERM_COLORS=255
+		for color in {000..$TERM_COLORS}; do
+			FG[$color]="%{\e[38;5;${color}m%}"
+			BG[$color]="%{\e[48;5;${color}m%}"
+		done
+		;;
+	*)
+		TERM_COLORS=15
+		typeset -i c
+		for color in {000..$TERM_COLORS}; do
+			c=$color
+			if [[ $c -ge 8 ]]; then
+				c=$c-8
+				p="1;"
+			fi
+			FG[$color]="%{\e[${p}3${c}m%}"
+			BG[$color]="%{\e[${p}4${c}m%}"
+		done
+		unset c p
+esac
+export TERM_COLORS
 
 # Text effects (FX)
+# See <https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters>, for example.
 
 typeset -Ag FX
 FX=(
-	reset     "%{[00m%}"
-	bold      "%{[01m%}"	no-bold      "%{[22m%}"
-	italic    "%{[03m%}"	no-italic    "%{[23m%}"
-	underline "%{[04m%}"	no-underline "%{[24m%}"
-	blink     "%{[05m%}"	no-blink     "%{[25m%}"
-	reverse   "%{[07m%}"	no-reverse   "%{[27m%}"
+	reset     "%{\e[0m%}"
+	bold      "%{\e[1m%}"	no-bold      "%{\e[22m%}"
+	italic    "%{\e[3m%}"	no-italic    "%{\e[23m%}"
+	underline "%{\e[4m%}"	no-underline "%{\e[24m%}"
+	blink     "%{\e[5m%}"	no-blink     "%{\e[25m%}"
+	reverse   "%{\e[7m%}"	no-reverse   "%{\e[27m%}"
 )
 
 ZSH_SPECTRUM_TEXT=${ZSH_SPECTRUM_TEXT:-The quick brown fox jumps over the lazy dog}
 
 # Show all 256 foreground colors with color number
 function spectrum_ls() {
-	for code in {000..255}; do
-		print -P -- "$code: %{$FG[$code]%}$ZSH_SPECTRUM_TEXT%{$reset_color%}"
+	for code in {000..$TERM_COLORS}; do
+		print -P -- "$code: $FG[$code]$ZSH_SPECTRUM_TEXT$FX[reset]"
 	done
 }
 
 # Show all 256 background colors with color number
 function spectrum_bls() {
-	for code in {000..255}; do
-		print -P -- "$code: %{$BG[$code]%}$ZSH_SPECTRUM_TEXT%{$reset_color%}"
+	for code in {000..$TERM_COLORS}; do
+		print -P -- "$code: $BG[$code]$ZSH_SPECTRUM_TEXT$FX[reset]"
 	done
 }
 

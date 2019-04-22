@@ -4,7 +4,7 @@
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
 # Check prerequisites ...
-axzsh_is_dumb_terminal && return 91
+axzsh_is_modern_terminal || return 91
 [[ -o interactive ]] || return 91
 [[ -z "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 91
 [[ "$TERM" != "screen" && "$TERM" != "screen-256color" ]] || return 91

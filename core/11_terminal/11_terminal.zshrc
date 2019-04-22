@@ -139,8 +139,13 @@ axzsh_is_dumb_terminal && return 0
 autoload -Uz colors
 colors
 
-fg[default]="\e[39m"
-bg[default]="\e[49m"
+if axzsh_is_modern_terminal; then
+	fg[default]="\e[39m"
+	bg[default]="\e[49m"
+else
+	fg[default]="\e[37m"
+	bg[default]="\e[47m"
+fi
 
 # Foreground (FG) and background (BG) colors.
 typeset -Ag FG BG

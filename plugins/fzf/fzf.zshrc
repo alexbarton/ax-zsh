@@ -1,6 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # fzf.zshrc: Setup Git
 
+axzsh_is_modern_terminal || return 91
+
 # Test for local fzf installation ...
 if [[ -r ~/.fzf.zsh ]]; then
 	source ~/.fzf.zsh

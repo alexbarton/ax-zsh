@@ -1,7 +1,7 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # powerline-shell.zshrc: "powerline-shell" integration.
 
-[[ "$TERM" = "linux" ]] && return 911
+axzsh_is_modern_terminal || return 91
 
 if [[ -z "$POWERLINE_SHELL" ]]; then
 	for p (

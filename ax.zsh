@@ -77,17 +77,17 @@ function axzsh_load_plugin {
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - $plugin ($type) ..."
 
-		# Note for "external" ("repo/*") plugins and "dumb" terminals:
-		# These (modern?) plugins most probably don't expect such an
-		# unusual old terminal configuration and don't behave well
-		# (echo color sequences, for example). Therefore we DON'T load
-		# any external plugins at all when running on such a terminal:
-		# this results in reduced/disabled functionality, but hopefully
-		# in readable output ...
+		# Note for "external" ("repo/*") plugins and unusual ("not so
+		# modern") terminals: These (modern?) plugins most probably
+		# don't expect such a terminal configuration and don't behave
+		# well (echo color sequences, for example). Therefore we DON'T
+		# load any external plugins at all in that case: this results in
+		# reduced/disabled functionality, but hopefully in readable
+		# output ...
 
 		case "$fname" in
 			*"/repos/"*)
-				axzsh_is_dumb_terminal || source "$fname"
+				axzsh_is_modern_terminal && source "$fname"
 				;;
 			*)
 				source "$fname"
@@ -99,7 +99,7 @@ function axzsh_load_plugin {
 			case "$fname" in
 				*"/repos/"*)
 					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type): \"$fname\" ...'" >>$cache_file
-					echo "axzsh_is_dumb_terminal || source '$fname'" >>$cache_file
+					echo "axzsh_is_modern_terminal && source '$fname'" >>$cache_file
 					;;
 				*)
 					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type, cached) ...'" >>$cache_file

@@ -7,6 +7,9 @@
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
 
+# Don't show reminders when ~/.hushlogin exists ...
+[[ -r ~/.hushlogin ]] && return 0
+
 # Check if reminders have been shown during last 60 minutes, and if so,
 # don't show them now but return.
 [[ -z `find ~/.last_reminder -mmin -60 2>/dev/null` ]] || return 0

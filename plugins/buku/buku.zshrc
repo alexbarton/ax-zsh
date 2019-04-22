@@ -4,4 +4,4 @@
 # Make sure that "buku(1)" is installed
 (( $+commands[buku] )) || return
 
-alias b='buku --suggest --tacit'
+alias b='buku --suggest'

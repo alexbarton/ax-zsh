@@ -15,4 +15,8 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-(( $+commands[lesspipe] )) && eval $(lesspipe)
+if (( $+commands[lesspipe] )); then
+	eval "$(lesspipe)"
+elif (( $+commands[lesspipe.sh] )); then
+	eval "$(lesspipe.sh)"
+fi

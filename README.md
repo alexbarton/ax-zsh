@@ -4,7 +4,6 @@ AX-ZSH: Alex' Modular ZSH Configuration
 AX-ZSH is a modular configuration system for the Z shell (ZSH).
 It provides sane defaults and is extendable by plugins.
 
-
 Installation
 ------------
 
@@ -15,13 +14,13 @@ up the `~/.axzsh` directory.
 When using Git it is best to directly clone the AX-ZSH repository into the
 `~/.axzsh` directory and call `install.sh` from this location.
 
-Clone repository from _GitHub_ (https://github.com/alexbarton/ax-zsh):
+Clone repository from _GitHub_ (<https://github.com/alexbarton/ax-zsh>):
 
-    $ git clone https://github.com/alexbarton/ax-zsh.git ~/.axzsh
+    git clone https://github.com/alexbarton/ax-zsh.git ~/.axzsh
 
 Then run the installer script:
 
-    $ ~/.axzsh/install.sh
+    ~/.axzsh/install.sh
 
 The `install.sh` script creates symbolic links for `~/.zprofile`, `~/.zshrc`,
 `~/.zlogin`, and `~/.zlogout` (don't worry, already existing files are backed
@@ -30,7 +29,6 @@ up).
 Now close and restart all your running ZSH session to activate AX-ZSH.
 
 To update AX-ZSH run `axzshctl upgrade`.
-
 
 AX-ZSH & Local ZSH Configuration
 --------------------------------
@@ -51,7 +49,6 @@ You can use the following files for local ZSH configuration:
    `~/.zlogin.local`, and `~/.zlogout.local` after its own core initialization
    files when present.
 
-
 Customization
 -------------
 
@@ -67,7 +64,6 @@ by default.
 
 In addition you can set the `AXZSH_PLUGIN_D` variable (and `ZSH_CUSTOM` like
 "OhMyZsh") to specify additional plugin search directories.
-
 
 Environment Variables
 ---------------------

@@ -18,10 +18,6 @@ for script (
 
 		source "$script"
 		unset script
-
-		# pip
-		export PIP_REQUIRE_VIRTUALENV="true"
-
 		break
 	fi
 done

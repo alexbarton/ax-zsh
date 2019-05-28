@@ -13,6 +13,9 @@ alias remindcal='remind -ccu+3 -m -w$COLUMNS,4,0 $HOME/.remind'
 # Don't show reminders when ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0
 
+# Is there a file with reminders?
+[[ -r ~/.remind ]] || return 0
+
 # Check if reminders have been shown during last 60 minutes, and if so,
 # don't show them now but return.
 [[ -z `find ~/.last_reminder -mmin -60 2>/dev/null` ]] || return 0

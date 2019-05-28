@@ -8,6 +8,8 @@
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
 # Enforce "strict host key checking"
-#alias ssh="\ssh -o 'StrictHostKeyChecking yes'"
-alias sshnew="\ssh -o 'StrictHostKeyChecking no'"
-alias sshtmp="\ssh -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null'"
+alias sshnew='ssh -o "StrictHostKeyChecking no"'
+alias sshtmp='ssh -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null"'
+
+compdef sshnew=ssh
+compdef sshtmp=ssh

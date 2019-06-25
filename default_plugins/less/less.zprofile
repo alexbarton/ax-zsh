@@ -18,5 +18,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 if (( $+commands[lesspipe] )); then
 	eval "$(lesspipe)"
 elif (( $+commands[lesspipe.sh] )); then
+	# Silence lesspipe(1), see <https://github.com/wofr06/lesspipe/issues/21>
+	export LESSQUIET=1
 	eval "$(lesspipe.sh)"
 fi

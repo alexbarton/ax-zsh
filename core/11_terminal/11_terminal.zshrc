@@ -82,14 +82,14 @@ function axzsh_terminal_set_window_title {
 # Update terminal titles befor echoing the shell prompt
 function axzsh_terminal_title_precmd {
 	axzsh_is_modern_terminal || return
-	axzsh_terminal_set_icon_title 'zsh'
+	axzsh_terminal_set_window_title ''
 	if [[ "$TERM_PROGRAM" == "Apple_Terminal" && "$TERM" != "screen"* ]]; then
-		axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST"
+		axzsh_terminal_set_icon_title "$LOGNAME@$SHORT_HOST"
 		# Update CWD in Terminal.app
 		local url=$(echo "file://$HOSTNAME$PWD" | sed -e 's| |%20|g')
 		printf '\e]7;%s\a' "$url"
 	else
-		axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST:$PWD"
+		axzsh_terminal_set_icon_title "$LOGNAME@$SHORT_HOST:$PWD"
 	fi
 }
 
@@ -114,17 +114,16 @@ function axzsh_terminal_title_preexec {
 			printf '\e]7;%s\a' ''
 		fi
 	fi
-	if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
-		# iTerm.app ...
-		[[ -n "$cmd" ]] && TITLE_ADD=" – $cmd"
+
+	if [[ -n "$cmd" ]]; then
+		# Add the command to the title
+		TITLE_ADD=" – $cmd"
 	fi
 
-	axzsh_terminal_set_icon_title "$cmd"
-
 	if [[ -z "$remote" ]]; then
-		axzsh_terminal_set_window_title "$LOGNAME@$SHORT_HOST$TITLE_ADD"
+		axzsh_terminal_set_icon_title "$LOGNAME@$SHORT_HOST$TITLE_ADD"
 	else
-		axzsh_terminal_set_window_title "$1"
+		axzsh_terminal_set_icon_title "$1"
 	fi
 }
 

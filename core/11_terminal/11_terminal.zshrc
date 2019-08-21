@@ -47,6 +47,7 @@ function _axzsh_is_widechar_terminal {
 # Test for "modern" terminal
 function axzsh_is_modern_terminal {
 	[[ "$TERM" = cygwin ]] && return 0
+	[[ "$TERM" = putty* ]] && return 0
 	[[ "$TERM" = screen* ]] && return 0
 	[[ "$TERM" = tmux* ]] && return 0
 	[[ "$TERM" = xterm* ]] && return 0

@@ -27,6 +27,19 @@ ax_hostname_prompt_functions=($ax_hostname_prompt_functions _ax_ssh_prompt)
 # file becomes invalid when the session has been disconnected.
 [[ ! -r "$SSH_AUTH_SOCK" ]] && unset SSH_AUTH_SOCK
 
+# Look for common socket locations ...
+if [[ -z "$SSH_AUTH_SOCK" ]]; then
+	for s (
+		/mnt/c/Local/$LOGNAME/ssh-agent.sock
+	); do
+		if [[ -r "$s" ]]; then
+			export SSH_AUTH_SOCK=$s
+			break
+		fi
+	done
+	unset s
+fi
+
 # Save SSH environment when available:
 if [[ -n "$SSH_AUTH_SOCK" && -d "$XDG_RUNTIME_DIR" ]]; then
 	# Save current environment when no state exists or is invalid.

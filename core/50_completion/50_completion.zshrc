@@ -11,7 +11,10 @@ zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select
 zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' group-name ''
 zstyle ':completion:*' squeeze-slashes true
+
+zstyle ':completion:*:descriptions' format %B%d%b
 
 # Use caching so that commands like apt and dpkg completions are useable
 zstyle ':completion:*' use-cache on

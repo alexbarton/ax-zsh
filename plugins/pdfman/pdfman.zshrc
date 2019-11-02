@@ -4,4 +4,4 @@
 # Make sure that "pdfman" script is installed
 (( $+commands[pdfman] )) || return
 
-alias man='nocorrect pdfman'
+alias man='pdfman'

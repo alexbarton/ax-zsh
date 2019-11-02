@@ -1,6 +1,9 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # bash_completion.zshrc: Setup bash(1) completion
 
+# Define some "dummy functions"
+_init_completion() { return 0 }
+
 autoload -Uz bashcompinit || return 1
 bashcompinit
 

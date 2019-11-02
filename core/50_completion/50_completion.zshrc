@@ -3,8 +3,6 @@
 
 autoload -Uz compinit
 
-setopt completealiases
-
 zstyle ':completion:*' completer _complete _ignored _correct _approximate
 
 zstyle ':completion:*' accept-exact '*(N)'

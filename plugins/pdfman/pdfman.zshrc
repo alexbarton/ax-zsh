@@ -5,3 +5,4 @@
 (( $+commands[pdfman] )) || return
 
 alias man='pdfman'
+compdef pdfman=man

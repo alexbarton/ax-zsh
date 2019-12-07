@@ -5,7 +5,7 @@
 (( $+commands[docker-machine] )) || return
 
 # Setup environment
-if ! eval "$(docker-machine env local-default 2>/dev/null)"; then
+if ! eval "$(docker-machine env default 2>/dev/null)"; then
 	# Clean environment on error
 	eval "$(docker-machine env -u)"
 fi

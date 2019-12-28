@@ -108,7 +108,7 @@ function EnablePlugin {
 		mkdir -p "$AXZSH/repos"
 		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then
 			ax_msg - "Cloning module from GitHub ..."
-			git clone "https://github.com/$1.git" \
+			git clone --depth=1 "https://github.com/$1.git" \
 			 "$AXZSH/repos/$plugin"
 		fi
 		# Try to enable a theme in this "foreign module", but ignore

@@ -107,13 +107,18 @@ function EnablePlugin {
 		# GitHub plugin
 		mkdir -p "$AXZSH/repos"
 		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then
-			ax_msg - "Cloning plugin from GitHub ..."
+			ax_msg - "Cloning module from GitHub ..."
 			git clone "https://github.com/$1.git" \
 			 "$AXZSH/repos/$plugin"
-			# Try to enable a theme in this "foreign" plugin, but
-			# ignore errors: we don't know if this plugin provides
-			# a theme at all ...
-			SetTheme "${plugin#*#}" 2>/dev/null
+		fi
+		# Try to enable a theme in this "foreign module", but ignore
+		# errors: we don't know if this module provides a theme or is
+		# a "regular" plugin ...
+		if SetTheme "${plugin#*#}" 2>/dev/null; then
+			ax_msg 0 "Module \"$1\" was enabled as theme \"${plugin#*#}\"."
+			# A theme was enabled: So assume that this is a theme
+			# and don't enable it as plugin.
+			return 0
 		fi
 	fi
 

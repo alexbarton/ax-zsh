@@ -15,6 +15,9 @@ if [[ -z "$ax_common_sourced" ]]; then
 		shift
 		echo "$@"
 	}
+	function ax_error {
+		ax_msg 2 "$@" >&2
+	}
 fi
 unset dir ax_common ax_common_sourced
 
@@ -78,7 +81,7 @@ function NormalizedPluginName {
 function EnableAXZSH {
 	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
 		ln -sv "$AXZSH/ax.zsh" "$f" \
-			|| ax_msg 2 "Failed to create symbolic link for \"$f\"!"
+			|| ax_error "Failed to create symbolic link for \"$f\"!"
 	done
 }
 
@@ -87,7 +90,7 @@ function DisableAXZSH {
 		if [ -h "$f" ]; then
 			rm -v "$f" || ax_msg 2 "Failed to remove \"$f\"!"
 		elif [ -e "$f" ]; then
-			ax_msg 2 "Error: Not removing \"$f\", it is not a symbolic link!"
+			ax_error "Error: Not removing \"$f\", it is not a symbolic link!"
 		else
 			ax_msg 1 "Warning: \"$f\" already does not exist. Ok."
 		fi
@@ -115,11 +118,12 @@ function EnablePlugin {
 		# errors: we don't know if this module provides a theme or is
 		# a "regular" plugin ...
 		if SetTheme "${plugin#*#}" 2>/dev/null; then
-			ax_msg 0 "Module \"$1\" was enabled as theme \"${plugin#*#}\"."
+			ax_msg 1 "Module \"$1\" was enabled as theme \"${plugin#*#}\"."
 			# A theme was enabled: So assume that this is a theme
 			# and don't enable it as plugin.
 			return 0
 		fi
+		echo "Module \"$1\" will be enabled as plugin ..."
 	fi
 
 	for dname (
@@ -141,7 +145,7 @@ function EnablePlugin {
 		return $?
 	done
 
-	ax_msg 2 "Plugin \"$1\" not found!"
+	ax_error "Plugin \"$1\" not found!"
 	return 1
 }
 
@@ -198,7 +202,7 @@ function SetTheme {
 
 	if [ "$1" = "-" ]; then
 		rm -f "$link_name" || return 1
-		echo "Theme settings have been reset."
+		ax_msg 0 "Theme settings have been reset."
 		return 0
 	fi
 
@@ -224,7 +228,7 @@ function SetTheme {
 			fi
 		done
 		if [[ -z "$theme" ]]; then
-			echo "Theme \"$1\" not found!"
+			ax_error "Theme \"$1\" not found!"
 			return 1
 		fi
 	fi
@@ -234,11 +238,11 @@ function SetTheme {
 
 function UpgradeAXZSH {
 	if [[ $+commands[git] -eq 0 ]]; then
-		ax_msg 2 "The git(1) command is not available!"
+		ax_error "The git(1) command is not available!"
 		return 1
 	fi
 	if [[ ! -d "$AXZSH/.git" ]]; then
-		ax_msg 2 "AX-ZSH seems not to be installed using Git. Can't upgrade!"
+		ax_error "AX-ZSH seems not to be installed using Git. Can't upgrade!"
 		return 1
 	fi
 
@@ -248,7 +252,7 @@ function UpgradeAXZSH {
 
 function UpgradeForeignPlugins {
 	if [[ $+commands[git] -eq 0 ]]; then
-		ax_msg 2 "The git(1) command is not available!"
+		ax_error "The git(1) command is not available!"
 		return 1
 	fi
 
@@ -258,10 +262,10 @@ function UpgradeForeignPlugins {
 			ax_msg - "Upgrading \"$name\" [git] ..."
 			(
 				cd "$dir"
-				git pull --ff-only || ax_msg 2 "Pull failed!"
+				git pull --ff-only || ax_error "Pull failed!"
 			)
 		else
-			ax_msg 2 "Unknown repository type!"
+			ax_error "Unknown repository type!"
 		fi
 	done
 }
@@ -334,7 +338,7 @@ NAME="$0:t"
 if [[ -z "$AXZSH" || ! -r "$AXZSH/ax.zsh" ]]; then
 	[[ -r "$HOME/.axzsh/ax.zsh" ]] && AXZSH="$HOME/.axzsh"
 	if [[ ! -r "$AXZSH/ax.zsh" ]]; then
-		ax_msg 2 "Oops, \"AXZSH\" is not set or invalid and can't be autodetected!"
+		ax_error "Oops, \"AXZSH\" is not set or invalid and can't be autodetected!"
 		exit 3
 	fi
 fi

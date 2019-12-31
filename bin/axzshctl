@@ -51,7 +51,7 @@ function Usage {
 	echo "  update-caches"
 	echo "    Force rebuild of all cache files."
 	echo
-	exit 2
+	exit 0
 }
 
 function UpdatePluginCache {
@@ -401,6 +401,11 @@ case "$cmd" in
 		[[ $# -eq 0 ]] || Usage
 		UpdatePluginCache
 		;;
-	*)
+	"--help")
 		Usage
+		;;
+	*)
+		ax_error "Invalid command \"$cmd\"!"
+		ax_error "Try \"$0 --help\" for more information."
+		exit 2
 esac

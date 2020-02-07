@@ -23,6 +23,7 @@ fi
 for dir (
 	/usr/local/lib/fzf/shell
 	/usr/local/opt/fzf/shell
+	/usr/local/share/examples/fzf/shell
 	/opt/fzf/shell
 ); do
 	[[ -d "$dir" ]] || continue

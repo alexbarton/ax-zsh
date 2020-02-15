@@ -57,7 +57,7 @@ function Usage {
 function UpdatePluginCache {
 	[[ -r "$AXZSH/cache" ]] || return 0
 
-	ax_msg - "Updating plugin cache ..."
+	[[ "$1" = "-v" ]] && ax_msg - "Updating plugin cache ..."
 	rm -rf \
 		$AXZSH/cache/zlogin.cache \
 		$AXZSH/cache/zlogout.cache \
@@ -419,7 +419,7 @@ case "$cmd" in
 		;;
 	"update-caches")
 		[[ $# -eq 0 ]] || Usage
-		UpdatePluginCache
+		UpdatePluginCache -v
 		;;
 	"--help")
 		Usage

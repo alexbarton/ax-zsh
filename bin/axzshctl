@@ -80,7 +80,7 @@ function NormalizedPluginName {
 
 function EnableAXZSH {
 	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
-		ln -sv "$AXZSH/ax.zsh" "$f" \
+		ln -s "$AXZSH/ax.zsh" "$f" \
 			|| ax_error "Failed to create symbolic link for \"$f\"!"
 	done
 }
@@ -88,7 +88,7 @@ function EnableAXZSH {
 function DisableAXZSH {
 	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
 		if [ -h "$f" ]; then
-			rm -v "$f" || ax_msg 2 "Failed to remove \"$f\"!"
+			rm "$f" || ax_msg 2 "Failed to remove \"$f\"!"
 		elif [ -e "$f" ]; then
 			ax_error "Error: Not removing \"$f\", it is not a symbolic link!"
 		else
@@ -208,11 +208,11 @@ function ResetPlugins {
 function EnableDefaultPlugins {
 	local dir="$AXZSH/active_plugins"
 
-	ax_msg - "Activating (linking) default plugins ..."
+	ax_msg - "Activating default plugins ..."
 	mkdir -p "$dir"
 	(
 		cd "$dir" || exit 9
-		ln -sfv "$AXZSH/default_plugins/"* "$PWD"
+		ln -sf "$AXZSH/default_plugins/"* "$PWD"
 	)
 	return $?
 }
@@ -252,7 +252,7 @@ function SetTheme {
 			return 1
 		fi
 	fi
-	ln -fsv "$theme" "$link_name" || return 1
+	ln -fs "$theme" "$link_name" || return 1
 	return $?
 }
 

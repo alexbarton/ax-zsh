@@ -152,14 +152,29 @@ function EnablePlugin {
 function DisablePlugin {
 	local plugin=$(NormalizedPluginName "$1")
 	local dir="$AXZSH/active_plugins"
+	local r=-1
 
-	if [[ ! -h "$dir/$plugin" ]]; then
-		ax_msg 1 "Plugin \"$1\" not active?"
-		return 1
+	# Active theme?
+	if [[ $(readlink "$AXZSH/active_theme") = "$AXZSH/repos/$plugin/"* ]]; then
+		rm "$AXZSH/active_theme"; r=$?
 	fi
 
-	rm -v "$dir/$plugin"; r=$?
-	[ $r -eq 0 ] && rm -fr "$AXZSH/repos/$plugin"
+	# Active plugin?
+	if [[ -h "$dir/$plugin" ]]; then
+		rm "$dir/$plugin"; r=$?
+	fi
+
+	if [[ $r -eq -1 ]]; then
+		ax_msg 1 "Plugin \"$1\" not active, nothing to do?"
+		r=1
+	fi
+
+	if [[ "$plugin" = *"#"* ]]; then
+		# Name matches a cloned repository, try to clean up!
+		echo "Cleaning up cloned repository ..."
+		rm -fr "$AXZSH/repos/$plugin"
+	fi
+
 	return $r
 }
 

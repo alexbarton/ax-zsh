@@ -112,18 +112,19 @@ function EnablePlugin {
 		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then
 			ax_msg - "Cloning module from GitHub ..."
 			git clone --depth=1 "https://github.com/$1.git" \
-			 "$AXZSH/repos/$plugin"
+			 "$AXZSH/repos/$plugin" \
+				|| ax_error "Failed to clone repository!"
 		fi
 		# Try to enable a theme in this "foreign module", but ignore
 		# errors: we don't know if this module provides a theme or is
 		# a "regular" plugin ...
 		if SetTheme "${plugin#*#}" 2>/dev/null; then
-			ax_msg 1 "Module \"$1\" was enabled as theme \"${plugin#*#}\"."
+			ax_msg 0 "Module \"$1\" was enabled as theme \"${plugin#*#}\"."
 			# A theme was enabled: So assume that this is a theme
 			# and don't enable it as plugin.
 			return 0
 		fi
-		echo "Module \"$1\" will be enabled as plugin ..."
+		echo "Trying to enable \"$1\" as plugin ..."
 	fi
 
 	for dname (
@@ -138,11 +139,15 @@ function EnablePlugin {
 	); do
 		[[ ! -d "$dname" ]] && continue
 		mkdir -p "$dir"
-		(
+		if ! (
 			cd "$dir" || exit 9
-			ln -sv "$dname" "$PWD"
-		)
-		return $?
+			ln -s "$dname" "$PWD"
+		); then
+			ax_error "Failed to create link!"
+			return 1
+		fi
+		ax_msg 0 "Plugin \"$plugin\" enabled."
+		return 0
 	done
 
 	ax_error "Plugin \"$1\" not found!"

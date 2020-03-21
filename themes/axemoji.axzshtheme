@@ -21,7 +21,7 @@ if axzsh_is_widechar_terminal; then
 	ZSH_THEME_VCS_PROMPT_DIRTY="👻$emoji_spacing"
 
 	# Primary prompt on the right-hand side.
-	RPS1="%(?..%{$fg_no_bold[red]%}❌$emoji_spacing%? ↵%{$reset_color%})"
+	RPS1="%(?..%{$fg_no_bold[red]%}🤔$emoji_spacing %?↵%{$reset_color%})"
 else
 	# Non-UTF8 or incompatible terminal
 	system_emoji=">"

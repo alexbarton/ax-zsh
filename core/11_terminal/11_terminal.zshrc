@@ -21,7 +21,21 @@ function axzsh_is_utf_terminal {
 }
 alias isutfenv=axzsh_is_utf_terminal
 
-# Check if terminal supports "wide" characters.
+# Get the length of a string when shown on the terminal. The return code of the
+# function is the length in "cells". Note: Echo'ing the length to the terminal,
+# which looks cleaner at first, doesn't work: this command can't be called with
+# its stdin and/or stdout redirected, as it it must be able to interact with the
+# terminal (write to and read from it).
+function axzsh_get_displayed_length {
+	echo -ne "$*\033[6n"
+	read -s -d\[ garbage
+	read -s -d R pos
+	echo -ne "\033[1K\r"
+	return $((${pos#*;} - 1))
+}
+
+# Check if terminal correctly handles "wide" characters, which means, displays
+# them with the correct width (>1).
 # <https://unix.stackexchange.com/questions/184345/detect-how-much-of-unicode-my-terminal-supports-even-through-screen>
 typeset -g _axzsh_is_widechar_terminal_cache
 function axzsh_is_widechar_terminal {
@@ -36,12 +50,8 @@ function _axzsh_is_widechar_terminal {
 	[[ -t 1 ]] || return 1
 	[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 1
 	axzsh_is_utf_terminal || return 1
-	echo -ne "🍀\033[6n"
-	read -s -d\[ garbage
-	read -s -d R pos
-	echo -ne "\033[1K\r"
-	[[ "${pos#*;}" -eq 2 ]] || return 1
-	return 0
+	axzsh_get_displayed_length "🍀"
+	[[ $? -eq 2 ]] && return 0 || return 1
 }
 
 # Test for "modern" terminal

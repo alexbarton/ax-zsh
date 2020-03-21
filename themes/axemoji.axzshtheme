@@ -4,7 +4,7 @@
 ZSH_THEME_PROMPT_PREFIX_SPACING=" "
 ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
 
-if axzsh_is_widechar_terminal; then
+if axzsh_is_utf_terminal; then
 	# UTF8 capable terminal:
 	if [[ -r "$HOME/.system_emoji-$SHORT_HOST" ]]; then
 		system_emoji=$(<"$HOME/.system_emoji-$SHORT_HOST")
@@ -13,7 +13,7 @@ if axzsh_is_widechar_terminal; then
 	else
 		system_emoji="🍀"
 	fi
-	[[ -n "$VTE_VERSION" ]] \
+	axzsh_is_widechar_terminal \
 		&& emoji_spacing="" \
 		|| emoji_spacing=" "
 

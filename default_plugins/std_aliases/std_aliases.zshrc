@@ -8,7 +8,6 @@ alias lasth='last | head -n "$((LINES-1))"'
 alias lastf='last | grep -v "^$LOGNAME"'
 
 alias d='dirs -v | head -10'
-alias 0='pwd'
 alias 1='cd ~1 && pwd'
 alias 2='cd ~2 && pwd'
 alias 3='cd ~3 && pwd'

@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2017 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2020 Alexander Barton <alex@barton.de>
 #
 
 # Include "ax-common.sh", if available:
@@ -118,7 +118,7 @@ function EnablePlugin {
 		# Try to enable a theme in this "foreign module", but ignore
 		# errors: we don't know if this module provides a theme or is
 		# a "regular" plugin ...
-		if SetTheme "${plugin#*#}" 2>/dev/null; then
+		if SetTheme "$plugin" 2>/dev/null; then
 			ax_msg 0 "Module \"$1\" was enabled as theme \"${plugin#*#}\"."
 			# A theme was enabled: So assume that this is a theme
 			# and don't enable it as plugin.
@@ -233,6 +233,17 @@ function SetTheme {
 	elif [[ -r "$AXZSH/themes/$1.axzshtheme" ]]; then
 		theme="$AXZSH/themes/$1.axzshtheme"
 	else
+		# Look for theme in specific remote module:
+		for f (
+			"$AXZSH/repos/$1/"*.axzshtheme(N[1])
+			"$AXZSH/repos/$1/"*.zsh-theme(N[1])
+		); do
+			if [[ -r "$f" ]]; then
+				theme="$f"
+				break
+			fi
+		done
+
 		# Look for theme inside of installed plugins:
 		for dname (
 			"$AXZSH/custom_themes"
@@ -247,6 +258,7 @@ function SetTheme {
 				break
 			fi
 		done
+
 		if [[ -z "$theme" ]]; then
 			ax_error "Theme \"$1\" not found!"
 			return 1

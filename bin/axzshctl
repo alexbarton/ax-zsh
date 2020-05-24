@@ -87,9 +87,9 @@ function EnableAXZSH {
 
 function DisableAXZSH {
 	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
-		if [ -h "$f" ]; then
+		if [[ -h "$f" ]]; then
 			rm "$f" || ax_msg 2 "Failed to remove \"$f\"!"
-		elif [ -e "$f" ]; then
+		elif [[ -e "$f" ]]; then
 			ax_error "Error: Not removing \"$f\", it is not a symbolic link!"
 		else
 			ax_msg 1 "Warning: \"$f\" already does not exist. Ok."
@@ -220,17 +220,17 @@ function EnableDefaultPlugins {
 function SetTheme {
 	local link_name="$AXZSH/active_theme"
 
-	if [ "$1" = "-" ]; then
+	if [[ "$1" = "-" ]]; then
 		rm -f "$link_name" || return 1
 		ax_msg 0 "Theme settings have been reset."
 		return 0
 	fi
 
-	if [ -r "$1" ]; then
+	if [[ -r "$1" ]]; then
 		theme="$1"
-	elif [ -r "$AXZSH/custom_themes/$1.axzshtheme" ]; then
+	elif [[ -r "$AXZSH/custom_themes/$1.axzshtheme" ]]; then
 		theme="$AXZSH/custom_themes/$1.axzshtheme"
-	elif [ -r "$AXZSH/themes/$1.axzshtheme" ]; then
+	elif [[ -r "$AXZSH/themes/$1.axzshtheme" ]]; then
 		theme="$AXZSH/themes/$1.axzshtheme"
 	else
 		# Look for theme inside of installed plugins:
@@ -278,7 +278,7 @@ function UpgradeForeignPlugins {
 
 	for dir ($AXZSH/repos/*(N)); do
 		name=${dir:t:s/#/\//}
-		if [ -d "$dir/.git" ]; then
+		if [[ -d "$dir/.git" ]]; then
 			ax_msg - "Upgrading \"$name\" [git] ..."
 			(
 				cd "$dir"

@@ -7,7 +7,7 @@
 axzsh_is_modern_terminal || return 91
 [[ -o interactive ]] || return 91
 [[ -z "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 91
-[[ "$TERM" != "screen" && "$TERM" != "screen-256color" ]] || return 91
+[[ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}$TERM" =~ "^screen" ]] && return 91
 
 # Try to source user-local shell integration installed by iTerm2 itself,
 # and only fall back to the implementation here when not found.
@@ -32,7 +32,7 @@ iterm2_set_user_var() {
 # Accessible in iTerm2 (in a badge now, elsewhere in the future) as
 # \(user.currentDirectory).
 whence -v iterm2_print_user_vars > /dev/null 2>&1
-if [[ $? -ne 0 ]]; then
+if [ $? -ne 0 ]; then
 	iterm2_print_user_vars() {
 		:
 	}
@@ -105,17 +105,22 @@ iterm2_decorate_prompt() {
 	ITERM2_SHOULD_DECORATE_PROMPT=""
 
 	# Add our escape sequences just before the prompt is shown.
-	if [[ $PS1 == *'$(iterm2_prompt_mark)'* ]]
-	then
-		PS1="$PS1%{$(iterm2_prompt_end)%}"
+	# Use ITERM2_SQUELCH_MARK for people who can't mdoify PS1 directly, like powerlevel9k users.
+	# This is gross but I had a heck of a time writing a correct if statetment for zsh 5.0.2.
+	local PREFIX=""
+	if [[ $PS1 == *"$(iterm2_prompt_mark)"* ]]; then
+		PREFIX=""
+	elif [[ "${ITERM2_SQUELCH_MARK-}" != "" ]]; then
+		PREFIX=""
 	else
-		PS1="%{$(iterm2_prompt_mark)%}$PS1%{$(iterm2_prompt_end)%}"
+		PREFIX="%{$(iterm2_prompt_mark)%}"
 	fi
+	PS1="$PREFIX$PS1%{$(iterm2_prompt_end)%}"
 }
 
 iterm2_precmd() {
 	local STATUS="$?"
-	if [ -z "$ITERM2_SHOULD_DECORATE_PROMPT" ]; then
+	if [ -z "${ITERM2_SHOULD_DECORATE_PROMPT-}" ]; then
 		# You pressed ^C while entering a command (iterm2_preexec did not run)
 		iterm2_before_cmd_executes
 	fi
@@ -142,7 +147,7 @@ precmd_functions+=(iterm2_precmd)
 preexec_functions+=(iterm2_preexec)
 
 iterm2_print_state_data
-printf "\033]1337;ShellIntegrationVersion=5;shell=zsh\007"
+printf "\033]1337;ShellIntegrationVersion=11;shell=zsh\007"
 
 # Setup iTerm2 command aliases
 for cmd (~/.iterm2/*(N)); do

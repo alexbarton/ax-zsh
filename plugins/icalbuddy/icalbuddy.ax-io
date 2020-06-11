@@ -16,7 +16,7 @@
 
 tmpfile=$(mktemp ${TMPDIR:-/tmp}/icalbuddy.XXXXXX) || return 1
 
-if axzsh_is_utf_terminal; then
+if [[ "$LANG" =~ "\.UTF" ]]; then
 	bul="•"; bul_imp="!"; sep="»"
 else
 	bul="*"; bul_imp="!"; sep=">"

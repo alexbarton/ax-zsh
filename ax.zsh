@@ -7,7 +7,7 @@ script_type="$script_name[2,-1]"
 # Handle "initialization stage", load all plugins of that stage, either from an
 # existing cache file or individually, optionally creating the cache.
 # - $1: Script name
-# - $2: Stage name (zprofile, zshrc, zlogin, zlogout)
+# - $2: Stage name (ax-io, zprofile, zshrc, zlogin, zlogout)
 function axzsh_handle_stage {
 	name="$1"
 	type="$2"
@@ -101,7 +101,7 @@ function axzsh_load_plugin {
 
 	if [[ ! -r "$fname" && "$type" == "zshrc" ]]; then
 		zsh_themes=("$dname/"*.zsh-theme(NY1))
-		if [[ -r "$dname/$plugin.zprofile" || -r "$dname/$plugin.zlogout" ]]; then
+		if [[ -r "$dname/$plugin.ax-io" || -r "$dname/$plugin.zprofile" || -r "$dname/$plugin.zlogout" ]]; then
 			# Native AX-ZSH plugin, but for different stage. Skip it!
 			:
 		elif [[ -r "$dname/${plugin_short}.plugin.zsh" ]]; then
@@ -199,6 +199,11 @@ if [[ -z "$AXZSH" ]]; then
 		echo "AXZSH_DEBUG=$AXZSH_DEBUG"
 		echo "AXZSH_PLUGIN_D=$AXZSH_PLUGIN_D"
 	fi
+fi
+
+if [[ "$script_type" = "zprofile" ]]; then
+	# Load all "output" plugins first, that is, before the "zprofile stage":
+	axzsh_handle_stage "$script_name" "ax-io"
 fi
 
 axzsh_handle_stage "$script_name" "$script_type"

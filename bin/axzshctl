@@ -220,6 +220,10 @@ function EnableDefaultPlugins {
 function SetTheme {
 	local link_name="$AXZSH/active_theme"
 
+	# --- Powerlevel10k ---
+	# Remove "instant prompt" configuration, if any ...
+	rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+
 	if [[ "$1" = "-" ]]; then
 		rm -f "$link_name" || return 1
 		ax_msg 0 "Theme settings have been reset."

@@ -206,6 +206,20 @@ if [[ "$script_type" = "zprofile" ]]; then
 	axzsh_handle_stage "$script_name" "ax-io"
 fi
 
+# Look for some 3rd-party integrations ...
+
+# --- Powerlevel10k ---
+# Read in Powerlevel10k configuration file, if not already read:
+[[ -z "$POWERLEVEL9K_CONFIG_FILE" && -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
+# Enable instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts,
+# [y/n] confirmations, etc.) must be executed before this, so all ax-zsh
+# plugings should do output in their "zprofile" stage!
+if [[ "$script_type" == "zprofile" ]]; then
+	p10k_instant_prompt="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+	[[ -r "$p10k_instant_prompt" ]] && source "$p10k_instant_prompt"
+fi
+
 axzsh_handle_stage "$script_name" "$script_type"
 
 # Clean up ...

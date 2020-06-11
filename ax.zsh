@@ -1,8 +1,74 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2017 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2020 Alexander Barton <alex@barton.de>
 
 script_name="${${(%):-%N}:t}"
 script_type="$script_name[2,-1]"
+
+# Handle "initialization stage", load all plugins of that stage, either from an
+# existing cache file or individually, optionally creating the cache.
+# - $1: Script name
+# - $2: Stage name (zprofile, zshrc, zlogin, zlogout)
+function axzsh_handle_stage {
+	name="$1"
+	type="$2"
+
+	[[ -n "$AXZSH_DEBUG" ]] && echo "» $name ($type):"
+
+	# Initialize cache
+	mkdir -p "$AXZSH/cache"
+	cache_file="$AXZSH/cache/$type.cache"
+
+	cat_cmd=${commands[cat]:-cat}
+
+	if [[ -r "$cache_file" ]]; then
+		# Cache file exists, use it!
+		# But when in the "zshrc" stage, make sure that the "zprofile" stage
+		# has already been handled (this uses the "01_zprofile" plugin which
+		# is used in the "zshrc.cache" as well, but can't be used successfully
+		# there because it becomes sourced inside of a ZSH function; so we have
+		# to source it here in the global context manually ...):
+		[[ -z "$AXZSH_ZPROFILE_READ" && "$type" = "zshrc" ]] \
+			&& source "$AXZSH/core/01_zprofile/01_zprofile.zshrc"
+		[[ -n "$AXZSH_DEBUG" ]] \
+			&& echo "   - Reading cache file \"$cache_file\" ..."
+		source "$cache_file"
+		unfunction ax_plugin_init
+	else
+		# No cache file available.
+		# Setup list of plugins to load:
+		typeset -U plugin_list
+		plugin_list=(
+			"$AXZSH/core/"[0-5]*
+			"$AXZSH/active_plugins/"*(N)
+			"$AXZSH/core/"[6-9]*
+		)
+
+		# Create new cache file:
+		if [[ -n "$cache_file" ]]; then
+			[[ -n "$AXZSH_DEBUG" ]] \
+				&& echo "   (Writing new cache file to \"$cache_file\" ...)"
+			printf "# %s\n\n" "$(LC_ALL=C date)" >"$cache_file"
+		fi
+
+		# Read in all the plugins for the current "type":
+		for plugin ($plugin_list); do
+			# Read the "theme file", if any and in "zshrc" stage.
+			# This must be done before 99_cleanup is run!
+			if [[ "$plugin:t" == "99_cleanup" && "$type" = "zshrc" ]]; then
+				if [[ -r "$AXZSH_THEME" ]]; then
+					source "$AXZSH_THEME"
+					if [[ -n "$cache_file" ]]; then
+						# Source the theme in the new cache file:
+						echo "# BEGIN Theme" >>"$cache_file"
+						echo 'source "$AXZSH_THEME"' >>"$cache_file"
+						echo "# END Theme" >>"$cache_file"
+					fi
+				fi
+			fi
+			axzsh_load_plugin "$plugin" "$type" "$cache_file"
+		done
+	fi
+}
 
 # Load plugin code of a given type.
 # - $1: plugin name
@@ -135,66 +201,8 @@ if [[ -z "$AXZSH" ]]; then
 	fi
 fi
 
-[[ -n "$AXZSH_DEBUG" ]] && echo "» $script_name:"
-
-# Initialize cache
-mkdir -p "$AXZSH/cache"
-cache_file="$AXZSH/cache/$script_type.cache"
-
-cat_cmd=${commands[cat]:-cat}
-
-if [[ -r "$cache_file" ]]; then
-	# Cache file exists, use it!
-	# But when in the "zshrc" stage, make sure that the "zprofile" stage
-	# has already been handled (this uses the "01_zprofile" plugin which
-	# is used in the "zshrc.cache" as well, but can't be used successfully
-	# there because it becomes sourced inside of a ZSH function; so we have
-	# to source it here in the global context manually ...):
-	[[ -z "$AXZSH_ZPROFILE_READ" && "$script_type" = "zshrc" ]] \
-		&& source "$AXZSH/core/01_zprofile/01_zprofile.zshrc"
-	[[ -n "$AXZSH_DEBUG" ]] \
-		&& echo "   - Reading cache file \"$cache_file\" ..."
-	source "$cache_file"
-	unfunction ax_plugin_init
-else
-	# No cache file available.
-	# Setup list of plugins to load:
-	typeset -U plugin_list
-	plugin_list=(
-		"$AXZSH/core/"[0-5]*
-		"$AXZSH/active_plugins/"*(N)
-		"$AXZSH/core/"[6-9]*
-	)
-
-	# Create new cache file:
-	if [[ -n "$cache_file" ]]; then
-		[[ -n "$AXZSH_DEBUG" ]] \
-			&& echo "   (Writing new cache file to \"$cache_file\" ...)"
-		printf "# %s\n\n" "$(LC_ALL=C date)" >"$cache_file"
-	fi
-
-	# Read in all the plugins for the current "type":
-	for plugin ($plugin_list); do
-		# Read the "theme file", if any and in "zshrc" stage.
-		# This must be done before 99_cleanup is run!
-		if [[ "$plugin:t" == "99_cleanup" && "$script_type" = "zshrc" ]]; then
-			if [[ -r "$AXZSH_THEME" ]]; then
-				source "$AXZSH_THEME"
-				if [[ -n "$cache_file" ]]; then
-					# Source the theme in the new cache file:
-					echo "# BEGIN Theme" >>"$cache_file"
-					echo 'source "$AXZSH_THEME"' >>"$cache_file"
-					echo "# END Theme" >>"$cache_file"
-				fi
-			fi
-		fi
-		axzsh_load_plugin "$plugin" "$script_type" "$cache_file"
-	done
-fi
+axzsh_handle_stage "$script_name" "$script_type"
 
 # Clean up ...
-unfunction axzsh_load_plugin
-unset script_name script_type plugin
-unset plugin_list
-unset cache_file
-unset cat_cmd
+unfunction axzsh_handle_stage axzsh_load_plugin
+unset script_name script_type

@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 10_terminal.zshrc: Initialize terminal settings
+# 11_terminal.zshrc: Initialize terminal settings
 
 # Fix up TERM. Do this here (and not in zprofile), because terminal emulators
 # often don't start a new login shell but "only" a new interactive shell.

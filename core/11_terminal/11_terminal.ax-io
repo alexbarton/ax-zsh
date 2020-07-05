@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 10_terminal.zprofile: Initialize terminal settings
+# 11_terminal.ax-io: Initialize terminal settings
 
 # Use tset(1) to validate TERM when stdin as a tty. Explicitly set SHELL to
 # /bin/sh to force tset to output sh-compliant commands even when SHELL was not

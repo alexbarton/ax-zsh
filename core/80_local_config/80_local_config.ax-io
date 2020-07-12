@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 80_local_config.zprofile: Read local configuration
+# 80_local_config.ax-io: Read local configuration
 
 if [[ -r "$HOME/.zprofile.local" ]]; then
 	[[ -n "$AXZSH_DEBUG" ]] && echo "» $HOME/.zprofile.local:"

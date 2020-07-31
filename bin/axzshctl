@@ -79,7 +79,7 @@ function UpdatePluginCache {
 		$AXZSH/cache/zshrc.cache \
 		|| return 1
 	echo "Regenerating cache files ..."
-	zsh -ilc '' >/dev/null
+	AXZSH_PLUGIN_CHECK=1 zsh -ilc '' >/dev/null
 }
 
 function NormalizedPluginName {

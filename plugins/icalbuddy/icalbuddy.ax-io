@@ -28,10 +28,10 @@ icalBuddy -f -n -b " $bul " -ab " $bul_imp " -ps "/ $sep /" \
 	tasksDueBefore:today 2>/dev/null >>"$tmpfile"
 icalBuddy -f -n -b " $bul " -ab " $bul_imp " -ps "/ $sep /" \
 	-nc -npn -iep "title,datetime" \
-	eventsToday+1 2>/dev/null  >>"$tmpfile"
+	eventsToday+1 2>/dev/null >>"$tmpfile"
 
 if [[ -s "$tmpfile" ]]; then
-	echo; cat "$tmpfile"; echo
+	cat "$tmpfile"; echo
 fi
 
 rm -f "$tmpfile"

@@ -18,10 +18,10 @@ alias remindcal='remind -ccu+3 -m -w$COLUMNS,4,0 $HOME/.remind'
 
 # Check if reminders have been shown during last 60 minutes, and if so,
 # don't show them now but return.
-[[ -z `find ~/.last_reminder -mmin -60 2>/dev/null` ]] || return 0
+[[ -z `find "$XDG_CACHE_HOME/axzsh_last_reminder" -mmin -60 2>/dev/null` ]] || return 0
 
 # Show reminders now.
 remind -h -g -t5 ~/.remind && echo
 
 # Wtite "stamp" file.
-[[ -w ~/ ]] && touch ~/.last_reminder
+[[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_reminder"

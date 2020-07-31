@@ -1,0 +1,24 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# neofetch.ax-io: Show neofetch(1) system information.
+
+# Make sure that "neofetch(1)" is installed.
+(( $+commands[neofetch] )) || return 1
+
+# Don't run this plugin on "check-plugins"!
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
+
+# Don't show any info when ~/.hushlogin exists ...
+[[ -r ~/.hushlogin ]] && return 0
+
+# Check if neofetch(1) infos have been shown during last 60 minutes, and if so,
+# don't show them now but return.
+[[ -z `find "$XDG_CACHE_HOME/axzsh_last_neofetch" -mmin -60 2>/dev/null` ]] || return 0
+
+neofetch \
+	--color_blocks off \
+	--disable packages \
+	--shell_path on \
+	--underline_char '~'
+
+# Wtite "stamp" file.
+[[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_neofetch"

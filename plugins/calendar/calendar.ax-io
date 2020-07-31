@@ -1,0 +1,26 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# calendar.ax-io: Show calendar(1) entries for the current day.
+
+# Make sure that "calendar(1)" is installed.
+(( $+commands[calendar] )) || return 1
+
+# Don't run this plugin on "check-plugins"!
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
+
+# Don't show any info when ~/.hushlogin exists ...
+[[ -r ~/.hushlogin ]] && return 0
+
+# Check if neofetch(1) infos have been shown during last 60 minutes, and if so,
+# don't show them now but return.
+[[ -z `find "$XDG_CACHE_HOME/axzsh_last_calendar" -mmin -60 2>/dev/null` ]] || return 0
+
+tmpfile=$(mktemp ${TMPDIR:-/tmp}/calendar.XXXXXX) || return 1
+
+calendar -A0 >"$tmpfile"
+if [[ -s "$tmpfile" ]]; then
+	cat "$tmpfile"; echo
+fi
+rm -f "$tmpfile"
+
+# Wtite "stamp" file.
+[[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_calendar"

@@ -1,0 +1,10 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# 00-newline.ax-io: Print an empty line ...
+
+# Don't run this plugin on "check-plugins"!
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
+
+# Don't output anything ~/.hushlogin exists ...
+[[ -r ~/.hushlogin ]] && return 0
+
+echo

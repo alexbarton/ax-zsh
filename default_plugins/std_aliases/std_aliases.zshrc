@@ -3,6 +3,7 @@
 
 alias ll="ls -hl"
 alias l="ll -a"
+alias la="ll -A"
 
 alias lasth='last | head -n "$((LINES-1))"'
 alias lastf='last | grep -v "^$LOGNAME"'
@@ -17,3 +18,7 @@ alias 6='cd ~6 && pwd'
 alias 7='cd ~7 && pwd'
 alias 8='cd ~8 && pwd'
 alias 9='cd ~9 && pwd'
+alias -- -='cd -'
+
+alias md='mkdir -p'
+alias rd=rmdir

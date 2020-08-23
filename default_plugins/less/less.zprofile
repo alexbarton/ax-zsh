@@ -4,6 +4,7 @@
 # Make sure that "less(1)" is installed
 (( $+commands[less] )) || return
 
+export PAGER="$commands[less]"
 export LESS="-FmRX"
 
 # Support colors in less

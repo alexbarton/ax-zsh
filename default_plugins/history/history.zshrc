@@ -1,14 +1,6 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # history.zshrc: Setup ZSH history
 
-if [[ -z "$HISTFILE" ]]; then
-	# Save history file in cache directory, if not already present
-	# in $ZDOTDIR/$HOME:
-	[ -r "${ZDOTDIR:-$HOME}/.zsh_history" ] \
-		&& HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history" \
-		|| HISTFILE="$ZSH_CACHE_DIR/history"
-fi
-
 HISTSIZE=10000
 SAVEHIST=10000
 

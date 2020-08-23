@@ -1,6 +1,12 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # history.zshrc: Setup ZSH history
 
+function clear_history {
+	local HISTSIZE=0
+	cat /dev/null >"$HISTFILE"
+	fc -R
+}
+
 HISTSIZE=10000
 SAVEHIST=10000
 

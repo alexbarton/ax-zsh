@@ -9,6 +9,9 @@ axzsh_is_modern_terminal || return 91
 [[ -z "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 91
 [[ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}$TERM" =~ "^screen" ]] && return 91
 
+# Add iTerm2 commands to PATH, when available.
+[[ -d ~/.iterm2 ]] && path+=(~/.iterm2)
+
 # Try to source user-local shell integration installed by iTerm2 itself,
 # and only fall back to the implementation here when not found.
 [[ -e "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"

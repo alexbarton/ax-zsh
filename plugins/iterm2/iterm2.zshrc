@@ -20,13 +20,22 @@ axzsh_is_modern_terminal || return 91
 ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
 ITERM2_SHOULD_DECORATE_PROMPT="1"
 
+if [[ -n "$TMUX" ]]; then
+	# Pass escape sequenzes through in tmux(1), see
+	# <https://gist.github.com/antifuchs/c8eca4bcb9d09a7bbbcd>.
+	TMUX_PREFIX='\ePtmux;\e'
+	TMUX_POSTFIX='\e\\'
+else
+	unset TMUX_PREFIX TMUX_POSTFIX
+fi
+
 # Indicates start of command output. Runs just before command executes.
 iterm2_before_cmd_executes() {
-	printf "\033]133;C;\007"
+	printf "${TMUX_PREFIX}\033]133;C;\007${TMUX_POSTFIX}"
 }
 
 iterm2_set_user_var() {
-	printf "\033]1337;SetUserVar=%s=%s\007" "$1" $(printf "%s" "$2" | base64 | tr -d '\n')
+	printf "${TMUX_PREFIX}\033]1337;SetUserVar=%s=%s\007${TMUX_POSTFIX}" "$1" $(printf "%s" "$2" | base64 | tr -d '\n')
 }
 
 # Users can write their own version of this method. It should call
@@ -42,25 +51,25 @@ if [ $? -ne 0 ]; then
 fi
 
 iterm2_print_state_data() {
-	printf "\033]1337;RemoteHost=%s@%s\007" "$USER" "$iterm2_hostname"
-	printf "\033]1337;CurrentDir=%s\007" "$PWD"
+	printf "${TMUX_PREFIX}\033]1337;RemoteHost=%s@%s\007${TMUX_POSTFIX}" "$USER" "$iterm2_hostname"
+	printf "${TMUX_PREFIX}\033]1337;CurrentDir=%s\007${TMUX_POSTFIX}" "$PWD"
 	iterm2_print_user_vars
 }
 
 # Report return code of command; runs after command finishes but before prompt
 iterm2_after_cmd_executes() {
-	printf "\033]133;D;%s\007" "$STATUS"
+	printf "${TMUX_PREFIX}\033]133;D;%s\007${TMUX_POSTFIX}" "$STATUS"
 	iterm2_print_state_data
 }
 
 # Mark start of prompt
 iterm2_prompt_mark() {
-	printf "\033]133;A\007"
+	printf "${TMUX_PREFIX}\033]133;A\007${TMUX_POSTFIX}"
 }
 
 # Mark end of prompt
 iterm2_prompt_end() {
-	printf "\033]133;B\007"
+	printf "${TMUX_PREFIX}\033]133;B\007${TMUX_POSTFIX}"
 }
 
 # There are three possible paths in life.
@@ -150,7 +159,7 @@ precmd_functions+=(iterm2_precmd)
 preexec_functions+=(iterm2_preexec)
 
 iterm2_print_state_data
-printf "\033]1337;ShellIntegrationVersion=11;shell=zsh\007"
+printf "${TMUX_PREFIX}\033]1337;ShellIntegrationVersion=11;shell=zsh\007${TMUX_POSTFIX}"
 
 # Setup iTerm2 command aliases
 for cmd (~/.iterm2/*(N)); do

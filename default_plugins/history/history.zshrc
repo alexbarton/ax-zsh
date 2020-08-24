@@ -7,6 +7,8 @@ function clear_history {
 	fc -R
 }
 
+[[ -n "$HISTFILE" ]] || HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
+
 HISTSIZE=10000
 SAVEHIST=10000
 

@@ -2,7 +2,7 @@
 # 00-newline.ax-io: Print an empty line ...
 
 # Don't run this plugin on "check-plugins"!
-[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
 # Don't output anything ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0

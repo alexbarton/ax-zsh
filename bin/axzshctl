@@ -325,7 +325,7 @@ function CheckPlugins {
 	invalid_plugins=()
 
 	ax_msg - "Checking plugins ..."
-	for dir ($AXZSH/plugins/*(N)); do
+	for dir ($AXZSH/plugins/[a-z0-9]*(N)); do
 		plugin=${dir:t}
 
 		# Test if plugin is already enabled
@@ -336,13 +336,13 @@ function CheckPlugins {
 		# Test plugin ...
 		printf " - \"%s\"%s ... " "$plugin" "$enabled"
 		new_plugin=""
-		for script ($AXZSH/plugins/$plugin/$plugin.{zshrc,zprofile}); do
+		for script ($AXZSH/plugins/$plugin/$plugin.{zshrc,zprofile,ax-io}); do
 			[[ -r "$script" ]] || continue
 			AXZSH_PLUGIN_CHECK=1 zsh -i -c "source $script"; r=$?
 			if [[ $r -eq 0 ]]; then
 				new_plugin=$plugin
-				break
 			fi
+			break
 		done
 		if [[ -n "$new_plugin" ]]; then
 			detected_plugins+=($new_plugin)

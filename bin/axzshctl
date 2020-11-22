@@ -4,22 +4,21 @@
 # Copyright (c) 2015-2020 Alexander Barton <alex@barton.de>
 #
 
-# Include "ax-common.sh", if available:
-for dir ("$HOME/lib" "$HOME/.ax" /usr/local /opt/ax /usr); do
-	[[ -z "$ax_common_sourced" ]] || break
-	ax_common="${dir}/lib/ax/ax-common.sh"
-	[[ -r "$ax_common" ]] && source "$ax_common"
-done
-if [[ -z "$ax_common_sourced" ]]; then
-	function ax_msg {
-		shift
-		echo "$@"
-	}
-	function ax_error {
-		ax_msg 2 "$@" >&2
-	}
-fi
-unset dir ax_common ax_common_sourced
+# Embedded ax-common compatibility functions ...
+function ax_msg {
+	case "$1" in
+		"0")	c="32";	;;
+		"1")	c="33";	;;
+		"2")	c="31";	;;
+		"-")	c="1";	;;
+		*)	c="0";	;;
+	esac
+	shift
+	printf "\e[${c}m%s\e[0m\n" "$@"
+}
+function ax_error {
+	ax_msg 2 "$@" >&2
+}
 
 function Version {
 	echo "ax-zsh -- Modular configuration system for the Z shell (ZSH)"

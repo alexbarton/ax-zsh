@@ -329,12 +329,15 @@ function CheckPlugins {
 		plugin=${dir:t}
 
 		# Test if plugin is already enabled
-		[[ -e "$AXZSH/active_plugins/$plugin" ]] \
-			&& enabled=" (enabled)" \
-			|| unset enabled
+		if [[ -e "$AXZSH/active_plugins/$plugin" ]]; then
+			printf ' \e[1;32m+\e[m "\e[1m%s\e[m" ... ' "${plugin}"
+			enabled=1
+		else
+			printf ' \e[1;31m-\e[m "%s" ... ' "${plugin}"
+			unset enabled
+		fi
 
 		# Test plugin ...
-		printf " - \"%s\"%s ... " "$plugin" "$enabled"
 		new_plugin=""
 		for script ($AXZSH/plugins/$plugin/$plugin.{zshrc,zprofile,ax-io}); do
 			[[ -r "$script" ]] || continue
@@ -354,7 +357,7 @@ function CheckPlugins {
 			ax_msg 1 "optional."
 		else
 			[[ -n "$enabled" ]] && invalid_plugins+=($plugin)
-			ax_msg 2 "failed."
+			ax_msg 2 "failed ($r)."
 		fi
 	done
 	echo

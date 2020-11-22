@@ -323,6 +323,18 @@ function CheckPlugins {
 	missing_plugins=()
 	invalid_plugins=()
 
+	# Building cache file for all zshrc core files:
+	if ! T=$(mktemp); then
+		ax_error "Failed to create temporary file!"
+		return 1
+	fi
+	for p in $AXZSH/core/*/*.zshrc; do
+		[[ "$(basename "$p")" == "01_zprofile.zshrc" ]] && continue
+		printf "# BEGIN: %s\nax_plugin_init()\n{\n" "$p" >>"$T"
+		cat "$p" >>"$T"
+		printf "}\nax_plugin_init\n# END: %s\n\n" "$p" >>"$T"
+	done
+
 	ax_msg - "Checking plugins ..."
 	for dir ($AXZSH/plugins/[a-z0-9]*(N)); do
 		plugin=${dir:t}
@@ -340,10 +352,13 @@ function CheckPlugins {
 		new_plugin=""
 		for script ($AXZSH/plugins/$plugin/$plugin.{zshrc,zprofile,ax-io}); do
 			[[ -r "$script" ]] || continue
-			AXZSH_PLUGIN_CHECK=1 zsh -i -c "source $script"; r=$?
-			if [[ $r -eq 0 ]]; then
-				new_plugin=$plugin
-			fi
+			(
+				AXZSH_PLUGIN_CHECK=1
+				source "$T"
+				ax_plugin_fnc() { source "$script" }
+				ax_plugin_fnc
+			); r=$?
+			[[ $r -eq 0 ]] && new_plugin=$plugin
 			break
 		done
 		if [[ -n "$new_plugin" ]]; then
@@ -359,6 +374,7 @@ function CheckPlugins {
 			ax_msg 2 "failed ($r)."
 		fi
 	done
+	rm -f "$T"
 	echo
 
 	result=0

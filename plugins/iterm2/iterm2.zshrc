@@ -15,13 +15,19 @@ axzsh_is_modern_terminal || return 91
 # Try to source user-local shell integration installed by iTerm2 itself,
 # and only fall back to the implementation here when not found.
 [[ -e "$HOME/.iterm2_shell_integration.zsh" ]] && source "$HOME/.iterm2_shell_integration.zsh"
+
+# ax-zsh specific iTerm2 functions
+iterm2_clear_captured_output() {
+	printf "\e]1337;ClearCapturedOutput\e\\"
+}
+
 [[ -z "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 0
 
 ITERM_SHELL_INTEGRATION_INSTALLED="Yes"
 ITERM2_SHOULD_DECORATE_PROMPT="1"
 
 if [[ -n "$TMUX" ]]; then
-	# Pass escape sequenzes through in tmux(1), see
+	# Pass escape sequences through in tmux(1), see
 	# <https://gist.github.com/antifuchs/c8eca4bcb9d09a7bbbcd>.
 	TMUX_PREFIX='\ePtmux;\e'
 	TMUX_POSTFIX='\e\\'
@@ -43,15 +49,14 @@ iterm2_set_user_var() {
 # e.g., iterm2_set_user_var currentDirectory $PWD
 # Accessible in iTerm2 (in a badge now, elsewhere in the future) as
 # \(user.currentDirectory).
-whence -v iterm2_print_user_vars > /dev/null 2>&1
-if [ $? -ne 0 ]; then
+if ! whence iterm2_print_user_vars >/dev/null; then
 	iterm2_print_user_vars() {
 		:
 	}
 fi
 
 iterm2_print_state_data() {
-	printf "${TMUX_PREFIX}\033]1337;RemoteHost=%s@%s\007${TMUX_POSTFIX}" "$USER" "$iterm2_hostname"
+	printf "${TMUX_PREFIX}\033]1337;RemoteHost=%s@%s\007${TMUX_POSTFIX}" "$USER" "$HOST"
 	printf "${TMUX_PREFIX}\033]1337;CurrentDir=%s\007${TMUX_POSTFIX}" "$PWD"
 	iterm2_print_user_vars
 }
@@ -117,8 +122,8 @@ iterm2_decorate_prompt() {
 	ITERM2_SHOULD_DECORATE_PROMPT=""
 
 	# Add our escape sequences just before the prompt is shown.
-	# Use ITERM2_SQUELCH_MARK for people who can't mdoify PS1 directly, like powerlevel9k users.
-	# This is gross but I had a heck of a time writing a correct if statetment for zsh 5.0.2.
+	# Use ITERM2_SQUELCH_MARK for people who can't modify PS1 directly, like powerlevel9k users.
+	# This is gross but I had a heck of a time writing a correct if statement for zsh 5.0.2.
 	local PREFIX=""
 	if [[ $PS1 == *"$(iterm2_prompt_mark)"* ]]; then
 		PREFIX=""
@@ -152,14 +157,11 @@ iterm2_preexec() {
 	iterm2_before_cmd_executes
 }
 
-# If hostname -f is slow on your system, set iterm2_hostname prior to sourcing this script.
-[[ -z "$iterm2_hostname" ]] && iterm2_hostname=`hostname -f`
-
 precmd_functions+=(iterm2_precmd)
 preexec_functions+=(iterm2_preexec)
 
 iterm2_print_state_data
-printf "${TMUX_PREFIX}\033]1337;ShellIntegrationVersion=11;shell=zsh\007${TMUX_POSTFIX}"
+printf "${TMUX_PREFIX}\033]1337;ShellIntegrationVersion=12;shell=zsh\007${TMUX_POSTFIX}"
 
 # Setup iTerm2 command aliases
 for cmd (~/.iterm2/*(N)); do

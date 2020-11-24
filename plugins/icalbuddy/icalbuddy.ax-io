@@ -14,7 +14,7 @@
 # don't show them now but return.
 [[ -z `find "$XDG_CACHE_HOME/axzsh_last_reminder" -mmin -60 2>/dev/null` ]] || return 0
 
-tmpfile=$(mktemp ${TMPDIR:-/tmp}/icalbuddy.XXXXXX) || return 1
+tmpfile=$(mktemp "$TMPDIR/icalbuddy.XXXXXX") || return 1
 
 if [[ "$LANG" =~ "\.UTF" ]]; then
 	bul="•"; bul_imp="!"; sep="»"

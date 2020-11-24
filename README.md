@@ -82,6 +82,7 @@ Validated and/or set up by core plugins:
 * `PS1`
 * `SHORT_HOST`
 * `TERM`
-* `XDG_RUNTIME_DIR`
+* `TMPDIR` (set and always ends with a "/")
 * `XDG_CACHE_HOME`
+* `XDG_RUNTIME_DIR`
 * `ZSH_CACHE_DIR`

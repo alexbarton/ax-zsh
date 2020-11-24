@@ -6,6 +6,22 @@ if [[ -z "$TZ" && -r "/etc/timezone" ]]; then
 	TZ=$(<"/etc/timezone") export TZ
 fi
 
+# Validate temporary directory
+if [[ -z "$TMPDIR" ]]; then
+	echo "WARNING: \"TMPDIR\" is not set, using /tmp as default!" >&2
+	TMPDIR='/tmp/'
+fi
+if [[ ! -w "$TMPDIR" ]]; then
+	echo "WARNING: Temporary directory \"$TMPDIR\" is not writable!" >&2
+fi
+# Make sure TMPDIR ends in a slash (like on macOS by default): this makes its
+# usage a bit safer ...
+case "$TMPDIR" in
+	*/) ;;
+	*)  TMPDIR="$TMPDIR/"
+esac
+export TMPDIR
+
 # Setup XDG cache directory
 if [[ -z "$XDG_CACHE_HOME" ]]; then
 	XDG_CACHE_HOME="$LOCAL_HOME/.cache"

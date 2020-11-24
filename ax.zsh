@@ -225,3 +225,6 @@ axzsh_handle_stage "$script_name" "$script_type"
 # Clean up ...
 unfunction axzsh_handle_stage axzsh_load_plugin
 unset script_name script_type
+
+# Hints for external installers:
+# - iTerm2: DON'T install "iterm2_shell_integration"!

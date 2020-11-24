@@ -1,8 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 30_hostname.zprofile: Initialize hostname settings
 
-# Setup "HOSTNAME" variable
-[[ -z "$HOSTNAME" ]] && HOSTNAME=$( hostname )
+# Setup legacy "HOSTNAME" variable (use "HOST"!)
+[[ -z "$HOSTNAME" ]] && HOSTNAME="$HOST"
 export HOSTNAME
 
 # Setup "SHORT_HOST" variable

@@ -20,7 +20,7 @@ while [[ $# -gt 0 ]]; do
 	shift
 done
 
-print -Pn -- "$fg[white]$FX[bold]$(hostname)$FX[no-bold] "
+print -Pn -- "$fg[white]$FX[bold]$HOST$FX[no-bold] "
 print -Pn -- "$fg[yellow]$(tty)$FX[reset], "
 print -Pn -- "$fg[green]$FX[underline]${TERM:-?}$FX[reset] "
 print -Pn -- "(${COLUMNS:-?}x${LINES:-?}); "

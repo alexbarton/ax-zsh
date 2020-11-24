@@ -97,7 +97,7 @@ function axzsh_terminal_title_precmd {
 	if [[ "$TERM_PROGRAM" == "Apple_Terminal" && "$TERM" != "screen"* ]]; then
 		axzsh_terminal_set_icon_title "$LOGNAME@$SHORT_HOST"
 		# Update CWD in Terminal.app
-		local url=$(echo "file://$HOSTNAME$PWD" | sed -e 's| |%20|g')
+		local url=$(echo "file://$HOST$PWD" | sed -e 's| |%20|g')
 		printf '\e]7;%s\a' "$url"
 	else
 		axzsh_terminal_set_icon_title "$LOGNAME@$SHORT_HOST:$PWD"

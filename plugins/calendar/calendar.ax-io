@@ -4,13 +4,17 @@
 # Make sure that "calendar(1)" is installed.
 (( $+commands[calendar] )) || return 1
 
-# Don't run this plugin on "check-plugins"!
-[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
+# Don't run this plugin on "check-plugins", but test if it would work!
+# It fails when no calendar files are available, for example, on macOS ...
+if [[ -n "$AXZSH_PLUGIN_CHECK" ]]; then
+	calendar >/dev/null 2>&1 || return 1
+	return 0
+fi
 
 # Don't show any info when ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0
 
-# Check if neofetch(1) infos have been shown during last 60 minutes, and if so,
+# Check if calendar(1) infos have been shown during last 60 minutes, and if so,
 # don't show them now but return.
 [[ -z `find "$XDG_CACHE_HOME/axzsh_last_calendar" -mmin -60 2>/dev/null` ]] || return 0
 

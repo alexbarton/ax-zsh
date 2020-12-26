@@ -191,14 +191,16 @@ fi
 [[ -n "$SHELL" ]] || export SHELL=$(command -v zsh)
 
 # Make sure that "AXZSH" variable is set and exported
-if [[ -z "$AXZSH" ]]; then
-	export AXZSH="$HOME/.axzsh"
-	if [[ -f "$HOME/.axzsh.debug" ]]; then
-		export AXZSH_DEBUG=1
-		echo "AXZSH=$AXZSH"
-		echo "AXZSH_DEBUG=$AXZSH_DEBUG"
-		echo "AXZSH_PLUGIN_D=$AXZSH_PLUGIN_D"
-	fi
+[[ -n "$AXZSH" ]] || export AXZSH="$HOME/.axzsh"
+
+# Check for "debug mode" ...
+if [[ -f "$AXZSH/debug" || -f "$HOME/.axzsh.debug" ]]; then
+	export AXZSH_DEBUG=1
+	echo "AXZSH=$AXZSH"
+	echo "AXZSH_DEBUG=$AXZSH_DEBUG"
+	echo "AXZSH_PLUGIN_D=$AXZSH_PLUGIN_D"
+	echo "AXZSH_ZLOGIN_READ=$AXZSH_ZLOGIN_READ"
+	echo "AXZSH_ZPROFILE_READ=$AXZSH_ZPROFILE_READ"
 fi
 
 if [[ "$script_type" = "zprofile" ]]; then

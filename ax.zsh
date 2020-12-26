@@ -9,8 +9,8 @@ script_type="$script_name[2,-1]"
 # - $1: Script name
 # - $2: Stage name (ax-io, zprofile, zshrc, zlogin, zlogout)
 function axzsh_handle_stage {
-	name="$1"
-	type="$2"
+	local name="$1"
+	local type="$2"
 
 	[[ -n "$AXZSH_DEBUG" ]] && echo "» $name ($type):"
 
@@ -30,9 +30,9 @@ function axzsh_handle_stage {
 
 	# Initialize cache
 	mkdir -p "$AXZSH/cache"
-	cache_file="$AXZSH/cache/$type.cache"
+	local cache_file="$AXZSH/cache/$type.cache"
 
-	cat_cmd=${commands[cat]:-cat}
+	local cat_cmd=${commands[cat]:-cat}
 
 	if [[ -r "$cache_file" ]]; then
 		# Cache file exists, use it!
@@ -50,6 +50,7 @@ function axzsh_handle_stage {
 	else
 		# No cache file available.
 		# Setup list of plugins to load:
+		local plugin_list
 		typeset -U plugin_list
 		plugin_list=(
 			"$AXZSH/core/"[0-5]*

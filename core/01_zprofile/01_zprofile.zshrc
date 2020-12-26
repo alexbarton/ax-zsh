@@ -3,14 +3,17 @@
 
 [[ -z "$AXZSH_ZPROFILE_READ" ]] || return
 
-# No "zprofile" files have been read in already! So most probably this
-# ZSH instance hasn't been called from an ax-zsh enabled ZSH!
+# No "ax-io" and "zprofile" files have been read in already, looks like this is
+# a non-login shell instance and not a (direct) child of a AX-ZSH enabled login
+# shell! So we have to make sure everything is set up properly by reading in
+# the "ax-io" and "zprofile" stages first!
+
+[[ -n "$AXZSH_DEBUG" ]] && echo "» 01_zprofile.zsh:"
 
 # Reset some environment variables, that could contain "garbage" ...
 unset PS1
 
-[[ -n "$AXZSH_DEBUG" ]] && echo "» 01_zprofile.zsh:"
-
+axzsh_handle_stage "01_zprofile.zsh" "ax-io"
 axzsh_handle_stage "01_zprofile.zsh" "zprofile"
 AXZSH_ZPROFILE_READ=2
 

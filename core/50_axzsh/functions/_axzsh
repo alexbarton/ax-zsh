@@ -30,6 +30,8 @@ _axzshctl() {
 			compadd "$@" -- "-" \
 				"$AXZSH"/themes/*.axzshtheme(:r:t) \
 				"$AXZSH"/custom_themes/*.axzshtheme(N:r:t) \
+				"$AXZSH"/custom_themes/*.zsh-theme(N:r:t) \
+				"$AXZSH"/repos/*/*.axzshtheme(N:r:t) \
 				"$AXZSH"/repos/*/*.zsh-theme(N:r:t)
 			;;
 		esac

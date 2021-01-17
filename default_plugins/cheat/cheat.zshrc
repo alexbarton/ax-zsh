@@ -1,6 +1,15 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # cheat: Setup https://cht.sh
 
+if (( $+commands[fzf] )); then
+	# See <https://twitter.com/igor_chubin/status/1343294742315020293>
+	function c() {
+		url="https://cht.sh"
+		term=$(curl -ks "$url/:list" | IFS=+ fzf --preview "curl -ks '$url/{}'" -q "$*") \
+			&& curl -ks "$url/${term}" | ${PAGER:-less}
+	}
+fi
+
 # Don't overwrite a real "cheat" command!
 (( $+commands[cheat] )) && return
 

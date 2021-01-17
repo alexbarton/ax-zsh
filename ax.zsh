@@ -127,6 +127,10 @@ function axzsh_load_plugin {
 			# Oh My ZSH plugin with "zsh-" prefix stripped
 			type="plugin.zsh"
 			fname="$dname/${plugin_short##zsh-}.plugin.zsh"
+		elif [[ -r "$dname/${plugin%.plugin.zsh}.plugin.zsh" ]]; then
+			# Oh My ZSH plugin with ".plugin.zsh" suffix in its name
+			type="plugin.zsh"
+			fname="$dname/${plugin}"
 		elif [[ -r "$dname/init.zsh" ]]; then
 			# Prezto module
 			type="init.zsh"

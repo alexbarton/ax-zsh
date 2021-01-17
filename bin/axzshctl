@@ -296,7 +296,12 @@ function UpgradeAXZSH {
 	fi
 
 	ax_msg - "Upgrading AX-ZSH in \"$AXZSH\" using git(1) ..."
-	( cd "$AXZSH" && git pull --ff-only )
+	(
+		set -e
+		cd "$AXZSH"
+		git pull --ff-only || ax_error "Git pull failed!"
+		git log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
+	)
 }
 
 function UpgradeForeignPlugins {
@@ -310,8 +315,10 @@ function UpgradeForeignPlugins {
 		if [[ -d "$dir/.git" ]]; then
 			ax_msg - "Upgrading \"$name\" [git] ..."
 			(
+				set -e
 				cd "$dir"
-				git pull --ff-only || ax_error "Pull failed!"
+				git pull --ff-only || ax_error "Git pull failed!"
+				git log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
 			)
 		else
 			ax_error "Unknown repository type!"

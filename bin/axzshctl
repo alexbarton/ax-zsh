@@ -82,7 +82,7 @@ function UpdatePluginCache {
 }
 
 function NormalizedPluginName {
-	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_-]+$" ]]; then
+	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_.-]+$" ]]; then
 		echo "${1:gs/\//#}"
 	elif [[ "$1" =~ "/" ]]; then
 		echo "${1:t}"
@@ -119,7 +119,7 @@ function EnablePlugin {
 		return 1
 	fi
 
-	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_-]+$" ]]; then
+	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_.-]+$" ]]; then
 		# GitHub plugin
 		mkdir -p "$AXZSH/repos"
 		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then

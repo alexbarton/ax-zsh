@@ -8,8 +8,8 @@ fi
 
 # Validate temporary directory
 if [[ -z "$TMPDIR" ]]; then
-	echo "WARNING: \"TMPDIR\" is not set, using /tmp as default!" >&2
-	TMPDIR='/tmp/'
+	TMPDIR="$(dirname $(mktemp -ut tmp.XXXXXXXXXX))/"
+	echo "WARNING: \"TMPDIR\" is not set, using \"$TMPDIR\" as default!" >&2
 fi
 if [[ ! -w "$TMPDIR" ]]; then
 	echo "WARNING: Temporary directory \"$TMPDIR\" is not writable!" >&2

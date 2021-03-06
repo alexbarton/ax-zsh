@@ -27,7 +27,7 @@ export XDG_CACHE_HOME
 
 # Setup XDG runtime directory
 if [[ -z "$XDG_RUNTIME_DIR" ]]; then
-	XDG_RUNTIME_DIR="${TMPDIR:-/tmp/${UID}-runtime-dir}"
+	XDG_RUNTIME_DIR="$TMPDIR/runtime-dir.$UID"
 fi
 if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
 	mkdir -p "$XDG_RUNTIME_DIR"

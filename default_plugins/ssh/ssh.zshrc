@@ -42,8 +42,9 @@ fi
 
 # Save SSH environment when available:
 if [[ -n "$SSH_AUTH_SOCK" && -d "$XDG_RUNTIME_DIR" ]]; then
-	# Save current environment when no state exists or is invalid.
+	# Save current environment when no state exists or state file is invalid.
 	if [[ -r "$XDG_RUNTIME_DIR/ssh-env.sh" ]]; then
+		# Check existing state file ...
 		(
 			source "$XDG_RUNTIME_DIR/ssh-env.sh"
 			if [[ -z "$SSH_AUTH_SOCK" || ! -r "$SSH_AUTH_SOCK" ]]; then

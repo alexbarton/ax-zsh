@@ -4,4 +4,4 @@
 # Make sure that "googler(1)" are installed
 (( $+commands[googler] )) || return
 
-alias g="googler -n $((LINES/6))"
+alias g="googler --show-browser-logs -n $((LINES/6))"

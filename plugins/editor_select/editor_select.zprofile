@@ -29,7 +29,4 @@ case "$EDITOR:t" in
 		;;
 esac
 
-if [[ -n "$EDITOR" ]]; then
-	export EDITOR
-	alias zshenv="$EDITOR ~/.zshenv"
-fi
+[[ -n "$EDITOR" ]] && export EDITOR

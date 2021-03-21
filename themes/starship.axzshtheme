@@ -1,0 +1,9 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# starship.axzshtheme: Enable extnerl "Starship" Theme
+# see <https://starship.rs/>
+
+if (( $+commands[starship] )); then
+	eval "$(starship init zsh)"
+else
+	echo "Oops, starship(1) command not found, can't enable Starship prompt!" >&2
+fi

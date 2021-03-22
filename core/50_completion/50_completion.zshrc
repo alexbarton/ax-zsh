@@ -54,5 +54,15 @@ if [[ -z "$ZSH_COMPDUMP" ]]; then
 	ZSH_COMPDUMP="$ZSH_CACHE_DIR/zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
 fi
 
+# Try to add all folders possibly containing completion functions to the fpath
+# before calling compinit. See <https://github.com/ohmyzsh/ohmyzsh/issues/4614>
+# for a discussion of this topic, for example. It boils down to:
+# - We have to call compinit early,
+# - but plugins can add completions later, that won't be found ...
+# (GENCOMPL_FPATH is used by RobSis/zsh-completion-generator)
+[[ -n "$GENCOMPL_FPATH" ]] && fpath+=($GENCOMPL_FPATH)
+fpath+=("$AXZSH/active_plugins/"*/completions(N))
+fpath+=("$AXZSH/active_plugins/"*/src(N))
+
 # Initialize ZSH completion system
 compinit -d "$ZSH_COMPDUMP"

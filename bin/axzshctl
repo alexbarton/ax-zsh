@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2020 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2021 Alexander Barton <alex@barton.de>
 #
 
 # Embedded ax-common compatibility functions ...
@@ -72,11 +72,11 @@ function UpdatePluginCache {
 	[[ "$1" = "-v" ]] && ax_msg - "Invalidating & updating caches ..."
 
 	if [[ -d "$ZSH_CACHE_DIR" ]]; then
-		echo "Removing ZSH cache folder ..."
+		[[ "$1" = "-v" ]] && echo "Removing ZSH cache folder ..."
 		rm -fr "$ZSH_CACHE_DIR"
 	fi
 
-	echo "Removing AX-ZSH cache files ..."
+	[[ "$1" = "-v" ]] && echo "Removing AX-ZSH cache files ..."
 	rm -rf \
 		$AXZSH/cache/ax-io.cache \
 		$AXZSH/cache/zlogin.cache \

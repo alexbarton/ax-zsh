@@ -29,7 +29,7 @@ function axzsh_handle_stage {
 	fi
 
 	# Initialize cache
-	mkdir -p "$AXZSH/cache"
+	[[ -d "$AXZSH/cache" ]] || mkdir -p "$AXZSH/cache"
 	local cache_file="$AXZSH/cache/$type.cache"
 
 	local cat_cmd=${commands[cat]:-cat}

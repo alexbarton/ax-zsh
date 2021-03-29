@@ -146,6 +146,9 @@ function EnablePlugin {
 			return 0
 		fi
 		echo "Trying to enable \"$1\" as plugin ..."
+	elif ! [[ "$1" =~ "^[[:alnum:]_.-]+$" ]]; then
+		ax_error "Invalid plugin name!"
+		return 1
 	fi
 
 	for dname (
@@ -167,7 +170,7 @@ function EnablePlugin {
 			ax_error "Failed to create link!"
 			return 1
 		fi
-		ax_msg 0 "Plugin \"$plugin\" enabled."
+		ax_msg 0 "Plugin \"$1\" enabled."
 		return 0
 	done
 

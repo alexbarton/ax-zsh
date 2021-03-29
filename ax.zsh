@@ -49,6 +49,8 @@ function axzsh_handle_stage {
 		unfunction ax_plugin_init
 	else
 		# No cache file available.
+		local new_cache_file="$cache_file.NEW"
+
 		# Setup list of plugins to load:
 		local plugin_list
 		typeset -U plugin_list
@@ -59,10 +61,12 @@ function axzsh_handle_stage {
 		)
 
 		# Create new cache file:
-		if [[ -n "$cache_file" ]]; then
+		if [[ -n "$cache_file" && -w "$new_cache_file" ]]; then
 			[[ -n "$AXZSH_DEBUG" ]] \
-				&& echo "   (Writing new cache file to \"$cache_file\" ...)"
-			printf "# %s\n\n" "$(LC_ALL=C date)" >"$cache_file"
+				&& echo "   (Writing new cache file to \"$new_cache_file\" ...)"
+			if ! printf "# %s\n\n" "$(LC_ALL=C date)" >"$new_cache_file"; then
+				unset new_cache_file
+			fi
 		fi
 
 		# Read in all the plugins for the current "type":
@@ -72,16 +76,21 @@ function axzsh_handle_stage {
 			if [[ "$plugin:t" == "99_cleanup" && "$type" = "zshrc" ]]; then
 				if [[ -r "$AXZSH_THEME" ]]; then
 					source "$AXZSH_THEME"
-					if [[ -n "$cache_file" ]]; then
+					if [[ -n "$new_cache_file" ]]; then
 						# Source the theme in the new cache file:
-						echo "# BEGIN Theme" >>"$cache_file"
-						echo 'source "$AXZSH_THEME"' >>"$cache_file"
-						echo "# END Theme" >>"$cache_file"
+						echo "# BEGIN Theme" >>"$new_cache_file"
+						echo 'source "$AXZSH_THEME"' >>"$new_cache_file"
+						echo "# END Theme" >>"$new_cache_file"
 					fi
 				fi
 			fi
-			axzsh_load_plugin "$plugin" "$type" "$cache_file"
+			axzsh_load_plugin "$plugin" "$type" "$new_cache_file"
 		done
+
+		if [[ -n "$cache_file" && -n "$new_cache_file" && -r "$new_cache_file" ]]; then
+			# Move newly created cache file in place:
+			mv "$new_cache_file" "$cache_file"
+		fi
 	fi
 }
 

@@ -14,7 +14,11 @@ fi
 
 # Test for Debian-specific keybinding location ...
 if [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
-	source /usr/share/zsh/vendor-completions/_fzf
+	if [[ -r /usr/share/doc/fzf/examples/completion.zsh ]]; then
+		source /usr/share/doc/fzf/examples/completion.zsh
+	elif [[ -r /usr/share/zsh/vendor-completions/_fzf ]]; then
+		source /usr/share/zsh/vendor-completions/_fzf
+	fi
 	source /usr/share/doc/fzf/examples/key-bindings.zsh
 	return 0
 fi

@@ -90,7 +90,7 @@ function UpdatePluginCache {
 }
 
 function NormalizedPluginName {
-	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_.-]+$" ]]; then
+	if [[ "$1" =~ "^@?[[:alnum:]-]+/[[:alnum:]_.-]+$" ]]; then
 		echo "${1:gs/\//#}"
 	elif [[ "$1" =~ "/" ]]; then
 		echo "${1:t}"
@@ -121,13 +121,27 @@ function DisableAXZSH {
 function EnablePlugin {
 	local plugin=$(NormalizedPluginName "$1")
 	local dir="$AXZSH/active_plugins"
+	local name="$plugin"
 
 	if [[ -h "$dir/$plugin" ]]; then
 		ax_msg 1 "Plugin \"$1\" already active!"
 		return 1
 	fi
 
-	if [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_.-]+$" ]]; then
+	if [[ "$1" =~ "^@[[:alnum:]-]+/[[:alnum:]_.+]+$" ]]; then
+		# GitHub plugin repository (like OhMyZsh)
+		local repo="${1##@}"
+		repo="${repo%/*}"
+		mkdir -p "$AXZSH/repos/@$repo"
+		if [[ ! -d "$AXZSH/repos/@$repo/plugins" ]]; then
+			ax_msg - "Cloning \"$repo\" from GitHub ..."
+			git clone --depth=1 "https://github.com/$repo/$repo.git" \
+			 "$AXZSH/repos/@$repo" \
+				|| ax_error "Failed to clone \"$repo\" repository!"
+		fi
+		plugin="@$repo/plugins/${1#*/}"
+		echo "Trying to enable \"$1\" ..."
+	elif [[ "$1" =~ "^[[:alnum:]-]+/[[:alnum:]_.-]+$" ]]; then
 		# GitHub plugin
 		mkdir -p "$AXZSH/repos"
 		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then
@@ -165,7 +179,7 @@ function EnablePlugin {
 		mkdir -p "$dir"
 		if ! (
 			cd "$dir" || exit 9
-			ln -s "$dname" "$PWD"
+			ln -s "$dname" "$PWD/$name"
 		); then
 			ax_error "Failed to create link!"
 			return 1

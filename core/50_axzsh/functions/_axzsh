@@ -25,6 +25,11 @@ _axzshctl() {
 				"$AXZSH"/plugins/*(/:t) \
 				"$AXZSH"/custom_plugins/*(N/:t) \
 				"$AXZSH"/repos/*(/:t:s/#/\\/)
+			for r in "$AXZSH"/repos/@*(N/); do
+				b=(echo $r(:t))
+				compadd "$@" -- \
+					$(echo $r/plugins/*(N:t) | sed -E "s/(^| )/ $b\//g")
+			done
 			;;
 		  "disable-plugin")
 			compadd "$@" -- \

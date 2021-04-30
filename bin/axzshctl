@@ -55,7 +55,7 @@ function Usage {
 	echo "  check-plugins"
 	echo "    Detect plugins which are \"useful\" on this system."
 	echo
-	echo "  set-theme <name>|-"
+	echo "  set-theme {<name>|-}"
 	echo "    Set active theme to <name>, or to the default."
 	echo
 	echo "  upgrade"

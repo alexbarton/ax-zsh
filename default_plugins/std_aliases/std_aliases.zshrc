@@ -5,8 +5,8 @@ alias ll="ls -hl"
 alias l="ll -a"
 alias la="ll -A"
 
-alias lasth='last | head -n "$((LINES-1))"'
-alias lastf='last | grep -v "^$LOGNAME"'
+alias lasth='last -aw | head -n "$((LINES-1))"'
+alias lastf='last -aw | grep -v "^$LOGNAME"'
 
 alias d='dirs -v | head -10'
 alias 1='cd ~1 && pwd'

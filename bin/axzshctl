@@ -128,7 +128,7 @@ function EnablePlugin {
 		return 1
 	fi
 
-	if [[ "$1" =~ "^@[[:alnum:]-]+/[[:alnum:]_.+]+$" ]]; then
+	if [[ "$1" =~ "^@[[:alnum:]-]+/[[:alnum:]_.+-]+$" ]]; then
 		# GitHub plugin repository (like OhMyZsh)
 		local repo="${1##@}"
 		repo="${repo%/*}"

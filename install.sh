@@ -90,6 +90,7 @@ if [ ! -d "$AXZSH/active_plugins" ]; then
 		zsh "$AXZSH/bin/axzshctl" reset-plugins || abort
 	else
 		ax_msg 1 "Oops, \"zsh\" not found!?"
+		exit 1
 	fi
 else
 	ax_msg - "Plugin directory \"$AXZSH/active_plugins\" already exists. Ok."

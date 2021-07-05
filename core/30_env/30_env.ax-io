@@ -9,7 +9,14 @@ fi
 # Validate temporary directory
 if [[ -z "$TMPDIR" ]]; then
 	TMPDIR="$(dirname $(mktemp -ut tmp.XXXXXXXXXX))/"
+	user_tmpdir="$TMPDIR$UID"
+	mkdir -p "$user_tmpdir" >/dev/null 2>&1
+	if [[ -w "$user_tmpdir" ]]; then
+		TMPDIR="$user_tmpdir/"
+		chmod 0700 "$TMPDIR"
+	fi
 	echo "WARNING: \"TMPDIR\" is not set, using \"$TMPDIR\" as default!" >&2
+	unset user_tmpdir
 fi
 if [[ ! -w "$TMPDIR" ]]; then
 	echo "WARNING: Temporary directory \"$TMPDIR\" is not writable!" >&2

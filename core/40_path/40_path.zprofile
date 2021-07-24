@@ -23,6 +23,8 @@ for d (
 	~/.linuxbrew/bin
 	~/.linuxbrew/sbin
 	~/.gem/ruby/*/bin(NOn)
+	~/.go/bin
+	~/.cargo/bin
 	~/.local/bin
 	~/bin
 	~/sbin

@@ -1,6 +1,21 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # std_functions: Setup standard ("common") functions
 
+function open_command() {
+	case $OSTYPE in
+		darwin*)
+			open "$@" || return 1
+			;;
+		cygwin*)
+			cygstart "$@" || return 1
+			;;
+		linux*)
+			nohup xdg-open "$@" &>/dev/null || return 1
+			;;
+	esac
+	return 1
+}
+
 function take() {
 	mkdir -p "$@" && cd "${@:$#}"
 }

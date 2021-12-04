@@ -7,18 +7,22 @@
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
 
+axzsh_neofetch() {
+	neofetch \
+		--color_blocks off \
+		--disable packages \
+		--shell_path on \
+		--underline_char '~'
+}
+
 # Don't show any info when ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0
 
 # Check if neofetch(1) infos have been shown during last 60 minutes, and if so,
 # don't show them now but return.
-[[ -z `find "$XDG_CACHE_HOME/axzsh_last_neofetch" -mmin -60 2>/dev/null` ]] || return 0
+[[ -z $(find "$XDG_CACHE_HOME/axzsh_last_neofetch" -mmin -60 2>/dev/null) ]] || return 0
 
-neofetch \
-	--color_blocks off \
-	--disable packages \
-	--shell_path on \
-	--underline_char '~'
+axzsh_neofetch
 
 # Wtite "stamp" file.
 [[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_neofetch"

@@ -2,6 +2,7 @@
 # autojump.zshrc: Initialize "autojump"
 
 for script (
+	"$HOMEBREW_PREFIX/etc/profile.d/autojump.sh"
 	"/usr/local/etc/profile.d/autojump.sh"
 	"/usr/share/autojump/autojump.zsh"
 ); do

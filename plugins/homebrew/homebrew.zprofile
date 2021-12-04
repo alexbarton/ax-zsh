@@ -4,7 +4,9 @@
 # Make sure that "brew(1)" is installed
 (( $+commands[brew] )) || return 1
 
-[[ -d "/usr/local/share/zsh-completions" ]] \
-	&& axzsh_fpath+=(/usr/local/share/zsh-completions)
+eval "$(brew shellenv)"
+
+[[ -d "$HOMEBREW_PREIX/share/zsh-completions" ]] \
+	&& axzsh_fpath+=("$HOMEBREW_PREFIX/share/zsh-completions")
 
 return 0

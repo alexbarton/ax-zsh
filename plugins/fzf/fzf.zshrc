@@ -25,6 +25,7 @@ fi
 
 # Search for and read in FZF ZSH integration files
 for dir (
+	"$HOMEBREW_PREFIX"/opt/fzf/shell
 	/usr/local/lib/fzf/shell
 	/usr/local/opt/fzf/shell
 	/usr/local/share/examples/fzf/shell

@@ -32,7 +32,7 @@ else
 fi
 
 # The primary prompt string, printed before a command is read.
-PS1="${system_emoji}${emoji_spacing} $(ax_logname_prompt_yn)$(ax_hostname_prompt_yn)%B%2~%b"'$(ax_vcs_prompt)'"$(ax_prompt)"
+PS1="${system_emoji}${emoji_spacing} $(axzsh_logname_prompt_yn)$(axzsh_hostname_prompt_yn)%B%2~%b"'$(axzsh_vcs_prompt)'"$(axzsh_prompt)"
 
 # Default execution trace prompt.
 PS4="$fg_no_bold[yellow]->$reset_color "

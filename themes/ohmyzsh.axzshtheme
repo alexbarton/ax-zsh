@@ -2,7 +2,7 @@
 # ohmyzsh.axzshtheme: OhMyZSH "robbyrussell" theme
 
 ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
-PS1='${ret_status} %{$fg[cyan]%}%c%b $(ax_vcs_prompt)%b '
+PS1='${ret_status} %{$fg[cyan]%}%c%b $(axzsh_vcs_prompt)%b '
 
 ZSH_THEME_VCS_PROMPT_PREFIX_SPACING="%{$fg_bold[blue]%}vcs:("
 ZSH_THEME_VCS_PROMPT_PREFIX="%{$fg[red]%}"

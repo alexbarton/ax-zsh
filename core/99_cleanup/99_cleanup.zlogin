@@ -2,24 +2,24 @@
 # 99_cleanup.zlogin: Don't pollute the namespace, remove variables/functions/...
 
 for func (
-	ax_hostname_prompt_root
-	ax_hostname_prompt_yn
-	ax_logname_prompt_root
-	ax_logname_prompt_yn
-	ax_prompt
+	axzsh_hostname_prompt_root
+	axzsh_hostname_prompt_yn
+	axzsh_logname_prompt_root
+	axzsh_logname_prompt_yn
+	axzsh_prompt
 ); do
 	unfunction $func 2>/dev/null
 done
 
-for func ($ax_logname_prompt_functions); do
+for func ($axzsh_logname_prompt_functions); do
 	unfunction $func 2>/dev/null
 done
-unset ax_logname_prompt_functions
+unset axzsh_logname_prompt_functions
 
-for func ($ax_hostname_prompt_functions); do
+for func ($axzsh_hostname_prompt_functions); do
 	unfunction $func 2>/dev/null
 done
-unset ax_hostname_prompt_functions
+unset axzsh_hostname_prompt_functions
 
 # Try to map OhMyZsh theme Environment ...
 [[ -n "$ZSH_THEME_GIT_PROMPT_AHEAD" ]] \

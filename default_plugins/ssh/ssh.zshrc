@@ -15,13 +15,13 @@ ssh-autoadd() {
 	ssh-add
 }
 
-_ax_ssh_prompt() {
+_axzsh_ssh_prompt() {
 	[[ -n "$SSH_CLIENT" ]] || return 1
 	return 0
 }
 
-ax_logname_prompt_functions=($ax_logname_prompt_functions _ax_ssh_prompt)
-ax_hostname_prompt_functions=($ax_hostname_prompt_functions _ax_ssh_prompt)
+axzsh_logname_prompt_functions=($axzsh_logname_prompt_functions _axzsh_ssh_prompt)
+axzsh_hostname_prompt_functions=($axzsh_hostname_prompt_functions _axzsh_ssh_prompt)
 
 # Validate SSH_AUTH_SOCK: Inside of screen(1) sessions for example, the socket
 # file becomes invalid when the session has been disconnected.

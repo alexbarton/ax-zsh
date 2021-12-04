@@ -46,7 +46,7 @@ function axzsh_handle_stage {
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - Reading cache file \"$cache_file\" ..."
 		source "$cache_file"
-		unfunction ax_plugin_init
+		unfunction axzsh_plugin_init
 	else
 		# No cache file available.
 		local new_cache_file="$cache_file.NEW"
@@ -189,7 +189,7 @@ function axzsh_load_plugin {
 
 		if [[ -n "$cache_file" ]]; then
 			# Add plugin data to cache
-			printf "# BEGIN: %s\nax_plugin_init()\n{\n" "$fname" >>"$cache_file"
+			printf "# BEGIN: %s\naxzsh_plugin_init()\n{\n" "$fname" >>"$cache_file"
 			case "$fname" in
 				*"/repos/"*)
 					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type): \"$fname\" ...'" >>$cache_file
@@ -199,7 +199,7 @@ function axzsh_load_plugin {
 					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type, cached) ...'" >>$cache_file
 					"$cat_cmd" "$fname" >>"$cache_file"
 			esac
-			printf "}\nax_plugin_init\n# END: %s\n\n" "$fname" >>"$cache_file"
+			printf "}\naxzsh_plugin_init\n# END: %s\n\n" "$fname" >>"$cache_file"
 		fi
 	fi
 

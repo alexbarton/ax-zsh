@@ -57,7 +57,7 @@ git_prompt() {
 # OhMyZsh compatibility functions
 alias parse_git_dirty=git_parse_dirty
 
-ax_vcs_prompt_functions=($ax_vcs_prompt_functions git_prompt)
+axzsh_vcs_prompt_functions=($axzsh_vcs_prompt_functions git_prompt)
 
 alias fix="gd --name-only | uniq | xargs $EDITOR"
 alias g="git"

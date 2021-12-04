@@ -18,21 +18,21 @@ else
 fi
 ZSH_THEME_LOGNAME_PROMPT_SUFFIX_SPACING="@"
 
-function ax_logname_prompt_root() {
+function axzsh_logname_prompt_root() {
 	(( $UID == 0 )) || return 1
 	return 0
 }
 
-function ax_logname_prompt_yn() {
+function axzsh_logname_prompt_yn() {
 	local func
-	for func ($ax_logname_prompt_functions); do
+	for func ($axzsh_logname_prompt_functions); do
 		$func || continue
 		echo "${ZSH_THEME_LOGNAME_PROMPT_PREFIX_SPACING}${ZSH_THEME_LOGNAME_PROMPT_PREFIX}${1:-$LOGNAME}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX}${ZSH_THEME_LOGNAME_PROMPT_SUFFIX_SPACING}"
 		return
 	done
 }
 
-ax_logname_prompt_functions=(ax_logname_prompt_root)
+axzsh_logname_prompt_functions=(axzsh_logname_prompt_root)
 
 # Hostname
 
@@ -41,21 +41,21 @@ ZSH_THEME_HOSTNAME_PROMPT_PREFIX=""
 ZSH_THEME_HOSTNAME_PROMPT_SUFFIX=""
 ZSH_THEME_HOSTNAME_PROMPT_SUFFIX_SPACING=":"
 
-function ax_hostname_prompt_root() {
+function axzsh_hostname_prompt_root() {
 	(( $UID == 0 )) || return 1
 	return 0
 }
 
-function ax_hostname_prompt_yn() {
+function axzsh_hostname_prompt_yn() {
 	local func
-	for func ($ax_hostname_prompt_functions); do
+	for func ($axzsh_hostname_prompt_functions); do
 		$func || continue
 		echo "${ZSH_THEME_HOSTNAME_PROMPT_PREFIX_SPACING}${ZSH_THEME_HOSTNAME_PROMPT_PREFIX}${1:-$SHORT_HOST}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX}${ZSH_THEME_HOSTNAME_PROMPT_SUFFIX_SPACING}"
 		return
 	done
 }
 
-ax_hostname_prompt_functions=()
+axzsh_hostname_prompt_functions=()
 
 # VCS
 
@@ -77,17 +77,17 @@ ZSH_THEME_VCS_PROMPT_BEHIND="%{$fg_no_bold[blue]%}$behind%{$fg[default]%}"
 
 unset clean dirty ahead behind
 
-function ax_vcs_prompt() {
+function axzsh_vcs_prompt() {
 	local func
 	local p
-	for func ($ax_vcs_prompt_functions); do
+	for func ($axzsh_vcs_prompt_functions); do
 		p=$( $func ) || continue
 		echo "${ZSH_THEME_VCS_PROMPT_PREFIX_SPACING}${p}${ZSH_THEME_VCS_PROMPT_SUFFIX_SPACING}"
 		return
 	done
 }
 
-ax_vcs_prompt_functions=()
+axzsh_vcs_prompt_functions=()
 
 # Prompt
 
@@ -100,7 +100,7 @@ ZSH_THEME_PROMPT_ROOT_PREFIX=""
 ZSH_THEME_PROMPT_SUFFIX=""
 ZSH_THEME_PROMPT_SUFFIX_SPACING=""
 
-function ax_prompt() {
+function axzsh_prompt() {
 	local p
 	(( $UID == 0 )) \
 		&& p="${ZSH_THEME_PROMPT_ROOT_PREFIX}${ZSH_THEME_PROMPT_ROOT}" \

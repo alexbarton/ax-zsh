@@ -362,9 +362,9 @@ function CheckPlugins {
 	fi
 	for p in $AXZSH/core/*/*.zshrc; do
 		[[ "$(basename "$p")" == "01_zprofile.zshrc" ]] && continue
-		printf "# BEGIN: %s\nax_plugin_init()\n{\n" "$p" >>"$T"
+		printf "# BEGIN: %s\naxzsh_plugin_init()\n{\n" "$p" >>"$T"
 		cat "$p" >>"$T"
-		printf "}\nax_plugin_init\n# END: %s\n\n" "$p" >>"$T"
+		printf "}\naxzsh_plugin_init\n# END: %s\n\n" "$p" >>"$T"
 	done
 
 	ax_msg - "Checking plugins ..."
@@ -387,8 +387,8 @@ function CheckPlugins {
 			(
 				AXZSH_PLUGIN_CHECK=1
 				source "$T"
-				ax_plugin_fnc() { source "$script" }
-				ax_plugin_fnc
+				axzsh_plugin_fnc() { source "$script" }
+				axzsh_plugin_fnc
 			); r=$?
 			[[ $r -eq 0 ]] && new_plugin=$plugin
 			break

@@ -6,7 +6,13 @@
 
 eval "$(brew shellenv)"
 
-[[ -d "$HOMEBREW_PREIX/share/zsh-completions" ]] \
-	&& axzsh_fpath+=("$HOMEBREW_PREFIX/share/zsh-completions")
+for dir (
+	"$HOMEBREW_PREFIX/share/zsh-completions"
+	"$HOMEBREW_PREFIX/share/zsh/site-functions"
+); do
+	[[ -d "$dir" ]] && axzsh_fpath+=("$dir")
+
+done
+unset dir
 
 return 0

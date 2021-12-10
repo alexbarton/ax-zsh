@@ -3,6 +3,9 @@
 [AX-ZSH] is a modular configuration system for the Z shell ([ZSH]).
 It provides sane defaults and is extendable by plugins.
 
+AX-ZSH integrates well with [Powerlevel10k] and other extensions, even plugins
+of [OhMyZsh], see [below](#integration-with-other-projects).
+
 ## Installation
 
 To install AX-ZSH, either download a source archive or use [Git] to clone it.
@@ -199,6 +202,21 @@ Please run `axzshctl --help` to get a full list of a available sub-commands:
 axzshctl --help
 ```
 
+## Integration with other projects
+
+### Powerlevel10k
+
+AX-ZSH supports [Powerlevel10k] out of the box, you just have to install it as a
+plugin:
+
+```sh
+axzshctl enable-plugin romkatv/powerlevel10k
+```
+
+*Hint:* Once the Powerlevel10k plugin theme is installed, you can use the
+regular `axzshctl set-theme` command to enable it, like for any other installed
+theme: `axzshctl set-theme powerlevel10k`.
+
 ## AX-ZSH & local ZSH configuration
 
 Don't modify `~/.zprofile`, `~/.zshrc`, `~/.zlogin`, or `~/.zlogout`! These
@@ -240,6 +258,7 @@ ___
 [Git]: <https://git-scm.com/> "Git Homepage"
 [GitHub]: <https://github.com/> "GitHub Homepage"
 [OhMyZsh]: <https://ohmyz.sh/> "OhMyZsh Homepage"
+[Powerlevel10k]: <https://github.com/romkatv/powerlevel10k> "Powerlevel10k Homepage"
 [ZSH]: <https://www.zsh.org/> "ZSH Homepage"
 
 [AX-ZSH] Copyright (c) 2015-2021 Alexander Barton <alex@barton.de>

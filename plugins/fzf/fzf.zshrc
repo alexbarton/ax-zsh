@@ -30,9 +30,10 @@ for dir (
 	/usr/local/opt/fzf/shell
 	/usr/local/share/examples/fzf/shell
 	/opt/fzf/shell
+	/usr/share/fzf/shell
 ); do
 	[[ -d "$dir" ]] || continue
-	source "$dir/completion.zsh"
+	[[ -r "$dir/completion.zsh" ]] && source "$dir/completion.zsh"
 	source "$dir/key-bindings.zsh"
 	return 0
 done

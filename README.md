@@ -1,18 +1,21 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 
-AX-ZSH is a modular configuration system for the Z shell (ZSH).
+[AX-ZSH] is a modular configuration system for the Z shell ([ZSH]).
 It provides sane defaults and is extendable by plugins.
 
 ## Installation
 
-To install AX-ZSH, either download a source archive or use Git to clone it.
+To install AX-ZSH, either download a source archive or use [Git] to clone it.
 Afterwards use the `install.sh` script inside of the source directory to set
 up the `~/.axzsh` directory.
 
+The homepage of [AX-ZSH] can be found at [GitHub]:
+<https://github.com/alexbarton/ax-zsh>.
+
 Prerequisites:
 
-* [ZSH](https://www.zsh.org/) – obviously ;-)
-* [Git](https://git-scm.com/) (optional but recommended!)
+* [ZSH] – obviously ;-)
+* [Git] (optional but recommended!)
 
 Installing AX-ZSH is a two-step process:
 
@@ -38,7 +41,7 @@ exec $(command -v zsh) -l
 
 ### Installation using Git
 
-When using Git, the preferred method, it is best to directly clone the AX-ZSH
+When using [Git], the preferred method, it is best to directly clone the AX-ZSH
 repository into the `~/.axzsh` directory and call `install.sh` from this
 location:
 
@@ -49,8 +52,9 @@ git clone https://github.com/alexbarton/ax-zsh.git ~/.axzsh
 
 ### Installation without Git
 
-*Note:* If you do not install AX-ZSH with Git, you will not be able to upgrade
-itself afterwards with the integrated `axzsh upgrade` command!
+*Note:* If you do not install AX-ZSH with [Git], you will not be able to upgrade
+itself afterwards with the integrated `axzsh upgrade` command! Therefore this
+method is _not recommended_ for normal use!
 
 ```sh
 curl -Lo ax-zsh-master.zip https://github.com/alexbarton/ax-zsh/archive/refs/heads/master.zip
@@ -120,8 +124,8 @@ Different types of plugins are supported (see the introduction to the section
 
 * `<name>`: locally available plugin, either bundled with AX-ZSH itself, or
   installed manually (see below).
-* `<repository>/<name>`: stand-alone GitHub repository.
-* `@ohmyzsh/<name>`: [OhMyZsh](https://ohmyz.sh/) plugin from the OhMyZsh GitHub
+* `<repository>/<name>`: stand-alone [GitHub] repository.
+* `@ohmyzsh/<name>`: [OhMyZsh] plugin from the OhMyZsh GitHub
   repository (see <https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins>).
 
 You can enable one or more plugins like this:
@@ -130,7 +134,7 @@ You can enable one or more plugins like this:
 axzshctl enable-plugin <identifier> [<identifier> […]]
 ```
 
-Hint: _Tab-completion_ works for sub-commands and already locally available
+*Hint:* _Tab-completion_ works for sub-commands and already locally available
 plugin names!
 
 Some examples:
@@ -144,8 +148,8 @@ axzshctl enable-plugin editor_select git ssh_autoadd
 axzshctl enable-plugin romkatv/powerlevel10k
 
 # Enable the "fast-syntax-highlighting" plugin from GitHub, see
-# <https://github.com/zdharma/fast-syntax-highlighting>:
-axzshctl enable-plugin zdharma/fast-syntax-highlighting
+# <https://github.com/zdharma-continuum/fast-syntax-highlighting>:
+axzshctl enable-plugin zdharma-continuum/fast-syntax-highlighting
 
 # Enable the Git and tmux plugins of OhMyZsh:
 axzshctl enable-plugin @ohmyzsh/git @ohmyzsh/tmux
@@ -159,7 +163,7 @@ the `$AXZSH/custom_plugins` folder which is searched by the `axzshctl` tool
 by default.
 
 In addition you can set the `AXZSH_PLUGIN_D` variable (and `ZSH_CUSTOM` like
-"OhMyZsh") to specify additional plugin search directories.
+[OhMyZsh]) to specify additional plugin search directories.
 
 ### Disable plugins
 
@@ -169,7 +173,7 @@ Run the following command to disable a currently enabled plugin:
 axzshctl disable-plugin <identifier> [<identifier> […]]
 ```
 
-Hint: _Tab-completion_ works for sub-commands and plugin names!
+*Hint:* _Tab-completion_ works for sub-commands and plugin names!
 
 ### Update plugin cache
 
@@ -230,3 +234,12 @@ Validated and/or set up by core plugins:
 * `XDG_CACHE_HOME`
 * `XDG_RUNTIME_DIR`
 * `ZSH_CACHE_DIR`
+
+___
+[AX-ZSH]: <https://github.com/alexbarton/ax-zsh> "AX-ZSH Homepage"
+[Git]: <https://git-scm.com/> "Git Homepage"
+[GitHub]: <https://github.com/> "GitHub Homepage"
+[OhMyZsh]: <https://ohmyz.sh/> "OhMyZsh Homepage"
+[ZSH]: <https://www.zsh.org/> "ZSH Homepage"
+
+[AX-ZSH] Copyright (c) 2015-2021 Alexander Barton <alex@barton.de>

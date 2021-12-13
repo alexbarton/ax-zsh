@@ -4,6 +4,11 @@
 # Make sure that "brew(1)" is installed
 (( $+commands[brew] )) || return 1
 
+if [[ -n "$AXZSH_PLUGIN_CHECK" ]]; then
+	# Make sure brew command is working
+	brew --version >/dev/null 2>&1 || return 1
+fi
+
 eval "$(brew shellenv)"
 
 for dir (

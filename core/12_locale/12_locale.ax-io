@@ -13,7 +13,7 @@ fix_locale() {
 	locale="$1:r"
 	encoding="$1:e"
 
-	if [[ -z "$1" || "$locale" =~ '.*_.*' || ${#locale%%_*} -ne 2 ]]; then
+	if [[ -z "$1" || "$locale" =~ '_' || ${#locale%%_*} -ne 2 ]]; then
 		echo "$1"
 	else
 		locale="${locale:0:2}_${locale:0:2:u}"
@@ -28,7 +28,7 @@ unfunction fix_locale
 # Validate the locale(7) settings in interactive shells and try to mimic the
 # tset(1) behaviour.
 while true; do
-	lc_messages=$(locale 2>/dev/null | fgrep LC_MESSAGES | cut -d'=' -f2)
+	lc_messages=$(locale 2>/dev/null | grep -F LC_MESSAGES | cut -d'=' -f2)
 	[[ "$lc_messages" = '"C"' && "$LANG" != 'C' && "$LC_ALL" != 'C' ]] && lc_messages=$LANG
 	lc_messages=$lc_messages:gs/\"//
 	locale=$lc_messages:r
@@ -45,10 +45,10 @@ while true; do
 		break
 	fi
 
-	echo "ax-zsh: unknown/unsupported locale ${lc_messages:-unknown}" >&2
+	echo "ax-zsh: Unknown/unsupported locale \"${lc_messages:-unknown}\"!" >&2
 	unset locale
 	while [[ -z "$locale" ]]; do
-		if ! read "locale?Locale? "; then
+		if ! read -r "locale?Locale? "; then
 			echo >&2
 			break 2
 		fi

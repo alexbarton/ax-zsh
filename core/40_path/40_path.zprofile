@@ -30,7 +30,7 @@ for d (
 	~/sbin
 	~/Applications
 ); do
-	[ -d "$d" ] && path=("$d" $path)
+	[[ -d "$d" ]] && path=("$d" $path)
 done
 
 # Append additional search paths
@@ -39,7 +39,7 @@ for d (
 	/usr/local/games
 	/usr/games
 ); do
-	[ -d "$d" ] && path=($path "$d")
+	[[ -d "$d" ]] && path=($path "$d")
 done
 
 # Set default MANPATH
@@ -55,7 +55,7 @@ if [[ $? -ne 0 ]]; then
 		/usr/share/man
 		/usr/local/share/man
 	); do
-		[ -d "$d" ] && manpath=($manpath "$d")
+		[[ -d "$d" ]] && manpath=($manpath "$d")
 	done
 fi
 typeset -Ux MANPATH

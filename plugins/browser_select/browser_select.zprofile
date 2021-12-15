@@ -18,7 +18,7 @@ if [[ -z "$BROWSER" ]]; then
 		$x11_browsers
 		elinks w3m links2 links lynx
 	); do
-		if [ -n "$commands[$browser]" ]; then
+		if [[ -n "$commands[$browser]" ]]; then
 			BROWSER="$commands[$browser]"
 			break
 		fi

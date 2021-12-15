@@ -12,7 +12,7 @@ if [[ -z "$EDITOR" ]]; then
 		$x11_editors
 		vim nano joe vi
 	); do
-		if [ -n "$commands[$editor]" ]; then
+		if [[ -n "$commands[$editor]" ]]; then
 			EDITOR="$commands[$editor]"
 			break
 		fi

@@ -137,14 +137,14 @@ iterm2_decorate_prompt() {
 
 iterm2_precmd() {
 	local STATUS="$?"
-	if [ -z "${ITERM2_SHOULD_DECORATE_PROMPT-}" ]; then
+	if [[ -z "${ITERM2_SHOULD_DECORATE_PROMPT-}" ]]; then
 		# You pressed ^C while entering a command (iterm2_preexec did not run)
 		iterm2_before_cmd_executes
 	fi
 
 	iterm2_after_cmd_executes "$STATUS"
 
-	if [ -n "$ITERM2_SHOULD_DECORATE_PROMPT" ]; then
+	if [[ -n "$ITERM2_SHOULD_DECORATE_PROMPT" ]]; then
 		iterm2_decorate_prompt
 	fi
 }

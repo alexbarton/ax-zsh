@@ -6,4 +6,3 @@ _axzsh_setup_path
 unfunction _axzsh_setup_path
 
 typeset -Ux PATH MANPATH
-typeset -U path manpath

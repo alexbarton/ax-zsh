@@ -8,7 +8,6 @@ else
 	PATH="/usr/sbin:/usr/bin:/sbin:/bin"
 fi
 typeset -Ux PATH
-typeset -U path
 
 _axzsh_setup_path() {
 	# Prepend additional search paths
@@ -65,4 +64,3 @@ if [[ $? -ne 0 ]]; then
 	done
 fi
 typeset -Ux MANPATH
-typeset -U manpath

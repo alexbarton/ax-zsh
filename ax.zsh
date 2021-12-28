@@ -55,9 +55,9 @@ function axzsh_handle_stage {
 		local plugin_list
 		typeset -U plugin_list
 		plugin_list=(
-			"$AXZSH/core/"[0-5]*
+			"$AXZSH/core/"[0-4]*
 			"$AXZSH/active_plugins/"*(N)
-			"$AXZSH/core/"[6-9]*
+			"$AXZSH/core/"[5-9]*
 		)
 
 		# Create new cache file:

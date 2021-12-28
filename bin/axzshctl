@@ -104,6 +104,10 @@ function EnableAXZSH {
 		ln -s "$AXZSH/ax.zsh" "$f" \
 			|| ax_error "Failed to create symbolic link for \"$f\"!"
 	done
+	if [[ -z "$AXZSH_FPATH" ]]; then
+		echo "AX-ZSH was enabled. Now you should restart your shell, for example like this:"
+		echo "$ exec -l \"\$SHELL\""
+	fi
 }
 
 function DisableAXZSH {

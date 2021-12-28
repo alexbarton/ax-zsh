@@ -4,6 +4,10 @@
 function axzshctl() {
 	zsh "$AXZSH/bin/axzshctl" "$@" || return $?
 
+	if [[ "$1" = "disable" ]]; then
+		unset AXZSH AXZSH_FPATH AXZSH_ZLOGIN_READ AXZSH_ZPROFILE_READ
+	fi
+
 	case "$1" in
 		"disable"*|"enable"*|"reset"*|"set"*|"up"*)
 			# Command which potentially "changed state".

@@ -32,8 +32,6 @@ function axzsh_logname_prompt_yn() {
 	done
 }
 
-axzsh_logname_prompt_functions=(axzsh_logname_prompt_root)
-
 # Hostname
 
 ZSH_THEME_HOSTNAME_PROMPT_PREFIX_SPACING=""

@@ -31,6 +31,8 @@ else
 	RPS1="%(?..%{$fg_no_bold[red]%}<%?>%{$reset_color%})"
 fi
 
+axzsh_logname_prompt_functions=($axzsh_logname_prompt_functions axzsh_logname_prompt_root)
+
 # The primary prompt string, printed before a command is read.
 PS1="${system_emoji}${emoji_spacing} $(axzsh_logname_prompt_yn)$(axzsh_hostname_prompt_yn)%B%2~%b"'$(axzsh_vcs_prompt)'"$(axzsh_prompt)"
 

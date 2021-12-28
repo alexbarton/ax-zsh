@@ -8,6 +8,7 @@ else
 	PATH="/usr/sbin:/usr/bin:/sbin:/bin"
 fi
 typeset -Ux PATH
+typeset -U path
 
 # Prepend additional search paths
 for d (
@@ -59,3 +60,4 @@ if [[ $? -ne 0 ]]; then
 	done
 fi
 typeset -Ux MANPATH
+typeset -U manpath

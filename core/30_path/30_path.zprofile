@@ -10,38 +10,43 @@ fi
 typeset -Ux PATH
 typeset -U path
 
-# Prepend additional search paths
-for d (
-	/Developer/usr/bin
-	/usr/ucb
-	/usr/pkg/bin
-	/usr/local/bin
-	/usr/local/sbin
-	/opt/*/bin(NOn)
-	/opt/*/sbin(NOn)
-	/home/linuxbrew/.linuxbrew/bin
-	/home/linuxbrew/.linuxbrew/sbin
-	~/.linuxbrew/bin
-	~/.linuxbrew/sbin
-	~/.gem/ruby/*/bin(NOn)
-	~/.go/bin
-	~/.cargo/bin
-	~/.local/bin
-	~/bin
-	~/sbin
-	~/Applications
-); do
-	[[ -d "$d" ]] && path=("$d" $path)
-done
+_axzsh_setup_path() {
+	# Prepend additional search paths
+	for d (
+		/Developer/usr/bin
+		/usr/ucb
+		/usr/pkg/bin
+		/usr/local/bin
+		/usr/local/sbin
+		/opt/*/bin(NOn)
+		/opt/*/sbin(NOn)
+		/home/linuxbrew/.linuxbrew/bin
+		/home/linuxbrew/.linuxbrew/sbin
+		~/.linuxbrew/bin
+		~/.linuxbrew/sbin
+		~/.gem/ruby/*/bin(NOn)
+		~/.go/bin
+		~/.cargo/bin
+		~/.local/bin
+		~/bin
+		~/sbin
+		~/Applications
+	); do
+		[[ -d "$d" ]] && path=("$d" $path)
+	done
 
-# Append additional search paths
-for d (
-	/usr/X11/bin
-	/usr/local/games
-	/usr/games
-); do
-	[[ -d "$d" ]] && path=($path "$d")
-done
+	# Append additional search paths
+	for d (
+		/usr/X11/bin
+		/usr/local/games
+		/usr/games
+	); do
+		[[ -d "$d" ]] && path=($path "$d")
+	done
+}
+
+# Prepend and append search paths (in a special order!)
+_axzsh_setup_path
 
 # Set default MANPATH
 MANPATH="$(manpath -q)" 2>/dev/null

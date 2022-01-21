@@ -26,6 +26,7 @@ print -Pn -- "$fg[green]$FX[underline]${TERM:-?}$FX[reset] "
 print -Pn -- "(${COLUMNS:-?}x${LINES:-?})"
 print -Pn -- "$FX[reset]"
 [[ -n "$LANG" ]] && print -Pn -- "; LANG=$LANG"
+[[ -n "$COLORTERM" ]] && print -Pn -- "; COLORTERM=$COLORTERM"
 echo
 
 [[ -z "$VERBOSE" ]] && return 0

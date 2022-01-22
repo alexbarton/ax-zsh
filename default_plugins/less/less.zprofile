@@ -21,5 +21,5 @@ if (( $+commands[lesspipe] )); then
 elif (( $+commands[lesspipe.sh] )); then
 	# Silence lesspipe(1), see <https://github.com/wofr06/lesspipe/issues/21>
 	export LESSQUIET=1
-	eval "$(lesspipe.sh)"
+	eval "$(lesspipe.sh 2>/dev/null)"
 fi

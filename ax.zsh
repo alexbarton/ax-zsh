@@ -65,6 +65,17 @@ function axzsh_handle_stage {
 			&& echo "   (Writing new cache file to \"$new_cache_file\" ...)"
 		if ! printf "# %s\n\n" "$(LC_ALL=C date)" >"$new_cache_file"; then
 			unset new_cache_file
+		else
+			# New cache file successfully created ...
+			if [[ "$type" = "ax-io" ]]; then
+				# AX-IO Stage:
+				# Write an initial PATH variable to the cache
+				# file, which becomes overwritten by the path
+				# plugin at the "zprofile" stage later on, but
+				# this way "ax-io" stage plugins have a somewhat
+				# saner PATH to begin with ...
+				printf 'export PATH="%s"\n\n' "$PATH" >>"$new_cache_file"
+			fi
 		fi
 
 		# Read in all the plugins for the current "type":

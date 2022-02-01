@@ -86,7 +86,9 @@ function UpdatePluginCache {
 		|| return 1
 
 	echo "Regenerating AX-ZSH cache ..."
-	AXZSH_PLUGIN_CHECK=1 zsh -ilc '' >/dev/null
+	[[ -z "$AXZSH_DEBUG" ]] \
+		&& AXZSH_PLUGIN_CHECK=1 zsh -ilc '' >/dev/null \
+		|| AXZSH_PLUGIN_CHECK=1 zsh -ilc ''
 }
 
 function NormalizedPluginName {

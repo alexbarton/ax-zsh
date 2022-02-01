@@ -61,12 +61,10 @@ function axzsh_handle_stage {
 		)
 
 		# Create new cache file:
-		if [[ -n "$cache_file" && -w "$new_cache_file" ]]; then
-			[[ -n "$AXZSH_DEBUG" ]] \
-				&& echo "   (Writing new cache file to \"$new_cache_file\" ...)"
-			if ! printf "# %s\n\n" "$(LC_ALL=C date)" >"$new_cache_file"; then
-				unset new_cache_file
-			fi
+		[[ -n "$AXZSH_DEBUG" ]] \
+			&& echo "   (Writing new cache file to \"$new_cache_file\" ...)"
+		if ! printf "# %s\n\n" "$(LC_ALL=C date)" >"$new_cache_file"; then
+			unset new_cache_file
 		fi
 
 		# Read in all the plugins for the current "type":

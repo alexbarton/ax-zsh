@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 40_path.zprofile: Setup PATH environment
+# 30_path.zprofile: Setup PATH environment
 
 # Set default PATH
 if [[ -x /usr/libexec/path_helper ]]; then

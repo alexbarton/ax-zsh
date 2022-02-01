@@ -224,6 +224,7 @@ fi
 # Check for "debug mode" ...
 if [[ -f "$AXZSH/debug" || -f "$HOME/.axzsh.debug" ]]; then
 	export AXZSH_DEBUG=1
+	export POWERLEVEL9K_INSTANT_PROMPT=quiet
 	echo "AXZSH=$AXZSH"
 	echo "AXZSH_DEBUG=$AXZSH_DEBUG"
 	echo "AXZSH_PLUGIN_D=$AXZSH_PLUGIN_D"

@@ -12,8 +12,10 @@ function open_command() {
 		linux*)
 			nohup xdg-open "$@" &>/dev/null || return 1
 			;;
+		*)
+			return 2
 	esac
-	return 1
+	return 0
 }
 
 function take() {

@@ -10,7 +10,12 @@ function open_command() {
 			cygstart "$@" || return 1
 			;;
 		linux*)
-			nohup xdg-open "$@" &>/dev/null || return 1
+			if [[ -n "$DISPLAY" ]]; then
+				# X11
+				nohup xdg-open "$@" &>/dev/null || return 1
+			else
+				xdg-open "$@" || return 1
+			fi
 			;;
 		*)
 			return 2

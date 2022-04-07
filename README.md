@@ -57,7 +57,7 @@ git clone https://github.com/alexbarton/ax-zsh.git ~/.axzsh
 
 *Note:* If you do not install AX-ZSH with [Git], you will not be able to upgrade
 itself afterwards with the integrated `axzsh upgrade` command! Therefore this
-method is _not recommended_ for normal use!
+method is *not recommended* for normal use!
 
 ```sh
 curl -Lo ax-zsh-master.zip https://github.com/alexbarton/ax-zsh/archive/refs/heads/master.zip
@@ -123,7 +123,7 @@ strengths when enabling additional plugins for additional tools and commands
 that are available on your system and you want to use.
 
 Different types of plugins are supported (see the introduction to the section
-"_usage_" above) which are differentiated by their identifier:
+"*usage*" above) which are differentiated by their identifier:
 
 * `<name>`: locally available plugin, either bundled with AX-ZSH itself, or
   installed manually (see below).
@@ -137,7 +137,7 @@ You can enable one or more plugins like this:
 axzshctl enable-plugin <identifier> [<identifier> […]]
 ```
 
-*Hint:* _Tab-completion_ works for sub-commands and already locally available
+*Hint:* *Tab-completion* works for sub-commands and already locally available
 plugin names!
 
 Some examples:
@@ -176,7 +176,7 @@ Run the following command to disable a currently enabled plugin:
 axzshctl disable-plugin <identifier> [<identifier> […]]
 ```
 
-*Hint:* _Tab-completion_ works for sub-commands and plugin names!
+*Hint:* *Tab-completion* works for sub-commands and plugin names!
 
 ### Update plugin cache
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2022 Alexander Barton <alex@barton.de>
 #
 
 # Include "ax-common.sh":

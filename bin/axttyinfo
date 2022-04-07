@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2017 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2022 Alexander Barton <alex@barton.de>
 #
 
 source "$AXZSH/core/11_terminal/11_terminal.zshrc" || exit 1

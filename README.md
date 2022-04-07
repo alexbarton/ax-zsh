@@ -261,4 +261,4 @@ ___
 [Powerlevel10k]: <https://github.com/romkatv/powerlevel10k> "Powerlevel10k Homepage"
 [ZSH]: <https://www.zsh.org/> "ZSH Homepage"
 
-[AX-ZSH] Copyright (c) 2015-2021 Alexander Barton <alex@barton.de>
+[AX-ZSH] Copyright (c) 2015-2022 Alexander Barton <alex@barton.de>

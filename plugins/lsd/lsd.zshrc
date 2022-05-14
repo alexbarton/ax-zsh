@@ -4,4 +4,4 @@
 # Make sure that "lsd(1)" is installed
 (( $+commands[lsd] )) || return 1
 
-alias ls='lsd --date relative --group-dirs first'
+alias ls='lsd'

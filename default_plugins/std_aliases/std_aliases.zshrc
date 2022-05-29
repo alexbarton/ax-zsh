@@ -4,6 +4,7 @@
 alias ll="ls -hl"
 alias l="ll -a"
 alias la="ll -A"
+alias lx="ls -A"
 
 alias lasth='last -aw | head -n "$((LINES-1))"'
 alias lastf='last -aw | grep -v "^$LOGNAME"'

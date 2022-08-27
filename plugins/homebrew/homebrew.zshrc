@@ -33,7 +33,7 @@ function brew() {
 
 	brew_prefix=$("$real_brew_cmd" --prefix) || return 102
 
-	if [[ $(stat -c %u "$brew_prefix") -eq $UID ]]; then
+	if [[ $(/bin/ls -ldn "$brew_prefix" | awk '{print $3}') -eq $UID ]]; then
 		# We are the owner of the Homebrew installation.
 		(
 			[[ $# -eq 0 && -t 1 ]] \
@@ -48,8 +48,8 @@ function brew() {
 		priv_exec="umask 0022 || exit 103; \"$real_brew_cmd\" $*"
 		(
 			cd /tmp
-			user="$(stat -c %U "$brew_prefix")"
-			group="$(stat -c %G "$brew_prefix")"
+			user="$(/bin/ls -ld "$brew_prefix" | awk '{print $3}')"
+			group="$(/bin/ls -ld "$brew_prefix" | awk '{print $4}')"
 			[[ $# -eq 0 && -t 1 ]] \
 				&& echo "Running \"$real_brew_cmd\" as user \"$user:$group\" ..."
 			sudo -u "$user" -g "$group" -- sh -c "$priv_exec"

@@ -6,14 +6,10 @@ It provides sane defaults and is extendable by plugins.
 AX-ZSH integrates well with [Powerlevel10k] and other extensions, even plugins
 of [OhMyZsh], see [below](#integration-with-other-projects).
 
-## Installation
-
-To install AX-ZSH, either download a source archive or use [Git] to clone it.
-Afterwards use the `install.sh` script inside of the source directory to set
-up the `~/.axzsh` directory.
-
 The homepage of [AX-ZSH] can be found at [GitHub]:
 <https://github.com/alexbarton/ax-zsh>.
+
+## Installation
 
 Prerequisites:
 
@@ -22,25 +18,17 @@ Prerequisites:
 
 Installing AX-ZSH is a two-step process:
 
-1. Clone or copy the source files into `~/.axzsh`,
+1. Clone or copy the source files into the `~/.axzsh` directory,
 2. Run the `~/.axzsh/install.sh` script.
 
 The `install.sh` script creates symbolic links for `~/.zprofile`, `~/.zshrc`,
 `~/.zlogin`, and `~/.zlogout` (don't worry, already existing files are backed
 up).
 
-Then close all running ZSH sessions and restart them to activate AX-ZSH. And
-maybe change your default shell to ZSH if you haven't already?
-
-For example like this:
-
-```sh
-# Set new default shell
-chsh -s $(command -v zsh)
-
-# Replace running shell with a ZSH login shell
-exec $(command -v zsh) -l
-```
+*Note:* The installation is per-user and only changes/installs files into the
+home directory of the current user (`~`). AX-ZSH is not meant to be installed
+globally for all users on a system at once, and you don't need to become "root"
+or any other user with elevated privileges!
 
 ### Installation using Git
 
@@ -64,6 +52,22 @@ curl -Lo ax-zsh-master.zip https://github.com/alexbarton/ax-zsh/archive/refs/hea
 unzip ax-zsh-master.zip
 mv ax-zsh-master ~/.axzsh
 ~/.axzsh/install.sh
+```
+
+### Post-Installation Tasks
+
+After installing AX-ZSH, using Git or via an archive file, you should close all
+running ZSH sessions and restart them to activate AX-ZSH. And maybe you want to
+change your default shell to ZSH if you haven't already?
+
+For example like this:
+
+```sh
+# Set new default shell
+chsh -s $(command -v zsh)
+
+# Replace running shell with a ZSH login shell
+exec $(command -v zsh) -l
 ```
 
 ## Upgrade

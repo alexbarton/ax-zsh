@@ -8,18 +8,27 @@ fi
 
 # Validate temporary directory
 if [[ -z "$TMPDIR" ]]; then
-	TMPDIR="$(dirname $(mktemp -ut tmp.XXXXXXXXXX))/"
-	user_tmpdir="$TMPDIR$UID"
-	mkdir -p "$user_tmpdir" >/dev/null 2>&1
-	if [[ -w "$user_tmpdir" ]]; then
-		TMPDIR="$user_tmpdir/"
-		chmod 0700 "$TMPDIR"
+	if [[ -n "$XDG_RUNTIME_DIR" && -w "$XDG_RUNTIME_DIR" ]]; then
+		# The "runtime directory" is set for this user, good, so use
+		# it silently as the "temporary directory", too:
+		TMPDIR="$XDG_RUNTIME_DIR"
+	else
+		# Try to find a sane "temporary directory", but warn the user
+		# that this is a best guess only!
+		TMPDIR="$(dirname $(mktemp -ut tmp.XXXXXXXXXX))/"
+		[[ -z "$TMPDIR" || "$TMPDIR" = "/" ]] && TMPDIR="/tmp"
+		user_tmpdir="$TMPDIR$UID"
+		mkdir -p "$user_tmpdir" >/dev/null 2>&1
+		if [[ -w "$user_tmpdir" ]]; then
+			TMPDIR="$user_tmpdir/"
+			chmod 0700 "$TMPDIR"
+		fi
+		echo "Note: \"TMPDIR\" was not set, using \"$TMPDIR\"." >&2
+		unset user_tmpdir
 	fi
-	echo "WARNING: \"TMPDIR\" is not set, using \"$TMPDIR\" as default!" >&2
-	unset user_tmpdir
 fi
 if [[ ! -w "$TMPDIR" ]]; then
-	echo "WARNING: Temporary directory \"$TMPDIR\" is not writable!" >&2
+	echo "Warning: Temporary directory \"$TMPDIR\" is not writable!" >&2
 fi
 
 # Setup XDG cache directory

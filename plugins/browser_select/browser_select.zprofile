@@ -6,6 +6,11 @@
 
 
 if [[ -z "$BROWSER" ]]; then
+	if [[ "$OSTYPE" != "linux-gnu" ]]; then
+		# Check for open(1) on Non-Linux systems. On (Debian-) Linux, the open(1)
+		# command would recursively call $BROWSER (=itself) ...
+		open_browsers="open"
+	fi
 	if [[ -n "$DISPLAY" ]]; then
 		# X11 available, consider X11-based browsers, too!
 		x11_browsers="firefox chrome"
@@ -14,7 +19,7 @@ if [[ -z "$BROWSER" ]]; then
 	# Note: We can't use xdg-open(1) here, as xdg-open itself tries to use
 	# $BROWSER, and this would result in an endless loop!
 	for browser (
-		open
+		$open_browsers
 		$x11_browsers
 		elinks w3m links2 links lynx
 	); do
@@ -23,7 +28,7 @@ if [[ -z "$BROWSER" ]]; then
 			break
 		fi
 	done
-	unset browser x11_browsers
+	unset browser open_browser x11_browsers
 fi
 
 [[ -n "$BROWSER" ]] && export BROWSER

@@ -2,8 +2,8 @@
 # std_aliases: Setup standard aliases
 
 alias ll="ls -hl"
-alias l="ll -a"
-alias la="ll -A"
+alias l="ls -ahl"
+alias la="ls -Ahl"
 alias lx="ls -A"
 
 alias lasth='last -aw | head -n "$((LINES-1))"'

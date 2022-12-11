@@ -228,7 +228,7 @@ fi
 [[ -n "$SHELL" ]] || export SHELL=$(command -v zsh)
 
 # Make sure that "AXZSH" variable is set and exported
-[[ -n "$AXZSH" ]] || export AXZSH="$HOME/.axzsh"
+[[ -n "$AXZSH" ]] || export AXZSH="${ZDOTDIR:-$HOME}/.axzsh"
 
 # Check for "debug mode" ...
 if [[ -f "$AXZSH/debug" || -f "$HOME/.axzsh.debug" ]]; then

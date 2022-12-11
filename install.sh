@@ -35,7 +35,7 @@ abort() {
 
 umask 027
 
-[ -n "$AXZSH" ] || AXZSH="$HOME/.axzsh"
+[ -n "$AXZSH" ] || AXZSH="${ZDOTDIR:-$HOME}/.axzsh"
 export AXZSH
 
 S=$(dirname "$0")
@@ -79,7 +79,12 @@ mkdir -p "$AXZSH/custom_themes" || abort
 
 ax_msg - "Linking ZSH startup files ..."
 
-for f in ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc; do
+for f in \
+	${ZDOTDIR:-$HOME}/.zlogin \
+	${ZDOTDIR:-$HOME}/.zlogout \
+	${ZDOTDIR:-$HOME}/.zprofile \
+	${ZDOTDIR:-$HOME}/.zshrc \
+; do
 	safe_rm "$f" || abort
 	ln -sv "$AXZSH/ax.zsh" "$f" || abort
 done

@@ -6,28 +6,76 @@
 
 source "$AXZSH/core/11_terminal/11_terminal.zshrc" || exit 1
 
-unset VERBOSE
+unset VERBOSE ONE_LINE
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
+		"-1")
+			ONE_LINE=1
+			;;
 		"-v")
 			VERBOSE=1
 			;;
 		*)
-			echo "Usage: ttyinfo [-v]" >&2
+			echo "Usage: ttyinfo [-1] [-v]" >&2
 			exit 1
 	esac
 	shift
 done
 
-print -Pn -- "$fg[white]$FX[bold]$HOST$FX[no-bold] "
+print -Pn -- "$fg[white]$FX[bold]$SHORT_HOST$FX[no-bold] "
 print -Pn -- "$fg[yellow]$(tty)$FX[reset], "
 print -Pn -- "$fg[green]$FX[underline]${TERM:-?}$FX[reset] "
 print -Pn -- "(${COLUMNS:-?}x${LINES:-?})"
+[[ -n "$TERM_PROGRAM" ]] && print -Pn -- "; $fg[green]$TERM_PROGRAM$FX[reset]"
+[[ -n "$$TERM_PROGRAM_VERSION" ]] && print -Pn -- " $TERM_PROGRAM_VERSION"
 print -Pn -- "$FX[reset]"
-[[ -n "$LANG" ]] && print -Pn -- "; LANG=$LANG"
-[[ -n "$COLORTERM" ]] && print -Pn -- "; COLORTERM=$COLORTERM"
 echo
+
+[[ -n "$ONE_LINE" ]] && return 0
+
+typeset -i max=${COLUMNS:-80}
+typeset -i col=0
+for key (
+	LANG
+	LC_ALL
+	LC_ADDRESS
+	LC_COLLATE
+	LC_CTYPE
+	LC_IDENTIFICATION
+	LC_MEASUREMENT
+	LC_MESSAGES
+	LC_MONETARY
+	LC_NAME
+	LC_NUMERIC
+	LC_PAPER
+	LC_TELEPHONE
+	LC_TIME
+	-
+	COLORTERM
+	CLICOLOR
+	TERM_COLORS
+	-
+	DISPLAY
+); do
+	if [[ $key == "-" ]]; then
+		[[ $col -gt 0 ]] && echo
+		col=0
+		continue
+	fi
+
+	[[ "${(P)key-UNSET}" = "UNSET" ]] && continue
+	val=${(P)key}
+
+	col=$(( $col + ${#key} + ${#val} + 5 ))
+	if [[ $col -gt $max ]]; then
+		echo
+		col=$(( ${#key} + ${#val} + 5 ))
+	fi
+
+	print -Pn -- "$key=\"$fg[cyan]$val$FX[reset]\"; "
+done
+[[ $col -gt 0 ]] && echo
 
 [[ -z "$VERBOSE" ]] && return 0
 

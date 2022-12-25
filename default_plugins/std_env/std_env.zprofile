@@ -3,4 +3,7 @@
 
 export CLICOLOR=${CLICOLOR:-1}
 export MANWIDTH=${MANWIDTH:-80}
-export REPORTTIME=${REPORTTIME:-5}
+
+if [[ "$TERM_PROGRAM" != "WarpTerminal" ]]; then
+	export REPORTTIME=${REPORTTIME:-5}
+fi

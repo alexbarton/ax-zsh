@@ -1,18 +1,28 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# neofetch.ax-io: Show neofetch(1) system information.
+# neofetch.ax-io: Show fastfetch(1) [preferred] or neofetch(1) system information.
 
-# Make sure that "neofetch(1)" is installed.
-(( $+commands[neofetch] )) || return 1
+# Make sure that fastfetch(1) or neofetch(1) is installed.
+(( $+commands[fastfetch] )) || (( $+commands[neofetch] )) || return 1
 
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
 
 axzsh_neofetch() {
-	neofetch \
-		--color_blocks off \
-		--disable packages \
-		--shell_path on \
-		--underline_char '~'
+	if (( $+commands[fastfetch] )); then
+		fastfetch \
+			--structure Title:Separator:OS:Host:Kernel:Uptime:Packages:Shell:Display:DE:WM:WMTheme:Theme:Terminal:TerminalFont:CPU:GPU:Memory:Battery:PowerAdapter:Break \
+			--percent-type 3 \
+			--separator-string '~'
+	elif (( $+commands[neofetch] )); then
+		neofetch \
+			--color_blocks off \
+			--disable packages \
+			--shell_path on \
+			--underline_char '~'
+	else
+		echo "Neither fastfetch(1) nor neofetch(1) was found!" >&2
+		return 1
+	fi
 }
 
 # Don't show any info when ~/.hushlogin exists ...

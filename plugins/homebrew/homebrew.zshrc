@@ -18,14 +18,14 @@ function brew() {
 	#   installed by Homebrew.
 	# - Call the "real" brew(1) command.
 
-	if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+	if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
 		real_brew_cmd="/home/linuxbrew/.linuxbrew/bin/brew"
-	elif [ -x /opt/homebrew/bin/brew ]; then
+	elif [[ -x /opt/homebrew/bin/brew ]]; then
 		real_brew_cmd="/opt/homebrew/bin/brew"
-	elif [ -x /usr/local/bin/brew ]; then
+	elif [[ -x /usr/local/bin/brew ]]; then
 		real_brew_cmd="/usr/local/bin/brew"
 	else
-		if [ "$1" != "shellenv" ] && [ "$1" != "--prefix" ]; then
+		if [[ "$1" != "shellenv" && "$1" != "--prefix" ]]; then
 			echo "Oops, real \"brew\" command not found!? [for \"$1\"]" >&2
 		fi
 		return 101
@@ -38,13 +38,12 @@ function brew() {
 	if [[ $(/bin/ls -ldn "$HOMEBREW_REPOSITORY" | awk '{print $3}') -eq $UID ]]; then
 		# We are the owner of the Homebrew installation.
 		(
-			[[ $# -eq 0 && -t 1 ]] \
-				&& echo "Running \"$real_brew_cmd\" ..."
+			[[ $# -eq 0 && -t 1 ]] && echo "Running \"$real_brew_cmd\" ..."
 			umask 0022 || return 103
 			"$real_brew_cmd" "$@"
 		)
 	else
-		# We are a different user than the owner of the Homebew
+		# We are a different user than the owner of the Homebrew
 		# installation. So we need to change the user when running the
 		# real "brew" command!
 		priv_exec="umask 0022 || exit 103; \"$real_brew_cmd\" $*"

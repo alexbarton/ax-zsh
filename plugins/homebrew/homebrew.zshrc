@@ -52,8 +52,9 @@ function brew() {
 			cd /tmp
 			user="$(/bin/ls -ld "$HOMEBREW_REPOSITORY" | awk '{print $3}')"
 			group="$(/bin/ls -ld "$HOMEBREW_REPOSITORY" | awk '{print $4}')"
-			[[ $# -eq 0 && -t 1 ]] \
-				&& echo "Running \"$real_brew_cmd\" as user \"$user:$group\" ..."
+			if [[ $# -eq 0 || "$1" = "doctor" || "$1" = "dr" ]]; then
+				echo "Running \"$real_brew_cmd\" as user \"$user:$group\" ..."
+			fi
 			sudo -u "$user" -g "$group" -- sh -c "$priv_exec"
 		)
 	fi

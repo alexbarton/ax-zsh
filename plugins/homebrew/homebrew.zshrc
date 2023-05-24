@@ -32,6 +32,7 @@ function brew() {
 	fi
 
 	if [[ -z "$HOMEBREW_REPOSITORY" ]]; then
+		echo "Oops, \"HOMEBREW_REPOSITORY\" not set? Trying to fix ..." >&2
 		eval "$("$real_brew_cmd" shellenv)"
 	fi
 
@@ -39,14 +40,14 @@ function brew() {
 		# We are the owner of the Homebrew installation.
 		(
 			[[ $# -eq 0 && -t 1 ]] && echo "Running \"$real_brew_cmd\" ..."
-			umask 0022 || return 103
+			umask 0022 || return 102
 			"$real_brew_cmd" "$@"
 		)
 	else
 		# We are a different user than the owner of the Homebrew
 		# installation. So we need to change the user when running the
 		# real "brew" command!
-		priv_exec="umask 0022 || exit 103; \"$real_brew_cmd\" $*"
+		priv_exec="eval \$("$real_brew_cmd" shellenv) || exit 103; umask 0022 || exit 104; \"$real_brew_cmd\" $*"
 		(
 			cd /tmp
 			user="$(/bin/ls -ld "$HOMEBREW_REPOSITORY" | awk '{print $3}')"

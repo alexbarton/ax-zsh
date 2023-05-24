@@ -65,4 +65,8 @@ fpath+=("$AXZSH/active_plugins/"*/completions(N))
 fpath+=("$AXZSH/active_plugins/"*/src(N))
 
 # Initialize ZSH completion system
-compinit -d "$ZSH_COMPDUMP"
+if [[ "$ZSH_DISABLE_COMPFIX" = "true" ]]; then
+	compinit -u -d "$ZSH_COMPDUMP"
+else
+	compinit -d "$ZSH_COMPDUMP"
+fi

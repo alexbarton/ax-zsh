@@ -1,10 +1,20 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # homebrew.zprofile -- Setup Homebrew Package Manager
 
-# Make sure that "brew(1)" is installed
-(( $+commands[brew] )) || return 1
+# Look for the "brew(1) command ...
+for brew_cmd (
+	/home/linuxbrew/.linuxbrew/bin/brew
+	/opt/homebrew/bin/brew
+	/usr/local/bin/brew
+); do
+	[[ -x "$brew_cmd" ]] && break
+done
+if [[ ! -x "$brew_cmd" ]]; then
+	unset brew_cmd
+	return 1
+fi
 
-eval "$(brew shellenv)"
+eval "$("$brew_cmd" shellenv)"
 
 for dir (
 	"$HOMEBREW_PREFIX/share/zsh-completions"
@@ -13,6 +23,6 @@ for dir (
 	[[ -d "$dir" ]] && axzsh_fpath+=("$dir")
 
 done
-unset dir
+unset dir brew_cmd
 
 return 0

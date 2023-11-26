@@ -23,3 +23,19 @@ alias -- -='cd -'
 
 alias md='mkdir -p'
 alias rd=rmdir
+
+# Global aliases
+
+alias -g C="| cut -d' '"
+alias -g G="| grep -i"
+alias -g H="| head"
+alias -g L="| less"
+alias -g LL="2>&1 | less"
+alias -g NUL=">/dev/null 2>&1"
+alias -g T="| tail"
+alias -g WL="| wc -l"
+alias -g X="| xargs"
+
+# Suffix aliases
+
+alias -s {c,cfg,conf,css,h,html,ini,json,md,me,rc,txt,yml,yaml}="$EDITOR"

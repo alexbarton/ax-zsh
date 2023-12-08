@@ -9,16 +9,9 @@
 
 axzsh_neofetch() {
 	if (( $+commands[fastfetch] )); then
-		fastfetch \
-			--structure Title:Separator:OS:Host:Kernel:Uptime:Packages:Shell:Display:DE:WM:WMTheme:Theme:Terminal:TerminalFont:CPU:GPU:Memory:Battery:PowerAdapter:Break \
-			--percent-type 3 \
-			--separator-string '~'
+		fastfetch
 	elif (( $+commands[neofetch] )); then
-		neofetch \
-			--color_blocks off \
-			--disable packages \
-			--shell_path on \
-			--underline_char '~'
+		neofetch
 	else
 		echo "Neither fastfetch(1) nor neofetch(1) was found!" >&2
 		return 1

@@ -7,7 +7,7 @@ if [[ -z "$TZ" && -r "/etc/timezone" ]]; then
 fi
 
 # Validate temporary directory
-if [[ -z "$TMPDIR" ]]; then
+if [[ -z "$TMPDIR" || "$TMPDIR" = "/" ]]; then
 	if [[ -n "$XDG_RUNTIME_DIR" && -w "$XDG_RUNTIME_DIR" ]]; then
 		# The "runtime directory" is set for this user, good, so use
 		# it silently as the "temporary directory", too:
@@ -27,9 +27,23 @@ if [[ -z "$TMPDIR" ]]; then
 		unset user_tmpdir
 	fi
 fi
+# Make sure TMPDIR ends in a slash (like on macOS by default): this makes its
+# usage a bit safer ...
+case "$TMPDIR" in
+	*/) ;;
+	*)  TMPDIR="$TMPDIR/"
+esac
 if [[ ! -w "$TMPDIR" ]]; then
 	echo "Warning: Temporary directory \"$TMPDIR\" is not writable!" >&2
 fi
+export TMPDIR
+
+# TMPDIR is the only one required to be set, but make sure that TMP, TEMP
+# and TEMPDIR are set to the same sane path name when already present in the
+# environment:
+[[ -n "$TMP" ]] && export TMP="$TMPDIR"
+[[ -n "$TEMP" ]] && export TEMP="$TMPDIR"
+[[ -n "$TEMPDIR" ]] && export TEMPDIR="$TMPDIR"
 
 # Setup XDG cache directory
 if [[ -z "$XDG_CACHE_HOME" ]]; then

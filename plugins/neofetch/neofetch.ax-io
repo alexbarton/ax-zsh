@@ -7,17 +7,6 @@
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
 
-axzsh_neofetch() {
-	if (( $+commands[fastfetch] )); then
-		fastfetch
-	elif (( $+commands[neofetch] )); then
-		neofetch
-	else
-		echo "Neither fastfetch(1) nor neofetch(1) was found!" >&2
-		return 1
-	fi
-}
-
 # Don't show any info when ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0
 
@@ -25,7 +14,13 @@ axzsh_neofetch() {
 # don't show them now but return.
 [[ -z $(find "$XDG_CACHE_HOME/axzsh_last_neofetch" -mmin -60 2>/dev/null) ]] || return 0
 
-axzsh_neofetch
+if (( $+commands[fastfetch] )); then
+	fastfetch
+elif (( $+commands[neofetch] )); then
+	neofetch
+else
+	return 0
+fi
 
 # Wtite "stamp" file.
 [[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_neofetch"

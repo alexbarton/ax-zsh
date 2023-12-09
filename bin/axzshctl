@@ -25,9 +25,20 @@ function Version {
 	echo "Copyright (c) 2015-2019 Alexander Barton <alex@barton.de>."
 	echo "Licensed under the terms of the MIT license, see LICENSE.md for details."
 	echo "Homepage: <https://github.com/alexbarton/ax-zsh>"
+	echo
+	echo "Installation prefix: $AXZSH"
+	echo -n "Version: "
 	if [[ -d "$AXZSH/.git" && -n "$commands[git]" ]]; then
-		echo -n "Version: Git ID "
+		echo -n "Git Commit-ID "
 		( cd "$AXZSH" && git describe --always )
+	else
+		echo "unknown"
+	fi
+	echo -n "Active theme: "
+	if [[ -n "$AXZSH_THEME" ]]; then
+		echo "${AXZSH_THEME:A:t:r}"
+	else
+		echo "unknown"
 	fi
 	echo
 	exit 0

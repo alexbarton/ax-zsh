@@ -2,7 +2,7 @@
 # 50_axzsh.zshrc: Initialize AX-ZSH
 
 function axzshctl() {
-	zsh "$AXZSH/bin/axzshctl" "$@" || return $?
+	AXZSH_THEME="$AXZSH_THEME" zsh "$AXZSH/bin/axzshctl" "$@" || return $?
 
 	if [[ "$1" = "disable" ]]; then
 		unset AXZSH AXZSH_FPATH AXZSH_ZLOGIN_READ AXZSH_ZPROFILE_READ

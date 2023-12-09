@@ -14,6 +14,8 @@ _axzshctl() {
 			set-theme\:"Set active theme."
 			upgrade\:"Upgrade AX-ZSH installation (requires Git)."
 			update-caches\:"Force rebuild of all cache files."
+			version\:"Show version and setup information."
+			help\:"Show help for the axzshctl command."
 		))' \
 		'*: :->args'
 #

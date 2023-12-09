@@ -74,6 +74,11 @@ function Usage {
 	echo "  update-caches"
 	echo "    Force rebuild of all cache files."
 	echo
+	echo "  help"
+	echo "    Show this help text."
+	echo "  version"
+	echo "    Show version and setup information."
+	echo
 	exit 0
 }
 

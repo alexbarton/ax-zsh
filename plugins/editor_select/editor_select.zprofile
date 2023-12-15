@@ -7,6 +7,17 @@ if [[ -n "$EDITOR" && ! -x "$EDITOR" && -z "$commands[$EDITOR]" ]]; then
 fi
 
 if [[ -z "$EDITOR" ]]; then
+	# Check user preferences first!
+	if [[ -r ~/.selected_editor ]]; then
+		. ~/.selected_editor
+		if [[ -x "$SELECTED_EDITOR" || -n "$commands[$SELECTED_EDITOR]" ]]; then
+			EDITOR="$SELECTED_EDITOR"
+		fi
+		unset SELECTED_EDITOR
+	fi
+fi
+
+if [[ -z "$EDITOR" ]]; then
 	# Auto-detect a "good" editor ...
 	if [[ -n "$DISPLAY" ]]; then
 		# X11 available, consider X11-based editors, too!
@@ -14,6 +25,7 @@ if [[ -z "$EDITOR" ]]; then
 	fi
 
 	for editor (
+		sensible-editor
 		code atom mate subl mvim
 		$x11_editors
 		vim nano joe vi

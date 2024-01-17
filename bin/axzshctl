@@ -58,6 +58,8 @@ function Usage {
 	echo "    Disable plugin(s)."
 	echo "  list-enabled"
 	echo "    List enabled plugins."
+	echo "  plugin-help"
+	echo "    Show help text for a plugin (when provided by the plugin)."
 	echo
 	echo "  reset-plugins"
 	echo "    Reset active plugins to the default set."
@@ -248,6 +250,35 @@ function ListEnabledPlugins {
 		print ${plugin:t:s/#/\//}
 	done
 	return 0
+}
+
+function PluginHelp {
+	local plugin=$(NormalizedPluginName "$1")
+	local repo_plugin=$(echo "$plugin" | sed -e 's|#|/plugins/|')
+	local plugin_found=
+
+	for plugin_d (
+		"$plugin:A"
+		"$AXZSH/active_plugins/$plugin"
+		"$AXZSH/active_plugins/$repo_plugin"
+		"$AXZSH_PLUGIN_D/$plugin"
+		"$ZSH_CUSTOM/$plugin"
+		"$AXZSH/custom_plugins/$plugin"
+		"$AXZSH/repos/$plugin"
+		"$AXZSH/repos/$repo_plugin"
+		"$AXZSH/plugins/$plugin"
+		"$AXZSH/default_plugins/$plugin"
+		"$AXZSH/core/$plugin"
+	); do
+		[[ -e "$plugin_d" ]] && plugin_found=1
+		[[ -r "$plugin_d/README.md" ]] || continue
+		less "$plugin_d/README.md"
+		return 0
+	done
+	[[ -n "$plugin_found" ]] \
+		&& echo "Plugin \"$1\" found, but no help available!" >&2 \
+		|| echo "Plugin \"$1\" not found!" >&2
+	return 1
 }
 
 function ResetPlugins {
@@ -494,6 +525,10 @@ case "$cmd" in
 	"list-enabled")
 		[[ $# -eq 0 ]] || Usage
 		ListEnabledPlugins
+		;;
+	"plugin-help")
+		[[ $# -eq 1 ]] || Usage
+		PluginHelp "$1"
 		;;
 	"reset-plugins")
 		[[ $# -eq 0 ]] || Usage

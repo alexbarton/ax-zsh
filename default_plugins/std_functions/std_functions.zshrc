@@ -24,7 +24,22 @@ function open_command() {
 }
 
 function take() {
-	mkdir -p "$@" && cd "${@:$#}"
+	if [[ $# -eq 0 ]]; then
+		cd "$(mktemp -d)"
+		pwd
+	else
+		mkdir -p "$@" && cd "${@:$#}"
+	fi
+}
+
+function untake() {
+	if [[ "${PWD%tmp.*}" = "${TMPDIR}" ]]; then
+		pwd
+		cd
+		rm -fri "$@" "${OLDPWD}"
+	else
+		echo 'Sorry, not a temporarily taken directory!' >&2
+	fi
 }
 
 function zsh_stats() {

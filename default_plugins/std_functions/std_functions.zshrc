@@ -33,12 +33,16 @@ function take() {
 }
 
 function untake() {
-	if [[ "${PWD%tmp.*}" = "${TMPDIR}" ]]; then
-		pwd
+	pwd="${PWD}/"
+	subdir="${pwd##$TMPDIR}"
+	if [[ "${PWD%tmp.*}" = "${TMPDIR}" && -n "$subdir" ]]; then
+		tmp_d="${TMPDIR}${subdir%%/*}"
+		echo "$tmp_d"
 		cd
-		rm -fri "$@" "${OLDPWD}"
+		rm -fr "$@" "${tmp_d}"
 	else
 		echo 'Sorry, not a temporarily taken directory!' >&2
+		return 1
 	fi
 }
 

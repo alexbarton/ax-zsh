@@ -22,8 +22,10 @@ function axzsh_handle_stage {
 	# Enable instant prompt. Should stay close to the top of ~/.zshrc.
 	# Initialization code that may require console input (password prompts,
 	# [y/n] confirmations, etc.) must be executed before this, so all ax-zsh
-	# plugings should do output in their "ax-io" stage only!
-	if [[ "$type" == "zprofile" ]]; then
+	# plugins should do output in their "ax-io" stage only!
+	# Read the initialization script in the "zprofile" stage for login
+	# shells, and in the "zshrc" stage for non-login shells.
+	if [[ ( -o login && "$type" == "zprofile" ) || ( ! -o login && "$type" == "zshrc" ) ]]; then
 		p10k_instant_prompt="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 		[[ -r "$p10k_instant_prompt" ]] && source "$p10k_instant_prompt"
 	fi

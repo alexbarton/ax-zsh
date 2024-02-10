@@ -32,7 +32,11 @@ function axzsh_handle_stage {
 		( ! -o login && "$type" == "zshrc" && -n "$AXZSH_ZPROFILE_READ" ) \
 	]]; then
 		p10k_instant_prompt="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-		[[ -r "$p10k_instant_prompt" ]] && source "$p10k_instant_prompt"
+		if [[ -r "$p10k_instant_prompt" ]]; then
+			[[ -n "$AXZSH_DEBUG" ]] && echo "  Reading \"$p10k_instant_prompt\" ..."
+			source "$p10k_instant_prompt"
+		fi
+		unset p10k_instant_prompt
 	fi
 
 	# Initialize cache

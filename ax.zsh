@@ -57,7 +57,7 @@ function axzsh_handle_stage {
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - Reading cache file \"$cache_file\" ..."
 		source "$cache_file"
-		unfunction axzsh_plugin_init
+		(( $+functions[axzsh_plugin_init] )) && unfunction axzsh_plugin_init
 	else
 		# No cache file available.
 		local new_cache_file="$cache_file.NEW"

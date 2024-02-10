@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2022 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2024 Alexander Barton <alex@barton.de>
 
 script_name="${${(%):-%N}:t}"
 script_type="$script_name[2,-1]"
@@ -24,8 +24,13 @@ function axzsh_handle_stage {
 	# [y/n] confirmations, etc.) must be executed before this, so all ax-zsh
 	# plugins should do output in their "ax-io" stage only!
 	# Read the initialization script in the "zprofile" stage for login
-	# shells, and in the "zshrc" stage for non-login shells.
-	if [[ ( -o login && "$type" == "zprofile" ) || ( ! -o login && "$type" == "zshrc" ) ]]; then
+	# shells, and in the "zshrc" stage for non-login sub-shells (which have
+	# the profile already read in and therefore will skip the "ax-io" and
+	# "zprofile" stages and not catch up).
+	if [[ \
+		( "$type" == "zprofile" ) || \
+		( ! -o login && "$type" == "zshrc" && -n "$AXZSH_ZPROFILE_READ" ) \
+	]]; then
 		p10k_instant_prompt="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 		[[ -r "$p10k_instant_prompt" ]] && source "$p10k_instant_prompt"
 	fi

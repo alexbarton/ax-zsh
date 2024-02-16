@@ -14,7 +14,7 @@ else
 	(( $+commands[gpg] )) || return 1
 fi
 
-export GPG_TTY=$(tty)
+export GPG_TTY=$TTY
 
 if (( $+commands[gpg-connect-agent] )); then
 	# Try to start/connect the agent ...

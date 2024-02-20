@@ -4,7 +4,6 @@
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
-
 if [[ -z "$BROWSER" ]]; then
 	if [[ "$OSTYPE" != "linux-gnu" ]]; then
 		# Check for open(1) on Non-Linux systems. On (Debian-) Linux, the open(1)

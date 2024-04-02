@@ -21,8 +21,10 @@ for dir (
 	"$HOMEBREW_PREFIX/share/zsh/site-functions"
 ); do
 	[[ -d "$dir" ]] && axzsh_fpath+=("$dir")
-
 done
 unset dir brew_cmd
+
+# Set some defaults, if not set already.
+[[ -z "$HOMEBREW_AUTO_UPDATE_SECS" ]] && HOMEBREW_AUTO_UPDATE_SECS=600
 
 return 0

@@ -8,6 +8,7 @@ axzsh_is_modern_terminal || return 91
 [[ -o interactive ]] || return 91
 [[ -z "$ITERM_SHELL_INTEGRATION_INSTALLED" ]] || return 91
 [[ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}$TERM" =~ "^screen" ]] && return 91
+[[ "${ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX-}$TERM" =~ "^tmux" ]] && return 91
 
 # Add iTerm2 commands to PATH, when available.
 [[ -d ~/.iterm2 ]] && path+=(~/.iterm2)

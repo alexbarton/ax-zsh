@@ -38,11 +38,15 @@ fi
 
 # Indicates start of command output. Runs just before command executes.
 iterm2_before_cmd_executes() {
-	printf "${TMUX_PREFIX}\033]133;C;\007${TMUX_POSTFIX}"
+	if [[ "$TERM_PROGRAM" = "iTerm.app" ]]; then
+		printf "${TMUX_PREFIX}\033]133;C;\r\007${TMUX_POSTFIX}"
+	else
+		printf "${TMUX_PREFIX}\033]133;C;\007${TMUX_POSTFIX}"
+	fi
 }
 
 iterm2_set_user_var() {
-	printf "${TMUX_PREFIX}\033]1337;SetUserVar=%s=%s\007${TMUX_POSTFIX}" "$1" $(printf "%s" "$2" | base64 | tr -d '\n')
+	printf "${TMUX_PREFIX}\033]1337;SetUserVar=%s=%s\007${TMUX_POSTFIX}" "$1" "$(printf "%s" "$2" | base64 | tr -d '\n')"
 }
 
 # Users can write their own version of this method. It should call
@@ -134,6 +138,7 @@ iterm2_decorate_prompt() {
 		PREFIX="%{$(iterm2_prompt_mark)%}"
 	fi
 	PS1="$PREFIX$PS1%{$(iterm2_prompt_end)%}"
+	ITERM2_DECORATED_PS1="$PS1"
 }
 
 iterm2_precmd() {
@@ -141,6 +146,10 @@ iterm2_precmd() {
 	if [[ -z "${ITERM2_SHOULD_DECORATE_PROMPT-}" ]]; then
 		# You pressed ^C while entering a command (iterm2_preexec did not run)
 		iterm2_before_cmd_executes
+		if [[ "$PS1" != "${ITERM2_DECORATED_PS1-}" ]]; then
+			# PS1 changed, perhaps in another precmd. See issue 9938.
+			ITERM2_SHOULD_DECORATE_PROMPT="1"
+		fi
 	fi
 
 	iterm2_after_cmd_executes "$STATUS"
@@ -162,4 +171,4 @@ precmd_functions+=(iterm2_precmd)
 preexec_functions+=(iterm2_preexec)
 
 iterm2_print_state_data
-printf "${TMUX_PREFIX}\033]1337;ShellIntegrationVersion=12;shell=zsh\007${TMUX_POSTFIX}"
+printf "${TMUX_PREFIX}\033]1337;ShellIntegrationVersion=14;shell=zsh\007${TMUX_POSTFIX}"

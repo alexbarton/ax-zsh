@@ -162,9 +162,3 @@ preexec_functions+=(iterm2_preexec)
 
 iterm2_print_state_data
 printf "${TMUX_PREFIX}\033]1337;ShellIntegrationVersion=12;shell=zsh\007${TMUX_POSTFIX}"
-
-# Setup iTerm2 command aliases
-for cmd (~/.iterm2/*(N)); do
-	[[ -x "$cmd" ]] && alias "$(basename "$cmd")=$cmd"
-done
-unset cmd

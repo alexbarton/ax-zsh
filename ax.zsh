@@ -17,8 +17,6 @@ function axzsh_handle_stage {
 	# Look for some 3rd-party integrations ...
 
 	# --- Powerlevel10k ---
-	# Read in Powerlevel10k configuration file, if not already read:
-	[[ -z "$POWERLEVEL9K_CONFIG_FILE" && -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
 	# Enable instant prompt. Should stay close to the top of ~/.zshrc.
 	# Initialization code that may require console input (password prompts,
 	# [y/n] confirmations, etc.) must be executed before this, so all ax-zsh
@@ -38,6 +36,8 @@ function axzsh_handle_stage {
 		fi
 		unset p10k_instant_prompt
 	fi
+	# Read in Powerlevel10k configuration file, if not already read:
+	[[ -z "$POWERLEVEL9K_CONFIG_FILE" && -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 	# Initialize cache
 	[[ -d "$AXZSH/cache" ]] || mkdir -p "$AXZSH/cache"

@@ -24,4 +24,4 @@ alias remindcal='remind -ccu+3 -m -w$COLUMNS,4,0 $HOME/.remind'
 remind -h -g -t5 ~/.remind && echo
 
 # Wtite "stamp" file.
-[[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_reminder"
+[[ -w "$XDG_CACHE_HOME" ]] && touch "$XDG_CACHE_HOME/axzsh_last_reminder"

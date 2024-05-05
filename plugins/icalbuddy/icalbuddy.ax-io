@@ -38,4 +38,4 @@ rm -f "$tmpfile"
 unset bul bul_imp sep tmpfile
 
 # Wtite "stamp" file.
-[[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_reminder"
+[[ -w "$XDG_CACHE_HOME" ]] && touch "$XDG_CACHE_HOME/axzsh_last_reminder"

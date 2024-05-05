@@ -27,4 +27,4 @@ fi
 rm -f "$tmpfile"
 
 # Wtite "stamp" file.
-[[ -w ~/ ]] && touch "$XDG_CACHE_HOME/axzsh_last_calendar"
+[[ -w "$XDG_CACHE_HOME" ]] && touch "$XDG_CACHE_HOME/axzsh_last_calendar"

@@ -7,4 +7,7 @@ if ! (( $+commands[bat] )); then
 	alias bat='batcat'
 fi
 
+# Use bat(1) as cat(1):
+alias cat='bat'
+
 return 0

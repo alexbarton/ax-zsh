@@ -1,0 +1,10 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# zkbd.ax-io: Initialize ZKBD Keybindings
+
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
+
+[[ -r ${ZDOTDIR:-$HOME}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE} ]] && return 0
+
+# ZKBD is not yet initialized for this terminal type; do it now!
+autoload -Uz zkbd
+zkbd

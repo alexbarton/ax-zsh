@@ -5,8 +5,10 @@
 
 autoload -Uz zkbd
 
-[[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE} ]] && zkbd
-source ${ZDOTDIR:-$HOME}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}
+# Try to load in existing settings:
+if [[ -r ${ZDOTDIR:-$HOME}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE} ]]; then
+	. ${ZDOTDIR:-$HOME}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}
+fi
 
 [[ -n "${key[Backspace]}" ]] && bindkey "${key[Backspace]}" backward-delete-char
 [[ -n "${key[Delete]}" ]] && bindkey "${key[Delete]}" delete-char

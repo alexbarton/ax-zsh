@@ -5,8 +5,8 @@
 
 autoload -Uz zkbd
 
-[[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE ]] && zkbd
-source ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE
+[[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE} ]] && zkbd
+source ${ZDOTDIR:-$HOME}/.zkbd/$TERM-${${DISPLAY:t}:-$VENDOR-$OSTYPE}
 
 [[ -n "${key[Backspace]}" ]] && bindkey "${key[Backspace]}" backward-delete-char
 [[ -n "${key[Delete]}" ]] && bindkey "${key[Delete]}" delete-char

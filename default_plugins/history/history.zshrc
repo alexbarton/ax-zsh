@@ -25,3 +25,6 @@ setopt inc_append_history
 setopt share_history
 
 alias history='fc -il 1'
+
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward

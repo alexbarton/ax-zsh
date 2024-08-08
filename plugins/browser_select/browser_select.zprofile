@@ -12,7 +12,7 @@ if [[ -z "$BROWSER" ]]; then
 	fi
 	if [[ -n "$DISPLAY" ]]; then
 		# X11 available, consider X11-based browsers, too!
-		x11_browsers="firefox chrome"
+		x11_browsers=(firefox chrome)
 	fi
 
 	# Note: We can't use xdg-open(1) here, as xdg-open itself tries to use

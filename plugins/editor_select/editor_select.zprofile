@@ -6,15 +6,13 @@ if [[ -n "$EDITOR" && ! -x "$EDITOR" && -z "$commands[$EDITOR]" ]]; then
 	unset EDITOR
 fi
 
-if [[ -z "$EDITOR" ]]; then
-	# Check user preferences first!
-	if [[ -r ~/.selected_editor ]]; then
-		. ~/.selected_editor
-		if [[ -x "$SELECTED_EDITOR" || -n "$commands[$SELECTED_EDITOR]" ]]; then
-			EDITOR="$SELECTED_EDITOR"
-		fi
-		unset SELECTED_EDITOR
+# Check user preferences first!
+if [[ -r ~/.selected_editor ]]; then
+	. ~/.selected_editor
+	if [[ -x "$SELECTED_EDITOR" || -n "$commands[$SELECTED_EDITOR]" ]]; then
+		EDITOR="$SELECTED_EDITOR"
 	fi
+	unset SELECTED_EDITOR
 fi
 
 if [[ -z "$EDITOR" ]]; then

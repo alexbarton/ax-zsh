@@ -16,10 +16,9 @@ fi
 function cheat() {
 	if (( $+commands[cht.sh] )); then
 		if [[ $# -eq 0 ]]; then
-			CHTSH_QUERY_OPTIONS="style=monokai" cht.sh --shell
+			cht.sh --shell
 		else
-			CHTSH_QUERY_OPTIONS="style=monokai" cht.sh "$@" \
-			 | ${PAGER:-less}
+			cht.sh "$@" | ${PAGER:-less}
 		fi
 		return $?
 	fi

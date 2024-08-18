@@ -1,7 +1,7 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # cheat: Setup https://cht.sh
 
-if (( $+commands[fzf] )); then
+if (( $+commands[fzf] )) && (( $+commands[curl] )); then
 	# See <https://twitter.com/igor_chubin/status/1343294742315020293>
 	function c() {
 		url="https://cht.sh"

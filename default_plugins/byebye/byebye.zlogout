@@ -2,7 +2,7 @@
 # byebye.zlogout -- Say goodbye to interactive users
 
 [[ -o interactive ]] || return
-[[ -n "$AXZSH_PLUGIN_CHECK" ]] || return 92
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
 # Clear the console if it is a local terminal
 case `tty` in

@@ -1,0 +1,69 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# 99-attach-session: Interactively reattach to a running session.
+
+# Don't run this plugin on "check-plugins"!
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
+
+# Don't do anything when ~/.hushlogin exists ...
+[[ -r ~/.hushlogin ]] && return 0
+
+__hello_session()
+{
+	printf "\e[1mThe following $1 sessions are running:\e[m\n"
+}
+
+__get_session_message()
+{
+	echo "Attach to \"$1\" (<RETURN>) or enter name; <CTRL+D> to skip: "
+}
+
+__exit_session()
+{
+	echo
+	axzsh_handle_stage "attach-session" "zlogout"
+	exit 0
+}
+
+__break_selection()
+{
+	printf "\nSkipped.\n"
+	break
+}
+
+# Test for tmux(1) sessions:
+if command -v tmux >/dev/null && tmux ls >/dev/null 2>&1; then
+	__hello_session "tmux(1)"
+	default=$(tmux ls | head -n 1 | cut -d':' -f1)
+	tmux ls | awk '{name=$1; $1=""; print "-", "\033[1m"name"\033[m", $0 }'
+	while true; do
+		if read "session?$(__get_session_message "$default")"; then
+			if tmux attach -t "${session:-$default}"; then
+				__exit_session
+			fi
+		else
+			__break_selection
+		fi
+	done
+	echo
+fi
+
+# Test for screen(1) sessions:
+if command -v screen >/dev/null && screen -ls >/dev/null 2>&1; then
+	__hello_session "screen(1)"
+	default=$(screen -ls | grep -F '(' | cut -d'.' -f2)
+	screen -ls | awk '/\(/ {id=$1; name=$2; $1=$2=""; print id, ".\033[1m"name"\033[0m.", $0 }' FS=. OFS=
+	while true; do
+		if read "session?$(__get_session_message "$default")"; then
+			if screen -rd "${session:-$default}"; then
+				__exit_session
+			fi
+		else
+			__break_selection
+		fi
+	done
+	echo
+fi
+
+# Clean up ...
+unfunction __get_session_message __exit_session __break_selection
+unset default session

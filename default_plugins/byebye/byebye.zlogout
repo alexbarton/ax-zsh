@@ -12,6 +12,9 @@ case `tty` in
 		|| clear
 	;;
     *)
+	# Don't show any info when ~/.hushlogin exists ...
+	[[ -r ~/.hushlogin ]] && return 0
+
 	echo "Bye, bye, $LOGNAME!"
 	echo
 esac

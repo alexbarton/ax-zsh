@@ -1,0 +1,15 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# 10-hello.ax-io: Greet the user in the (new) environment
+
+# Don't run this plugin on "check-plugins"!
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0
+
+# Don't show any info when ~/.hushlogin exists ...
+[[ -r ~/.hushlogin ]] && return 0
+
+# Check for a container environment:
+if [[ -e /run/.containerenv ]]; then
+	# Try to get some infos about the environment ...
+	. /run/.containerenv 2>/dev/null
+	echo "You entered the ${name:-container} environment."
+fi

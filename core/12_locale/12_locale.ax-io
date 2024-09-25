@@ -21,8 +21,10 @@ fix_locale() {
 		echo "$locale"
 	fi
 }
+[[ -n "$AXZSH_DEBUG" ]] && echo "  LANG='${LANG:-(unset/empty)}' LANGUAGE='${LANGUAGE:-(unset/empty)}' LC_MESSAGES='${LC_MESSAGES:-(unset/empty)}'"
 [[ -n "$LANG" ]] && LANG=$(fix_locale "$LANG")
 [[ -n "$LC_MESSAGES" ]] && LANG=$(fix_locale "$LC_MESSAGES")
+[[ -n "$AXZSH_DEBUG" ]] && echo "  LANG='${LANG:-(unset/empty)}' LANGUAGE='${LANGUAGE:-(unset/empty)}' LC_MESSAGES='${LC_MESSAGES:-(unset/empty)}' - after fix."
 unfunction fix_locale
 
 # Validate the locale(7) settings in interactive shells and try to mimic the
@@ -69,3 +71,4 @@ case "$LANG" in
 			export LANGUAGE=${LANG%.*}:${${LANG%.*}%_*}
 		fi
 esac
+[[ -n "$AXZSH_DEBUG" ]] && echo "  LANG='${LANG:-(unset/empty)}' LANGUAGE='${LANGUAGE:-(unset/empty)}' LC_MESSAGES='${LC_MESSAGES:-(unset/empty)}' - set."

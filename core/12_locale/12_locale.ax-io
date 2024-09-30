@@ -47,7 +47,7 @@ while true; do
 		break
 	fi
 
-	echo "ax-zsh: Unknown/unsupported locale \"${lc_messages:-unknown}\"!" >&2
+	echo "AX-ZSH: Unknown/unsupported locale \"${lc_messages:-unknown}\"!" >&2
 	unset locale
 	while [[ -z "$locale" ]]; do
 		if ! read -r "locale?Locale? "; then

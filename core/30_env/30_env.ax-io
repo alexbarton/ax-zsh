@@ -23,7 +23,7 @@ if [[ -z "$TMPDIR" || "$TMPDIR" = "/" ]]; then
 			TMPDIR="$user_tmpdir/"
 			chmod 0700 "$TMPDIR"
 		fi
-		echo "Note: \"TMPDIR\" was not set, using \"$TMPDIR\"." >&2
+		echo "AX-ZSH: \"TMPDIR\" was not set, using \"$TMPDIR\"." >&2
 		unset user_tmpdir
 	fi
 fi
@@ -34,7 +34,7 @@ case "$TMPDIR" in
 	*)  TMPDIR="$TMPDIR/"
 esac
 if [[ ! -w "$TMPDIR" ]]; then
-	echo "Warning: Temporary directory \"$TMPDIR\" is not writable!" >&2
+	echo "AX-ZSH: Temporary directory \"$TMPDIR\" is not writable!" >&2
 fi
 export TMPDIR
 

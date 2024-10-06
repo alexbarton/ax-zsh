@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2022 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2024 Alexander Barton <alex@barton.de>
 #
 
 source "$AXZSH/core/11_terminal/11_terminal.zshrc" || exit 1
@@ -13,11 +13,14 @@ while [[ $# -gt 0 ]]; do
 		"-1")
 			ONE_LINE=1
 			;;
+		"-f")
+			FEATURE_TEST=1
+			;;
 		"-v")
 			VERBOSE=1
 			;;
 		*)
-			echo "Usage: ttyinfo [-1] [-v]" >&2
+			echo "Usage: ttyinfo [-1] [-f] [-v]" >&2
 			exit 1
 	esac
 	shift
@@ -77,6 +80,33 @@ for key (
 done
 [[ $col -gt 0 ]] && echo
 
+feature_tests="
+Styles:		Normal
+		\033[1mBold\033[0m
+		\033[2mDim\033[0m
+		\033[3mItalic\033[0m
+		\033[3;1mBold italic\033[0m
+		\033[4mUnderline\033[0m (with \033[58;5;5m\033[4mcolor\033[0m)
+		\033[4:2mDouble underline\033[0m (\033[21mvariant 2\033[0m)
+		\033[4:3mCurly underline\033[0m
+		\033[4:4mDotted underline\033[0m
+		\033[4:5mDashed underline\033[0m
+		\033[5mBlink\033[0m
+		\033[7mReverse\033[0m
+		Hidden text: \"\033[8mHIDDEN\033[0m\"
+		\033[9mStrikethrough\033[0m
+		\033[53mOverline\033[0m
+		\033[74mSubscript\033[0m
+		\033[31mRed\033[0m, \033[92mbright green\033[0m, black on \033[30;46mblue\033[0m, ...
+		\033]8;;https://github.com/alexbarton/ax-zsh\033\\Hyperlink\033]8;;\033\\
+
+Ligatures:	->  <-  !=  ==  === !== >=  <=  =>
+
+Nerdfont:	         󰾆      󰢻   󱑥   󰒲   󰗼
+Fontawesome:	                        
+"
+[[ -n "$FEATURE_TEST" ]] && printf "%b\n" "${feature_tests}"
+
 [[ -z "$VERBOSE" ]] && return 0
 
 check_function_result() {
@@ -90,7 +120,7 @@ check_function_result() {
 	return $r
 }
 
-echo
+[[ -z "$FEATURE_TEST" ]] && echo
 for f (
 	axzsh_is_dumb_terminal
 	axzsh_is_modern_terminal

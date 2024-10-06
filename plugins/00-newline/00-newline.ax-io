@@ -4,6 +4,11 @@
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
 
+# Check prerequisites ...
+[[ -o interactive ]] || return 91
+[[ -z "$STY" ]] || return 91
+[[ -z "$TMUX" ]] || return 91
+
 # Don't output anything ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0
 

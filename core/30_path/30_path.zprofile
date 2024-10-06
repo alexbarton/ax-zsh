@@ -5,7 +5,11 @@
 if [[ -x /usr/libexec/path_helper ]]; then
 	eval "$(/usr/libexec/path_helper)"
 else
-	PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+	path=()
+	[[ $UID -eq 0 ]] && path+=(/usr/sbin)
+	path+=(/usr/bin)
+	[[ ! -h /sbin && $UID -eq 0 ]] && path+=(/sbin)
+	[[ ! -h /bin ]] && path+=(/bin)
 fi
 typeset -Ux PATH
 
@@ -27,6 +31,7 @@ _axzsh_setup_path() {
 		~/sbin
 		~/Applications
 	); do
+		[[ "$d" = */sbin && $UID -ne 0 ]] && continue
 		[[ -d "$d" ]] && path=("$d" $path)
 	done
 

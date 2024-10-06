@@ -12,6 +12,8 @@ fi
 # Make sure that "fzf(1)" is installed
 (( $+commands[fzf] )) || return 1
 
+alias -g F="| fzf"
+
 # Test for Debian-specific keybinding location ...
 if [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
 	if [[ -r /usr/share/doc/fzf/examples/completion.zsh ]]; then

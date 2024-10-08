@@ -56,12 +56,16 @@ function _axzsh_is_widechar_terminal {
 
 # Test for "modern" terminal
 function axzsh_is_modern_terminal {
-	[[ "$TERM" = cygwin ]] && return 0
-	[[ "$TERM" = putty* ]] && return 0
-	[[ "$TERM" = screen* ]] && return 0
-	[[ "$TERM" = tmux* ]] && return 0
-	[[ "$TERM" = xterm* ]] && return 0
-	return 1
+	[[ -n "$AXZSH_IS_MODERN_TERMINAL" ]] \
+		&& return $(test $AXZSH_IS_MODERN_TERMINAL -eq 0 )
+	result=1
+	[[ "$TERM" = cygwin ]] && result=0
+	[[ "$TERM" = putty* ]] && result=0
+	[[ "$TERM" = screen* ]] && result=0
+	[[ "$TERM" = tmux* ]] && result=0
+	[[ "$TERM" = xterm* ]] && result=0
+	export AXZSH_IS_MODERN_TERMINAL=$result
+	return $result
 }
 
 # Test for "dumb" terminal
@@ -90,7 +94,7 @@ function axzsh_terminal_set_window_title {
 	printf '\e]2;%s\a' "$1"
 }
 
-# Update terminal titles befor echoing the shell prompt
+# Update terminal titles before echoing the shell prompt
 function axzsh_terminal_title_precmd {
 	axzsh_is_modern_terminal || return
 	axzsh_terminal_set_window_title ''
@@ -106,7 +110,7 @@ function axzsh_terminal_title_precmd {
 
 precmd_functions+=(axzsh_terminal_title_precmd)
 
-# Update terminal titles befor executing a command
+# Update terminal titles before executing a command
 function axzsh_terminal_title_preexec {
 	axzsh_is_modern_terminal || return
 

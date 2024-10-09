@@ -60,6 +60,7 @@ function axzsh_is_modern_terminal {
 		&& return $(test $AXZSH_IS_MODERN_TERMINAL -eq 0 )
 	result=1
 	[[ "$TERM" = cygwin ]] && result=0
+	[[ "$TERM" = kitty* ]] && result=0
 	[[ "$TERM" = putty* ]] && result=0
 	[[ "$TERM" = screen* ]] && result=0
 	[[ "$TERM" = tmux* ]] && result=0

@@ -256,8 +256,7 @@ if [[ -f "$AXZSH/debug" || -f "$HOME/.axzsh.debug" ]]; then
 fi
 
 # Reset some caches. These should become refreshed per-stage:
-unset AXZSH_IS_MODERN_TERMINAL
-unset _axzsh_is_widechar_terminal_cache
+unset _axzsh_is_modern_terminal_cache _axzsh_is_widechar_terminal_cache
 
 if [[ "$script_type" = "zprofile" ]]; then
 	# Load all "output" plugins first, that is, before the "zprofile stage":

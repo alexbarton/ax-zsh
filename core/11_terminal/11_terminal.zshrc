@@ -73,12 +73,12 @@ function axzsh_is_modern_terminal {
 	if [[ -z "$TERM" ]]; then
 		# Ops, the TERM environment variable no (longer) set?
 		# This is definitely no "modern" terminal!
-		unset AXZSH_IS_MODERN_TERMINAL
+		unset _axzsh_is_modern_terminal_cache
 		return 1
 	fi
 	[[ -n "$TERM_DOWNGRADED_FROM" ]] && return 1
-	[[ -n "$AXZSH_IS_MODERN_TERMINAL" ]] \
-		&& return $(test "$AXZSH_IS_MODERN_TERMINAL" -eq 0 2>/dev/null)
+	[[ -n "$_axzsh_is_modern_terminal_cache" ]] \
+		&& return $(test "$_axzsh_is_modern_terminal_cache" -eq 0 2>/dev/null)
 
 	result=1
 	[[ "$TERM" = cygwin ]] && result=0
@@ -88,7 +88,7 @@ function axzsh_is_modern_terminal {
 	[[ "$TERM" = tmux* ]] && result=0
 	[[ "$TERM" = xterm* ]] && result=0
 
-	export AXZSH_IS_MODERN_TERMINAL=$result
+	export _axzsh_is_modern_terminal_cache=$result
 	return $result
 }
 

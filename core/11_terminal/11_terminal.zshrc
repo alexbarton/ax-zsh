@@ -205,6 +205,13 @@ if [[ -z "$TERM_COLORS" ]]; then
 fi
 [[ -n "$TERM_COLORS" ]] && export TERM_COLORS
 
+# Set "CLICOLOR" when there are at least 4 colors available.
+if [[ "${TERM_COLORS:-0}" -ge 4 ]]; then
+	export CLICOLOR=1
+else
+	unset CLICOLOR
+fi
+
 # Foreground (FG) and background (BG) colors.
 typeset -Ag FG BG
 if [[ $TERM_COLORS -gt 16 ]]; then

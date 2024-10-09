@@ -42,6 +42,7 @@ typeset -i max=${COLUMNS:-80}
 typeset -i col=0
 for key (
 	LANG
+	LANGUAGE
 	LC_ALL
 	LC_ADDRESS
 	LC_COLLATE

@@ -174,7 +174,7 @@ alias axttyinfo="zsh \"\$AXZSH/bin/axttyinfo\""
 axzsh_is_dumb_terminal && return 0
 
 # Colors
-# See <https://en.wikipedia.org/wiki/ANSI_escape_code#Colors>, for exmaple.
+# See <https://en.wikipedia.org/wiki/ANSI_escape_code#Colors>, for example.
 
 autoload -Uz colors
 colors
@@ -230,14 +230,14 @@ ZSH_SPECTRUM_TEXT=${ZSH_SPECTRUM_TEXT:-The quick brown fox jumps over the lazy d
 
 # Show all 256 foreground colors with color number
 function spectrum_ls() {
-	for code in {000..$TERM_COLORS}; do
+	test "$TERM_COLORS" -gt 0 || return 1
 		print -P -- "$code: $FG[$code]$ZSH_SPECTRUM_TEXT$FX[reset]"
 	done
 }
 
 # Show all 256 background colors with color number
 function spectrum_bls() {
-	for code in {000..$TERM_COLORS}; do
+	test "$TERM_COLORS" -gt 0 || return 1
 		print -P -- "$code: $BG[$code]$ZSH_SPECTRUM_TEXT$FX[reset]"
 	done
 }

@@ -8,6 +8,20 @@
 # versions of GNOME Terminal (at least) set TERM=xterm ...
 [[ "$TERM" = "xterm" && "$VTE_VERSION" != "" ]] && TERM="xterm-256color"
 
+# Check if TERM_COLORS match the TERM setting, and fix TERM if not:
+if [[ \
+	-n "$TERM_COLORS" \
+	&& "$TERM_COLORS" -lt 255 \
+	&& "$TERM" = *-256color \
+]]; then
+	# Cut off the "-256color" suffix!
+	export TERM_DOWNGRADED_FROM=$TERM
+	export TERM="${TERM%*-256color}"
+	# Adjust color definitions for ls(1):
+	unset LS_COLORS
+	(( $+commands[dircolors] )) && eval $(dircolors)
+fi
+
 # Common helper functions
 
 # Check if terminal supports Unicode.
@@ -62,6 +76,7 @@ function axzsh_is_modern_terminal {
 		unset AXZSH_IS_MODERN_TERMINAL
 		return 1
 	fi
+	[[ -n "$TERM_DOWNGRADED_FROM" ]] && return 1
 	[[ -n "$AXZSH_IS_MODERN_TERMINAL" ]] \
 		&& return $(test "$AXZSH_IS_MODERN_TERMINAL" -eq 0 2>/dev/null)
 

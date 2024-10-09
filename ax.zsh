@@ -103,7 +103,7 @@ function axzsh_handle_stage {
 					if [[ -n "$new_cache_file" ]]; then
 						# Source the theme in the new cache file:
 						echo "# BEGIN Theme" >>"$new_cache_file"
-						echo 'source "$AXZSH_THEME"' >>"$new_cache_file"
+						echo 'test -r "$AXZSH_THEME" && source "$AXZSH_THEME"' >>"$new_cache_file"
 						echo "# END Theme" >>"$new_cache_file"
 					fi
 				fi

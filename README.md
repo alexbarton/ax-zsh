@@ -251,7 +251,6 @@ Validated and/or set up by core plugins:
 * `LOCAL_HOME`
 * `PS1`
 * `SHORT_HOST`
-* `TERM`
 * `TMPDIR` (set and always ends with a "/")
 * `XDG_CACHE_HOME`
 * `XDG_RUNTIME_DIR`

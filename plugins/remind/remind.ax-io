@@ -9,6 +9,7 @@
 
 # Some handy alias.
 alias remindcal='remind -ccu+3 -m -w$COLUMNS,4,0 $HOME/.remind'
+alias reminders='remind -h -g -t5 ~/.remind && echo'
 
 # Don't show reminders when ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0
@@ -20,8 +21,7 @@ alias remindcal='remind -ccu+3 -m -w$COLUMNS,4,0 $HOME/.remind'
 # don't show them now but return.
 [[ -z `find "$XDG_CACHE_HOME/axzsh_last_reminder" -mmin -60 2>/dev/null` ]] || return 0
 
-# Show reminders now.
-remind -h -g -t5 ~/.remind && echo
+reminders
 
-# Wtite "stamp" file.
+# Write "stamp" file.
 [[ -w "$XDG_CACHE_HOME" ]] && touch "$XDG_CACHE_HOME/axzsh_last_reminder"

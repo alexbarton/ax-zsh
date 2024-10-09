@@ -220,6 +220,7 @@ typeset -Ag FX
 FX=(
 	reset     "%{\e[0m%}"
 	bold      "%{\e[1m%}"	no-bold      "%{\e[22m%}"
+	dim       "%{\e[2m%}"	no-dim       "%{\e[22m%}"
 	italic    "%{\e[3m%}"	no-italic    "%{\e[23m%}"
 	underline "%{\e[4m%}"	no-underline "%{\e[24m%}"
 	blink     "%{\e[5m%}"	no-blink     "%{\e[25m%}"

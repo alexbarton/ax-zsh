@@ -255,6 +255,10 @@ if [[ -f "$AXZSH/debug" || -f "$HOME/.axzsh.debug" ]]; then
 	echo "AXZSH_ZPROFILE_READ=$AXZSH_ZPROFILE_READ"
 fi
 
+# Reset some caches. These should become refreshed per-stage:
+unset AXZSH_IS_MODERN_TERMINAL
+unset _axzsh_is_widechar_terminal_cache
+
 if [[ "$script_type" = "zprofile" ]]; then
 	# Load all "output" plugins first, that is, before the "zprofile stage":
 	axzsh_handle_stage "$script_name" "ax-io"

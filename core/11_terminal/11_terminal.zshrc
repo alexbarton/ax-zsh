@@ -56,8 +56,15 @@ function _axzsh_is_widechar_terminal {
 
 # Test for "modern" terminal
 function axzsh_is_modern_terminal {
+	if [[ -z "$TERM" ]]; then
+		# Ops, the TERM environment variable no (longer) set?
+		# This is definitely no "modern" terminal!
+		unset AXZSH_IS_MODERN_TERMINAL
+		return 1
+	fi
 	[[ -n "$AXZSH_IS_MODERN_TERMINAL" ]] \
-		&& return $(test $AXZSH_IS_MODERN_TERMINAL -eq 0 )
+		&& return $(test "$AXZSH_IS_MODERN_TERMINAL" -eq 0 2>/dev/null)
+
 	result=1
 	[[ "$TERM" = cygwin ]] && result=0
 	[[ "$TERM" = kitty* ]] && result=0
@@ -65,12 +72,14 @@ function axzsh_is_modern_terminal {
 	[[ "$TERM" = screen* ]] && result=0
 	[[ "$TERM" = tmux* ]] && result=0
 	[[ "$TERM" = xterm* ]] && result=0
+
 	export AXZSH_IS_MODERN_TERMINAL=$result
 	return $result
 }
 
 # Test for "dumb" terminal
 function axzsh_is_dumb_terminal {
+	[[ -z "$TERM" ]] && return 0
 	axzsh_is_modern_terminal && return 1
 	[[ "$TERM" = dumb* ]] && return 0
 	[[ "$TERM" = "vt52" ]] && return 0

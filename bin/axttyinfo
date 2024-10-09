@@ -58,6 +58,7 @@ for key (
 	COLORTERM
 	CLICOLOR
 	TERM_COLORS
+	VTE_VERSION
 	-
 	DISPLAY
 ); do

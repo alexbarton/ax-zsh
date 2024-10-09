@@ -11,7 +11,7 @@
 # Check if TERM_COLORS match the TERM setting, and fix TERM if not:
 if [[ \
 	-n "$TERM_COLORS" \
-	&& "$TERM_COLORS" -lt 255 \
+	&& "$TERM_COLORS" -lt 256 \
 	&& "$TERM" = *-256color \
 ]]; then
 	# Cut off the "-256color" suffix!
@@ -171,6 +171,7 @@ preexec_functions+=(axzsh_terminal_title_preexec)
 
 alias axttyinfo="zsh \"\$AXZSH/bin/axttyinfo\""
 
+# "Dumb" terminals most likely have no color or style support. So stop here!
 axzsh_is_dumb_terminal && return 0
 
 # Colors
@@ -187,31 +188,43 @@ else
 	bg[default]="\e[47m"
 fi
 
+# Try to detect the number of supported colors and store it in TERM_COLORS:
+# first by querying the "termcap" database, and if this does not work, some
+# hardcoded defaults.
+if [[ -z "$TERM_COLORS" ]]; then
+	TERM_COLORS=$(tput colors 2>/dev/null)
+	if [[ -z "$TERM_COLORS" ]]; then
+		case "$TERM" in
+			*-256color|xterm-kitty)
+				TERM_COLORS=256 ;;
+			*)
+				# Assume 16 colors by default ...
+				TERM_COLORS=16
+		esac
+	fi
+fi
+[[ -n "$TERM_COLORS" ]] && export TERM_COLORS
+
 # Foreground (FG) and background (BG) colors.
 typeset -Ag FG BG
-case "$TERM" in
-	*-256color)
-		TERM_COLORS=255
-		for color in {000..$TERM_COLORS}; do
-			FG[$color]="%{\e[38;5;${color}m%}"
-			BG[$color]="%{\e[48;5;${color}m%}"
-		done
-		;;
-	*)
-		TERM_COLORS=15
-		typeset -i c
-		for color in {000..$TERM_COLORS}; do
-			c=$color
-			if [[ $c -ge 8 ]]; then
-				c=$c-8
-				p="1;"
-			fi
-			FG[$color]="%{\e[${p}3${c}m%}"
-			BG[$color]="%{\e[${p}4${c}m%}"
-		done
-		unset c p
-esac
-export TERM_COLORS
+if [[ $TERM_COLORS -gt 16 ]]; then
+	for color in {000..$((TERM_COLORS-1))}; do
+		FG[$color]="%{\e[38;5;${color}m%}"
+		BG[$color]="%{\e[48;5;${color}m%}"
+	done
+elif [[ $TERM_COLORS -gt 0 ]]; then
+	typeset -i c
+	for color in {000..$((TERM_COLORS-1))}; do
+		c=$color
+		if [[ $c -ge 8 ]]; then
+			c=$c-8
+			p="1;"
+		fi
+		FG[$color]="%{\e[${p}3${c}m%}"
+		BG[$color]="%{\e[${p}4${c}m%}"
+	done
+	unset c p
+fi
 
 # Text effects (FX)
 # See <https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters>, for example.
@@ -232,6 +245,7 @@ ZSH_SPECTRUM_TEXT=${ZSH_SPECTRUM_TEXT:-The quick brown fox jumps over the lazy d
 # Show all 256 foreground colors with color number
 function spectrum_ls() {
 	test "$TERM_COLORS" -gt 0 || return 1
+	for code in {000..$((TERM_COLORS-1))}; do
 		print -P -- "$code: $FG[$code]$ZSH_SPECTRUM_TEXT$FX[reset]"
 	done
 }
@@ -239,6 +253,7 @@ function spectrum_ls() {
 # Show all 256 background colors with color number
 function spectrum_bls() {
 	test "$TERM_COLORS" -gt 0 || return 1
+	for code in {000..$((TERM_COLORS-1))}; do
 		print -P -- "$code: $BG[$code]$ZSH_SPECTRUM_TEXT$FX[reset]"
 	done
 }

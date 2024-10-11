@@ -1,6 +1,9 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # axemoji.axzshtheme: Fancier AX-ZSH Theme
 
+ZSH_THEME_TTY_PROMPT_PREFIX="%{$fg_no_bold[cyan]%}"
+ZSH_THEME_TTY_PROMPT_SUFFIX="%{$reset_color%}"
+
 ZSH_THEME_PROMPT_PREFIX_SPACING=" "
 ZSH_THEME_PROMPT_SUFFIX_SPACING=" "
 
@@ -35,7 +38,7 @@ axzsh_logname_prompt_functions=($axzsh_logname_prompt_functions axzsh_logname_pr
 axzsh_hostname_prompt_functions=($axzsh_hostname_prompt_functions axzsh_hostname_prompt_root)
 
 # The primary prompt string, printed before a command is read.
-PS1="${system_emoji}${emoji_spacing} $(axzsh_logname_prompt_yn)$(axzsh_hostname_prompt_yn)%B%2~%b"'$(axzsh_vcs_prompt)'"$(axzsh_prompt)"
+PS1="${system_emoji}${emoji_spacing} $(axzsh_tty_prompt_yn)$$(axzsh_logname_prompt_yn)$(axzsh_hostname_prompt_yn)%B%2~%b"'$(axzsh_vcs_prompt)'"$(axzsh_prompt)"
 
 # Default execution trace prompt.
 PS4="$fg_no_bold[yellow]->$reset_color "

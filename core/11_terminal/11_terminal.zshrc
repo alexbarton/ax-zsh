@@ -172,7 +172,11 @@ preexec_functions+=(axzsh_terminal_title_preexec)
 alias axttyinfo="zsh \"\$AXZSH/bin/axttyinfo\""
 
 # "Dumb" terminals most likely have no color or style support. So stop here!
-axzsh_is_dumb_terminal && return 0
+if ! axzsh_is_dumb_terminal; then
+	# But clean up a bit!
+	unset CLICOLOR TERM_COLORS
+	return 0
+fi
 
 # Colors
 # See <https://en.wikipedia.org/wiki/ANSI_escape_code#Colors>, for example.

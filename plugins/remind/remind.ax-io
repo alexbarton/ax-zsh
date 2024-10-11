@@ -21,7 +21,7 @@ alias reminders='remind -h -g -t5 ~/.remind && echo'
 # don't show them now but return.
 [[ -z `find "$XDG_CACHE_HOME/axzsh_last_reminder" -mmin -60 2>/dev/null` ]] || return 0
 
-reminders
+eval $(alias reminders|cut -d"'" -f2)
 
 # Write "stamp" file.
 [[ -w "$XDG_CACHE_HOME" ]] && touch "$XDG_CACHE_HOME/axzsh_last_reminder"

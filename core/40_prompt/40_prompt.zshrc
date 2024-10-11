@@ -55,6 +55,18 @@ function axzsh_hostname_prompt_yn() {
 
 axzsh_hostname_prompt_functions=()
 
+# TTY
+
+ZSH_THEME_TTY_PROMPT_PREFIX_SPACING="["
+ZSH_THEME_TTY_PROMPT_PREFIX=""
+ZSH_THEME_TTY_PROMPT_SUFFIX=""
+ZSH_THEME_TTY_PROMPT_SUFFIX_SPACING="] "
+
+function axzsh_tty_prompt_yn() {
+	[[ "$TTY" = /dev/tty[0-9]* ]] || return
+	echo "${ZSH_THEME_TTY_PROMPT_PREFIX_SPACING}${ZSH_THEME_TTY_PROMPT_PREFIX}${TTY##*/}${ZSH_THEME_TTY_PROMPT_SUFFIX}${ZSH_THEME_TTY_PROMPT_SUFFIX_SPACING}"
+}
+
 # VCS
 
 if axzsh_is_utf_terminal; then

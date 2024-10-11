@@ -94,6 +94,53 @@ using plugins. Different types of plugins are supported:
   * installed manually into `$AXZSH/custom_themes`
   * some stand-alone themes stored on GitHub
 
+### Configuration of other applications & tools
+
+Some tools, notably remote access tools like ssh(1) and screen-multiplexers
+like screen(1) or tmux(1), can be configured to better support AX-ZSH. For
+example, AX-ZSH tries to adjust itself for a sane terminal and locale setup,
+which in turn requires some information (mostly environment variables) being
+available and passed to the ZSH running AX-ZSH on the (target) system.
+
+#### OpenSSH Client
+
+If you are using the OpenSSH client, the following configuration in your
+`~/.ssh/config` file is very useful:
+
+```ini
+# Some defaults.
+# Note: Place this block LAST to not override some other settings, if any, as
+# OpenSSH uses the first(!) match it finds!
+Host *
+    # Pass some environment variables to the remote host to allow the remote
+    # system to get a better idea of your used and desired working environment:
+    SendEnv COLORTERM LANG LC_* TERM_* TZ
+
+    # Don't hash host names in the ~/.ssh/known_hosts file, so that ZSH
+    # compeltion functions can detect helpful host names to complete.
+    # Note: This has an "security impact". It is on YOU to check what your
+    # security requirements are!
+    HashKnownHosts no
+```
+
+#### OpenSSH Client
+
+On an OpenSSH server, the following configuration in one of its configuration
+files (for example, a good place is in a drop-in configuration file like
+`/etc/ssh/sshd_config.d/local.conf`) allows SSH clients to pass some
+environment variables to the server:
+
+```init
+# Allow SSH client to pass some "safe" environment variables to the server:
+AcceptEnv COLORTERM LANG LC_* TERM_* TZ
+```
+
+This is required for the SSH client configuration shown above to work.
+
+Don't forget to have `sshd` reload its configuration, for example using
+`systemctl reload ssh.service` or `pkill -o -HUP sshd`, or whatever is used on
+your operating system.
+
 ### Check whether all locally available "useful" plug-ins are activated
 
 Most plugins can be enabled even when the commands they work with aren't

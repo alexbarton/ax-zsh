@@ -77,6 +77,7 @@ function axzsh_is_modern_terminal {
 		return 1
 	fi
 	[[ -n "$TERM_DOWNGRADED_FROM" ]] && return 1
+	[[ "$TERM_COLORS" -le 8 ]] && return 1
 	[[ -n "$_axzsh_is_modern_terminal_cache" ]] \
 		&& return $(test "$_axzsh_is_modern_terminal_cache" -eq 0 2>/dev/null)
 

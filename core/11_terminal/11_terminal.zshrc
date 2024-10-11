@@ -191,19 +191,19 @@ fi
 # Try to detect the number of supported colors and store it in TERM_COLORS:
 # first by querying the "termcap" database, and if this does not work, some
 # hardcoded defaults.
+TERM_COLORS=$(tput colors 2>/dev/null)
 if [[ -z "$TERM_COLORS" ]]; then
-	TERM_COLORS=$(tput colors 2>/dev/null)
-	if [[ -z "$TERM_COLORS" ]]; then
-		case "$TERM" in
-			*-256color|xterm-kitty)
-				TERM_COLORS=256 ;;
-			*)
-				# Assume 16 colors by default ...
-				TERM_COLORS=16
-		esac
-	fi
+	case "$TERM" in
+		*-256color|xterm-kitty)
+			TERM_COLORS=256 ;;
+		linux)
+			TERM_COLORS=8 ;;
+		*)
+			# Assume 16 colors by default ...
+			TERM_COLORS=16
+	esac
 fi
-[[ -n "$TERM_COLORS" ]] && export TERM_COLORS
+export TERM_COLORS
 
 # Set "CLICOLOR" when there are at least 4 colors available.
 if [[ "${TERM_COLORS:-0}" -ge 4 ]]; then

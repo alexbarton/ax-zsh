@@ -1,7 +1,7 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # zsh-autosuggestions.zshrc: Initialize "Fish-like autosuggestions for zsh"
 
-axzsh_is_modern_terminal || return 91
+axzsh_is_dumb_terminal && return 91
 
 for script (
 	"/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh"

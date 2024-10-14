@@ -7,23 +7,60 @@
 [[ -n "$AXZSH_DEBUG" ]] && \
 	echo "  TERM='${TERM:-(unset/empty)}' TERM_COLORS='${TERM_COLORS:-(unset/empty)}' TERM_DOWNGRADED_FROM='${TERM_DOWNGRADED_FROM:-(unset/empty)}' ..."
 
+# Normally, TERM_INITIAL is set in the zprofile stage; but make sure that it is
+# set, for example in non-login shells!
+[[ -n "$TERM_INITIAL" ]] || TERM_INITIAL="$TERM"
+
+# Try to get a value for TERM_COLORS, when it is not yet set. Note: it will be
+# re-detected for the final TERM type later on below!
+[[ -n "$TERM_COLORS" ]] || TERM_COLORS=$(tput colors 2>/dev/null)
+initial_term_colors="$TERM_COLORS"
+
 # VTE based terminals (like GNOME Terminal) support 256 colors, but old(er)
 # versions of GNOME Terminal (at least) set TERM=xterm ...
 [[ "$TERM" = "xterm" && "$VTE_VERSION" != "" ]] && TERM="xterm-256color"
 
+# Fix TERM_COLORS according to the initial TERM setting ... This is mostly
+# relevant in terminal multiplexers like screen(1) and tmux(1) which, sometimes
+# by default, use their "*-256color" TERM type -- even when the initial
+# terminal only supports a subset!
+# Note that the final value for the TERM_COLORS variable is determined
+# according to the final TERM value and overwritten later on below!
+[[ $TERM_COLORS -gt 16 && "$TERM_INITIAL" = *-16color ]] && TERM_COLORS=16
+[[ $TERM_COLORS -gt 8 && (
+	"$TERM_INITIAL" = ansi ||
+	"$TERM_INITIAL" = linux ||
+	"$TERM_INITIAL" = xterm
+) ]] && TERM_COLORS=8
+[[ $TERM_COLORS -gt 2 && (
+	"$TERM_INITIAL" = dumb ||
+	"$TERM_INITIAL" = vt52 ||
+	"$TERM_INITIAL" = vt100
+) ]] && TERM_COLORS=2
+
 # Check if TERM_COLORS match the TERM setting, and fix TERM if not:
-if [[ \
-	-n "$TERM_COLORS" \
-	&& "$TERM_COLORS" -lt 256 \
-	&& "$TERM" = *-256color \
-]]; then
-	# Cut off the "-256color" suffix!
-	export TERM_DOWNGRADED_FROM=$TERM
-	export TERM="${TERM%*-256color}"
+[[ $TERM_COLORS -lt 16 && "$TERM" = *-16color ]] \
+	&& downgrade="16color"
+[[ $TERM_COLORS -lt 256 && "$TERM" = *-256color ]] \
+	&& downgrade="256color"
+if [[ -n "$downgrade" ]]; then
+	# Save the "pre-downgrade" setting(s) ...
+	[[ -z "$TERM_DOWNGRADED_FROM" ]] \
+		&& TERM_DOWNGRADED_FROM="$TERM[$initial_term_colors]" \
+		|| TERM_DOWNGRADED_FROM="$TERM[$initial_term_colors],$TERM_DOWNGRADED_FROM"
+	export TERM_DOWNGRADED_FROM
+	# Cut off the wrong suffix! Try first to use a "-<N>color"-type,
+	# and fall back to the plain type if this is not known.
+	new_term="${TERM%*-$downgrade}"
+	TERM="${new_term}-${TERM_COLORS}color" tput colors 1>/dev/null 2>&1 \
+		&& TERM="${new_term}-${TERM_COLORS}color" || TERM="${new_term}"
+	export TERM
+	unset new_term
 	# Adjust color definitions for ls(1):
 	unset LS_COLORS
 	(( $+commands[dircolors] )) && eval $(dircolors)
 fi
+unset downgrade initial_term_colors
 
 # Common helper functions
 

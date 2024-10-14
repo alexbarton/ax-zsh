@@ -4,6 +4,9 @@
 # Fix up TERM. Do this here (and not in zprofile), because terminal emulators
 # often don't start a new login shell but "only" a new interactive shell.
 
+[[ -n "$AXZSH_DEBUG" ]] && \
+	echo "  TERM='${TERM:-(unset/empty)}' TERM_COLORS='${TERM_COLORS:-(unset/empty)}' TERM_DOWNGRADED_FROM='${TERM_DOWNGRADED_FROM:-(unset/empty)}' ..."
+
 # VTE based terminals (like GNOME Terminal) support 256 colors, but old(er)
 # versions of GNOME Terminal (at least) set TERM=xterm ...
 [[ "$TERM" = "xterm" && "$VTE_VERSION" != "" ]] && TERM="xterm-256color"

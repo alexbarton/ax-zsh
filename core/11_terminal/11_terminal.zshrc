@@ -176,6 +176,13 @@ function axzsh_terminal_title_precmd {
 
 precmd_functions+=(axzsh_terminal_title_precmd)
 
+# Reset the terminal to "sane defaults" before executing a command
+function axzsh_terminal_reset_prexec {
+	# Reset colors. Some prompt commands fail to do this on their own on
+	# some terminals ... so let's play it safe!
+	print -Pn -- "$FX[reset]"
+}
+
 # Update terminal titles before executing a command
 function axzsh_terminal_title_preexec {
 	axzsh_is_modern_terminal || return
@@ -208,7 +215,7 @@ function axzsh_terminal_title_preexec {
 	fi
 }
 
-preexec_functions+=(axzsh_terminal_title_preexec)
+preexec_functions+=(axzsh_terminal_reset_prexec axzsh_terminal_title_preexec)
 
 alias axttyinfo="zsh \"\$AXZSH/bin/axttyinfo\""
 

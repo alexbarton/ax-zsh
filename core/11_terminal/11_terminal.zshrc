@@ -257,11 +257,21 @@ if [[ -z "$TERM_COLORS" ]]; then
 fi
 export TERM_COLORS
 
-# Set "CLICOLOR" when there are at least 4 colors available.
+# Set "CLICOLOR" when there are at least 4 colors available. And try to set
+# CLICOLOR to a sane value, too:
 if [[ "${TERM_COLORS:-0}" -ge 4 ]]; then
+	# At least 4 colors ...
 	export CLICOLOR=1
+	if [[ "${TERM_COLORS:-0}" -lt 256 ]]; then
+		COLORTERM="yes"
+	else
+		[[ -z "$COLORTERM" || "$COLORTERM" = "no" ]] && COLORTERM="yes"
+	fi
+	export COLORTERM
 else
+	# Less than 4 colors ("no colors"):
 	unset CLICOLOR
+	unset COLORTERM
 fi
 
 # Foreground (FG) and background (BG) colors.

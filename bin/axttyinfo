@@ -101,7 +101,7 @@ Styles:		Normal
 		\033[9mStrikethrough\033[0m
 		\033[53mOverline\033[0m
 		\033[74mSubscript\033[0m
-		\033[31mRed\033[0m, \033[92mbright green\033[0m, black on \033[30;46mblue\033[0m, ...
+		\033[31mRed\033[0m, \"\033[92mbright\033[0m\" \033[32mgreen\033[0m, \033[97mwhite\033[0m on \033[97;44mblue\033[0m, ...
 		\033]8;;https://github.com/alexbarton/ax-zsh\033\\Hyperlink\033]8;;\033\\
 
 Ligatures:	->  <-  !=  ==  === !== >=  <=  =>

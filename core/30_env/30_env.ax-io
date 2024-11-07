@@ -74,3 +74,22 @@ if [[ ! -d "$ZSH_CACHE_DIR" ]]; then
 	chmod 0700 "$ZSH_CACHE_DIR"
 fi
 export ZSH_CACHE_DIR
+
+# Save some environment variables as "latest known good values" into a cache
+# file, which can be used to "upgrade" sessions already running in a terminal
+# multiplexer like screen(1) or tmux(1) but (try to) skip this step if this is
+# not the "initial" shell of this session:
+[[ "$SHLVL" -eq 1 ]] || return 0
+[[ -z "$STY" ]] || return 0
+[[ -z "$TMUX" ]] || return 0
+[[ -z "$VIM_TERMINAL" ]] || return 0
+
+state="${ZSH_CACHE_DIR}/axzsh_session_state"
+_AX_SESSION=$$
+echo "_AX_SESSION=${_AX_SESSION}" >"$state"
+for var in \
+	SSH_AUTH_SOCK SSH_CLIENT SSH_CONNECTION SSH_TTY \
+; do
+	echo "export ${var}='${(P)var}'" >>"$state"
+done
+unset state var

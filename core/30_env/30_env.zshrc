@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 30_env.ax-io: Setup environment
+# 30_env.zshrc: Setup environment
 
 if [[
 	"$TMPDIR" = '/' ||
@@ -12,3 +12,13 @@ if [[
 	[[ -n "$AXZSH_DEBUG" ]] && echo 'Note: Fixing up the environment!'
 	. "$AXZSH/core/30_env/30_env.ax-io"
 fi
+
+function axzsh_update_session() {
+	state="${ZSH_CACHE_DIR}/axzsh_session_state"
+	if [[ -r "$state" ]]; then
+		. "$state"
+	else
+		echo "No state file found: \"$state\"!" >&2
+		return 1
+	fi
+}

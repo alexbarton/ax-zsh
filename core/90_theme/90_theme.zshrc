@@ -21,5 +21,18 @@ if ! axzsh_is_modern_terminal; then
 	unset zle_bracketed_paste
 fi
 
+# Default secondary, select and execution trace prompts. Note: Can become
+# overwritten by the theme later on.
+PS2="%_$fg_no_bold[yellow]»$reset_color "
+PS3="$fg_no_bold[yellow]?$reset_color "
+PS4="$fg_no_bold[yellow]->$reset_color "
+
+# The PS3 and PS4 prompts are compatible with sh(1) and bash(1), too, and
+# "unlikely" to get overwritten by themes. So let's export them to be useful
+# in sub-shells as well!
+# NOTE: PS1 is set by themes, and PS2 is set to a ZSH-specific setting here in
+# this file. So we DO NOT export those!
+export PS3 PS4
+
 # NOTE: The theme itself is read in by the ax.zsh script itself: last and into
 # the global context (code for the cache file is generated as required).

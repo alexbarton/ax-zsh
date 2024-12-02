@@ -23,7 +23,3 @@ axzsh_is_utf_terminal \
 	&& RPS1="%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})" \
 	|| RPS1="%(?..%{$fg_no_bold[red]%}<%?>%{$reset_color%})"
 
-# Default execution trace prompt.
-PS4="$fg_no_bold[yellow]->$reset_color "
-# This prompt is compatible with sh(1) and bash(1), too, so export it!
-export PS4

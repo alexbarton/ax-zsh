@@ -26,6 +26,7 @@ _shellenv_cache="$XDG_CACHE_HOME/axzsh_homebrew_shellenv"
 find "$_shellenv_cache" -mmin +1440 -delete 2>/dev/null
 if [[ ! -r "$_shellenv_cache" ]]; then
 	# Create new cache file:
+	[[ -n "$AXZSH_DEBUG" ]] && echo '     - (creating new "shellenv cache")'
 	"$brew_cmd" shellenv >"$_shellenv_cache"
 fi
 . "$_shellenv_cache"

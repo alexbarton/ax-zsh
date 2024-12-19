@@ -52,3 +52,9 @@ alias jr="jj git remote"
 alias jrb="jj rebase"
 alias jsh="jj show"
 alias jst="jj status"
+
+# Check for and enable command completion:
+if ! type _jj &>/dev/null && ! type _clap_dynamic_completer_jj &>/dev/null; then
+	# No completion function found so far.
+	source <(COMPLETE=zsh jj)
+fi

@@ -73,6 +73,7 @@ function axzsh_is_utf_terminal {
 		(*) return 1 ;;
 	esac
 }
+# Compatibility with GRMLZSHRC, see <https://grml.org/zsh/grmlzshrc.html>:
 alias isutfenv=axzsh_is_utf_terminal
 
 # Get the length of a string when shown on the terminal. The return code of the

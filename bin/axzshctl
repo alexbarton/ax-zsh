@@ -159,7 +159,7 @@ function EnablePlugin {
 		mkdir -p "$AXZSH/repos/@$repo"
 		if [[ ! -d "$AXZSH/repos/@$repo/plugins" ]]; then
 			ax_msg - "Cloning \"$repo\" from GitHub ..."
-			git clone --depth=1 "https://github.com/$repo/$repo.git" \
+			git clone --depth=1 --recurse-submodules --single-branch "https://github.com/$repo/$repo.git" \
 			 "$AXZSH/repos/@$repo" \
 				|| ax_error "Failed to clone \"$repo\" repository!"
 		fi
@@ -170,7 +170,7 @@ function EnablePlugin {
 		mkdir -p "$AXZSH/repos"
 		if [[ ! -e "$AXZSH/repos/$plugin" ]]; then
 			ax_msg - "Cloning module from GitHub ..."
-			git clone --depth=1 "https://github.com/$1.git" \
+			git clone --depth=1 --recurse-submodules --single-branch "https://github.com/$1.git" \
 			 "$AXZSH/repos/$plugin" \
 				|| ax_error "Failed to clone repository!"
 		fi

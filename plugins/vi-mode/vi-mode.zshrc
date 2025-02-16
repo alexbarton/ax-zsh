@@ -28,7 +28,7 @@ bindkey -M vicmd 'k' history-search-backward
 # VI Mode Environment
 
 # Change cursor shape for different vi modes.
-function zle-keymap-select {
+function zle-line-init zle-keymap-select {
 	case "${KEYMAP}" in
 	'main' | 'viins')
 		# Use '|' style cursor in main and insert mode:
@@ -41,16 +41,10 @@ function zle-keymap-select {
 	esac
 }
 zle -N zle-keymap-select
-
-# Enforce insert mode on each new command line, which in turn calls the
-# zle-keymap-select() function and therefore correctly initialises the curser.
-function zle-line-init() {
-	zle -K viins
-}
 zle -N zle-line-init
 
 # Reset the cursor to the default (block) mode before calling commands.
-function __vi_mode_cursor_block() {
+function __vi_mode_cursor_block {
 	echo -ne '\e[1 q'
 }
 preexec_functions+=(__vi_mode_cursor_block)

@@ -25,20 +25,19 @@ function open_command() {
 
 function take() {
 	if [[ $# -eq 0 ]]; then
-		cd "$(mktemp -d)"
+		cd "$(mktemp -d "${TMPDIR}/tmp.XXXXXXXX")" || return 1
 		pwd
 	else
-		mkdir -p "$@" && cd "${@:$#}"
+		mkdir -p "$@" && cd "${@:$#}" || return 1
 	fi
 }
 
 function untake() {
-	pwd="${PWD}/"
-	subdir="${pwd##$TMPDIR}"
+	subdir="${PWD##$TMPDIR}"
 	if [[ "${PWD%tmp.*}" = "${TMPDIR}" && -n "$subdir" ]]; then
 		tmp_d="${TMPDIR}${subdir%%/*}"
 		echo "$tmp_d"
-		cd
+		cd || return 1
 		rm -fr "$@" "${tmp_d}"
 	else
 		echo 'Sorry, not a temporarily taken directory!' >&2

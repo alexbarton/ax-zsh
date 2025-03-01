@@ -90,7 +90,7 @@ Styles:		Normal
 		\033[2mDim\033[0m
 		\033[3mItalic\033[0m
 		\033[3;1mBold italic\033[0m
-		\033[4mUnderline\033[0m (with \033[58;5;5m\033[4mcolor\033[0m)
+		\033[4mUnderline\033[0m (\033[4:1mvariant 2\033[0m; with \033[58;5;5m\033[4mcolor\033[0m)
 		\033[4:2mDouble underline\033[0m (\033[21mvariant 2\033[0m)
 		\033[4:3mCurly underline\033[0m
 		\033[4:4mDotted underline\033[0m

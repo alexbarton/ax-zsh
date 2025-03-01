@@ -22,6 +22,8 @@ bindkey -M viins '^[.' insert-last-word
 
 # Normal mode (command mode)
 
+bindkey -M vicmd '^[[3~' delete-char
+
 bindkey -M vicmd 'j' history-search-forward
 bindkey -M vicmd 'k' history-search-backward
 

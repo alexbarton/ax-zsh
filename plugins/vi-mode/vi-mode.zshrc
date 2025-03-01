@@ -7,12 +7,23 @@
 bindkey -v
 export KEYTIMEOUT=25
 
+# All modes
+
+function _bindkey_all {
+	for mode (viins vicmd); do
+		bindkey -M ${mode} "$@"
+	done
+}
+
+_bindkey_all '^[[H' beginning-of-line		# POS1
+_bindkey_all '^[[F' end-of-line			# END
+_bindkey_all '^[[3~' delete-char		# DEL
+
+unfunction _bindkey_all
+
 # Insert mode
 
-bindkey -M viins '^[[H' beginning-of-line
 bindkey -M viins '^A' beginning-of-line
-
-bindkey -M viins '^[[F' end-of-line
 bindkey -M viins '^E' end-of-line
 
 bindkey -M viins '^U' backward-kill-line
@@ -21,8 +32,6 @@ bindkey -M viins '^K' kill-line
 bindkey -M viins '^[.' insert-last-word
 
 # Normal mode (command mode)
-
-bindkey -M vicmd '^[[3~' delete-char
 
 bindkey -M vicmd 'j' history-search-forward
 bindkey -M vicmd 'k' history-search-backward

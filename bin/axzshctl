@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2023 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2025 Alexander Barton <alex@barton.de>
 #
 
 # Embedded ax-common compatibility functions ...
@@ -22,7 +22,7 @@ function ax_error {
 
 function Version {
 	echo "ax-zsh -- Modular configuration system for the Z shell (ZSH)"
-	echo "Copyright (c) 2015-2023 Alexander Barton <alex@barton.de>."
+	echo "Copyright (c) 2015-2025 Alexander Barton <alex@barton.de>."
 	echo "Licensed under the terms of the MIT license, see LICENSE.md for details."
 	echo "Homepage: <https://github.com/alexbarton/ax-zsh>"
 	echo

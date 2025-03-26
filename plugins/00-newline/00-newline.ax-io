@@ -12,4 +12,7 @@
 # Don't output anything ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0
 
+# Don't add a newline in graphical environments:
+[[ -n "$DISPLAY" || -n "$WAYLAND_DISPLAY" ]] && return 0
+
 echo

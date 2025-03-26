@@ -1,0 +1,23 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# ssh_autoadd.zshrc: Make sure that SSH keys are available
+
+# Make sure that "ssh(1)" is installed.
+(( $+commands[ssh] )) || return 1
+
+# This plugin is optional.
+[[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92
+
+# Make sure that an SSH agent is available (but ignore failure):
+[[ -n "$SSH_AUTH_SOCK" ]] || return 0
+
+# Make sure we have a terminal connected:
+[[ -t 1 ]] || return 0
+
+# Check if the agent already has identities, and run "ssh-add" otherwise:
+# Note: we can't use the "ssh-autoadd" function here, because this script runs
+# in the AX-IO stage and that function was not sourced yet!
+ssh-add -l >/dev/null 2>&1 && return 0
+[[ $? -eq 2 ]] && return 2
+echo "There is a SSH agent available, but it has no identities!"
+ssh-add
+echo

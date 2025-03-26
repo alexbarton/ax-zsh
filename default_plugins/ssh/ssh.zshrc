@@ -27,7 +27,16 @@ axzsh_hostname_prompt_functions=($axzsh_hostname_prompt_functions _axzsh_ssh_pro
 # file becomes invalid when the session has been disconnected.
 [[ ! -r "$SSH_AUTH_SOCK" ]] && unset SSH_AUTH_SOCK
 
-# Look for common socket locations ...
+
+
+# No ssh-agent socket found yet, look for an GnuPG agent ...
+if [[ -z "$SSH_AUTH_SOCK" ]] && (( $+commands[gpgconf] )); then
+	s=$(gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+	[[ -n "$s" && -r "$s" ]] && export SSH_AUTH_SOCK=$s
+	unset s
+fi
+
+# No ssh-agent socket found yet, look for common socket locations ...
 if [[ -z "$SSH_AUTH_SOCK" ]]; then
 	for s (
 		/mnt/c/Local/$LOGNAME/ssh-agent.sock

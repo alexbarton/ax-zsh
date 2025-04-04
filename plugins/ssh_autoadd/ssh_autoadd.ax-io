@@ -10,14 +10,28 @@
 # Make sure that an SSH agent is available (but ignore failure):
 [[ -n "$SSH_AUTH_SOCK" ]] || return 0
 
-# Make sure we have a terminal connected:
-[[ -t 1 ]] || return 0
+# Check if the agent already has keys, and return if this is already the case
+# and nothing is to to.
+ssh-add -l >/dev/null 2>&1 && return 0
 
-# Check if the agent already has identities, and run "ssh-add" otherwise:
+# Apple macOS:
+# Try to add keys with passwords stored in the macOS "keychain" ...
+
+if [[ "$OSTYPE" =~ '^darwin' ]]; then
+	# Try to load SSH keys using passwords stored in the "keychain", but
+	# ignore all errors. And return if at least one identity was added:
+	LC_ALL=C APPLE_SSH_ADD_BEHAVIOR=macos ssh-add -A 2>&1 \
+		| grep -Fq 'Identity added: ' && return 0
+fi
+
+# Generic:
+# Try to load keys ...
+
+# Make sure we have a terminal connected, DISPLAY is set or SSH_ASKPASS is set:
+[[ -t 1 || -n "$DISPLAY" || -n "$SSH_ASKPASS" ]] || return 0
+
 # Note: we can't use the "ssh-autoadd" function here, because this script runs
 # in the AX-IO stage and that function was not sourced yet!
-ssh-add -l >/dev/null 2>&1 && return 0
-[[ $? -eq 2 ]] && return 2
-echo "There is a SSH agent available, but it has no identities!"
+echo "A SSH agent is available but has no identities!"
 ssh-add
 echo

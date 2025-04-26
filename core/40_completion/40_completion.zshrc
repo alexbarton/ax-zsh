@@ -28,20 +28,20 @@ zstyle ':completion:*:manuals.*' insert-sections true
 
 # Don't complete uninteresting users
 zstyle ':completion:*:*:*:users' ignored-patterns \
-	adm amanda amavis apache arpwatch at avahi avahi-autoipd backup \
-	beaglidx bin bind cacti canna clamav cockpit-ws cockpit-wsinstance \
-	colord daapd daemon dbus distcache dnsmasq dovecot dovenull fax \
-	fetchmail firebird ftp games gdm gkrellmd gnats gopher hacluster \
-	haldaemon halt hsqldb ident irc junkbust kdm ldap libuuid libvirt-qemu \
-	list logcheck lp mail mailman mailnull man messagebus mldonkey mysql \
-	nagios named netdata netdump news nfsnobody nobody nscd ntp nut nx \
-	obsrun oident openvpn operator pcap polkitd postfix postgres postgrey \
-	privoxy proxy pvm quagga radvd rpc rpcuser rpm rslsync rtkit rwhod \
-	sbuild scard shutdown squid sshd statd stunnel4 svn sync sys \
-	systemd-coredump systemd-journal-remote systemd-network systemd-resolve \
-	systemd-timesync telnetd telnetd-ssl tftp thelounge usbmux uucp uuidd \
-	vcsa www-data wwwrun xfs xrdp zabbix  \
-	'_*' '*$' 'debian-*' 'Debian-*'
+	adm amanda amavis apache arpwatch at avahi backup beaglidx bin bind \
+	cacti canna clamav colord daapd daemon davfs2 dbus distcache dnsmasq \
+	dovecot dovenull fax fetchmail firebird ftp games gdm geoclue \
+	git-daemon gkrellmd gnats gopher hacluster haldaemon halt hsqldb ident \
+	irc junkbust kdm ldap libuuid libvirt-qemu list logcheck lp mail \
+	mailman mailnull man mariadb messagebus mldonkey mysql nagios named \
+	netdata netdump news nfsnobody nobody nscd ntp nut nx obsrun oident \
+	openvpn operator pcap polkitd postfix postgres postgrey privoxy proxy \
+	pvm quagga radvd redis rpc rpcuser rpm rslsync rtkit rwhod sbuild scard \
+	shutdown squid sshd statd stunnel4 svn sync sys tcpdump telnetd \
+	telnetd-ssl tftp thelounge tss usbmux uucp uuidd vcsa www-data wwwrun \
+	xfs xrdp zabbix \
+	'*$' '_*' 'avahi-*' 'cockpit-*' 'cups-*' 'debian-*' 'Debian-*' \
+	'fwupd-*' 'gnome-*' 'speech-*' 'systemd-*'
 
 # Ignore completion functions
 zstyle ':completion:*:functions' ignored-patterns '_*'

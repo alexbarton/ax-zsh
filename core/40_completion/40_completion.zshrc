@@ -13,10 +13,10 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' squeeze-slashes true
 
 # Messages
-zstyle ':completion:*:corrections' format '%B%d%b (%e errors)'
-zstyle ':completion:*:descriptions' format '%B%d%b'
-zstyle ':completion:*:messages' format '%B%F{yellow}%d%f%b'
-zstyle ':completion:*:warnings' format '%B%F{red}No matches found!%f%b'
+zstyle ':completion:*:corrections' format '%B%F{green}-> %d (%e errors):%f%b'
+zstyle ':completion:*:descriptions' format '%B%F{cyan}-> %d:%f%b'
+zstyle ':completion:*:messages' format '%B%F{yellow}-> %d%f%b'
+zstyle ':completion:*:warnings' format '%B%F{red}-> no matches found!%f%b'
 
 # Use caching so that commands like apt and dpkg completions are useable
 zstyle ':completion:*' use-cache on

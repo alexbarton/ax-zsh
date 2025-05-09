@@ -32,6 +32,7 @@ for dir (
 	/usr/local/opt/fzf/shell
 	/usr/local/share/examples/fzf/shell
 	/opt/fzf/shell
+	/usr/share/fzf
 	/usr/share/fzf/shell
 ); do
 	[[ -d "$dir" ]] || continue

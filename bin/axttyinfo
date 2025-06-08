@@ -63,6 +63,7 @@ for key (
 	TERM_COLORS
 	VTE_VERSION
 	-
+	WAYLAND_DISPLAY
 	DISPLAY
 ); do
 	if [[ $key == "-" ]]; then

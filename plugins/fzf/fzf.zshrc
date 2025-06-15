@@ -35,7 +35,7 @@ for dir (
 	/usr/share/fzf
 	/usr/share/fzf/shell
 ); do
-	[[ -d "$dir" ]] || continue
+	[[ -r "$dir/key-bindings.zsh" ]] || continue
 	[[ -r "$dir/completion.zsh" ]] && source "$dir/completion.zsh"
 	source "$dir/key-bindings.zsh"
 	return 0

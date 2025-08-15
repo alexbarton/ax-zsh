@@ -4,8 +4,8 @@
 # Make sure that "less(1)" is installed
 (( $+commands[less] )) || return
 
-export PAGER="$commands[less]"
-export LESS="-FmRX"
+export PAGER="${PAGER:-$commands[less]}"
+export LESS="${LESS:--FMRSX}"
 
 # Support colors in less
 export LESS_TERMCAP_mb=$'\E[01;31m'

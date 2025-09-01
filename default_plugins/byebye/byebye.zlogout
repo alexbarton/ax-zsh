@@ -7,6 +7,7 @@
 # Check for a container environment:
 if [[ -e /run/.containerenv ]]; then
 	# Try to get some infos about the environment ...
+	unset name
 	. /run/.containerenv 2>/dev/null
 
 	# Don't show any info when ~/.hushlogin exists ...

@@ -4,7 +4,9 @@
 It provides sane defaults and is extendable by plugins.
 
 AX-ZSH integrates well with [Powerlevel10k] and other extensions, even plugins
-of [OhMyZsh], see [below](#integration-with-other-projects).
+of [OhMyZsh], see [below](#integration-with-other-projects). And it uses a
+*cache* and supports the Powerlevel10k *instant prompt* feature to speed up ZSH
+startup times, even when using multiple plugins.
 
 The homepage of [AX-ZSH] can be found at [GitHub]:
 <https://github.com/alexbarton/ax-zsh>.
@@ -22,8 +24,8 @@ Installing AX-ZSH is a two-step process:
 2. Run the `~/.axzsh/install.sh` script.
 
 The `install.sh` script creates symbolic links for `~/.zprofile`, `~/.zshrc`,
-`~/.zlogin`, and `~/.zlogout` (don't worry, already existing files are backed
-up).
+`~/.zlogin`, and `~/.zlogout`. But don't worry, preexisting files are backed
+up.
 
 *Note:* The installation is per-user and only changes/installs files into the
 home directory of the current user (`~`). AX-ZSH is not meant to be installed
@@ -32,26 +34,40 @@ or any other user with elevated privileges!
 
 ### Installation using Git
 
-When using [Git], the preferred method, it is best to directly clone the AX-ZSH
-repository into the `~/.axzsh` directory and call `install.sh` from this
-location:
+The preferred method for installing AX-ZSH is using [Git] to clone the
+repository directly into the `~/.axzsh` directory and to call the `install.sh`
+script from this location:
 
 ```sh
 git clone https://github.com/alexbarton/ax-zsh.git ~/.axzsh
 ~/.axzsh/install.sh
 ```
 
+On Debian, you can fulfil the prerequisites like this:
+
+```sh
+apt update && apt install --no-install-recommends \
+  ca-certificates git zsh
+```
+
 ### Installation without Git
 
-*Note:* If you do not install AX-ZSH with [Git], you will not be able to upgrade
-itself afterwards with the integrated `axzsh upgrade` command! Therefore this
-method is *not recommended* for normal use!
+*Note:* If you do not use [Git] to install AX-ZSH, you will not be able to
+upgrade AX-ZSH itself afterwards with the integrated `axzsh upgrade` command!
+Therefore this method is *not recommended* for normal use!
 
 ```sh
 curl -Lo ax-zsh-master.zip https://github.com/alexbarton/ax-zsh/archive/refs/heads/master.zip
 unzip ax-zsh-master.zip
 mv ax-zsh-master ~/.axzsh
 ~/.axzsh/install.sh
+```
+
+On Debian, you can fulfil the prerequisites like this:
+
+```sh
+apt update && apt install --no-install-recommends \
+  ca-certificates curl unzip zsh
 ```
 
 ### Post-Installation Tasks
@@ -72,8 +88,8 @@ exec $(command -v zsh) -l
 
 ## Upgrade
 
-When you used Git to install AX-ZSH (and/or plugins), you can use the `axzshctl`
-command to upgrade AX-ZSH itself and external plugins like this:
+When you used [Git] to install AX-ZSH (and/or plugins), you can use the
+`axzshctl` command to upgrade AX-ZSH itself and external plugins like this:
 
 ```sh
 axzshctl upgrade
@@ -123,7 +139,7 @@ Host *
     HashKnownHosts no
 ```
 
-#### OpenSSH Client
+#### OpenSSH Server
 
 On an OpenSSH server, the following configuration in one of its configuration
 files (for example, a good place is in a drop-in configuration file like

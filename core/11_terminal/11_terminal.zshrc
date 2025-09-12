@@ -1,8 +1,9 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 11_terminal.zshrc: Initialize terminal settings
 
-# Fix up TERM. Do this here (and not in zprofile), because terminal emulators
-# often don't start a new login shell but "only" a new interactive shell.
+# Fix up TERM. Do this here in the zshrc stage (and not in zprofile), because
+# terminal emulators often don't start a new login shell but "only" a new
+# interactive shell.
 
 [[ -n "$AXZSH_DEBUG" ]] && \
 	echo "  TERM='${TERM:-(unset/empty)}' TERM_COLORS='${TERM_COLORS:-(unset/empty)}' TERM_DOWNGRADED_FROM='${TERM_DOWNGRADED_FROM:-(unset/empty)}' ..."
@@ -77,9 +78,9 @@ function axzsh_is_utf_terminal {
 alias isutfenv=axzsh_is_utf_terminal
 
 # Get the length of a string when shown on the terminal. The return code of the
-# function is the length in "cells". Note: Echo'ing the length to the terminal,
+# function is the length in "cells". Note: Echoing the length to the terminal,
 # which looks cleaner at first, doesn't work: this command can't be called with
-# its stdin and/or stdout redirected, as it it must be able to interact with the
+# its stdin and/or stdout redirected, as it must be able to interact with the
 # terminal (write to and read from it).
 function axzsh_get_displayed_length {
 	echo -ne "$*\033[6n"
@@ -112,8 +113,8 @@ function _axzsh_is_widechar_terminal {
 # Test for "modern" terminal
 function axzsh_is_modern_terminal {
 	if [[ -z "$TERM" ]]; then
-		# Ops, the TERM environment variable no (longer) set?
-		# This is definitely no "modern" terminal!
+		# Ops, the TERM environment variable is no (longer) set?
+		# This is definitely not a "modern" terminal!
 		unset _axzsh_is_modern_terminal_cache
 		return 1
 	fi

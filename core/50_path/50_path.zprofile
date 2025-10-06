@@ -4,5 +4,20 @@
 # Prepend and append search paths (in a special order!)
 _axzsh_setup_path
 unfunction _axzsh_setup_path
+typeset -Ux PATH
 
-typeset -Ux PATH MANPATH
+# Set default MANPATH
+MANPATH="$(manpath -q)" 2>/dev/null
+if [[ $? -ne 0 ]]; then
+	for d (
+		~/share/man
+		~/man
+		/opt/*/share/man(NOn)
+		/opt/*/man(NOn)
+		/usr/share/man
+		/usr/local/share/man
+	); do
+		[[ -d "$d" ]] && manpath+=("$d")
+	done
+fi
+typeset -Ux MANPATH

@@ -23,6 +23,7 @@ _axzsh_setup_path() {
 		/usr/local/sbin
 		/opt/*/bin(NOn)
 		/opt/*/sbin(NOn)
+		/home/linuxbrew/.linuxbrew/bin
 		~/.gem/ruby/*/bin(NOn)
 		~/.go/bin
 		~/.cargo/bin

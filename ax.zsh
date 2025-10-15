@@ -89,7 +89,7 @@ function axzsh_handle_stage {
 				# plugin at the "zprofile" stage later on, but
 				# this way "ax-io" stage plugins have a somewhat
 				# saner PATH to begin with ...
-				printf 'export PATH="%s"\n\n' "$PATH" >>"$new_cache_file"
+				printf 'export PATH=/usr/bin:/bin\n\n' >>"$new_cache_file"
 			fi
 		fi
 

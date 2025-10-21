@@ -247,7 +247,7 @@ fi
 TERM_COLORS=$(tput colors 2>/dev/null)
 if [[ -z "$TERM_COLORS" ]]; then
 	case "$TERM" in
-		*-256color|xterm-kitty)
+		*-256color|xterm-ghostty|xterm-kitty)
 			TERM_COLORS=256 ;;
 		linux)
 			TERM_COLORS=8 ;;

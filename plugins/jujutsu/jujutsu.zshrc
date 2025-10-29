@@ -40,6 +40,7 @@ jj_prompt() {
 
 axzsh_vcs_prompt_functions=($axzsh_vcs_prompt_functions jj_prompt)
 
+alias jcmsg="jj commit --message"
 alias jd="jj diff"
 alias jdesc="jj desc"
 alias je="jj edit"

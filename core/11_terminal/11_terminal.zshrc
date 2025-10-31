@@ -125,6 +125,9 @@ function axzsh_is_modern_terminal {
 
 	result=1
 	[[ "$TERM" = cygwin ]] && result=0
+	[[ "$TERM" = foot ]] && result=0
+	[[ "$TERM" = ghostty ]] && result=0
+	[[ "$TERM" = kitty ]] && result=0
 	[[ "$TERM" = putty* ]] && result=0
 	[[ "$TERM" = screen* ]] && result=0
 	[[ "$TERM" = tmux* ]] && result=0

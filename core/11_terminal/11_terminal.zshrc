@@ -47,8 +47,8 @@ initial_term_colors="$TERM_COLORS"
 if [[ -n "$downgrade" ]]; then
 	# Save the "pre-downgrade" setting(s) ...
 	[[ -z "$TERM_DOWNGRADED_FROM" ]] \
-		&& TERM_DOWNGRADED_FROM="$TERM[$initial_term_colors]" \
-		|| TERM_DOWNGRADED_FROM="$TERM[$initial_term_colors],$TERM_DOWNGRADED_FROM"
+		&& TERM_DOWNGRADED_FROM="${TERM}[${initial_term_colors}]" \
+		|| TERM_DOWNGRADED_FROM="${TERM}[${initial_term_colors}],${TERM_DOWNGRADED_FROM}"
 	export TERM_DOWNGRADED_FROM
 	# Cut off the wrong suffix! Try first to use a "-<N>color"-type,
 	# and fall back to the plain type if this is not known.

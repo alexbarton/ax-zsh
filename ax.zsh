@@ -171,6 +171,18 @@ function axzsh_load_plugin {
 		elif [[ ${#zsh_themes} -gt 0 ]]; then
 			# ZSH "theme plugin", ignore here!
 			:
+		elif [[ -r "${dname}/${plugin_short}.zsh" ]]; then
+			# Raw plugin with ".zsh" suffix.
+			type="raw.zsh"
+			fname="${dname}/${plugin_short}.zsh"
+		elif [[ -r "${dname}/${plugin_short}.sh" ]]; then
+			# Raw plugin with ".sh" suffix.
+			type="raw.sh"
+			fname="${dname}/${plugin_short}.sh"
+		elif [[ -r "${dname}/${plugin_short}" ]]; then
+			# Raw plugin without suffix.
+			type="raw"
+			fname="${dname}/${plugin_short}"
 		else
 			echo "AX-ZSH plugin type of \"$plugin\" unknown, skipped!" >&2
 			echo "Contents of \"$dname\":" >&2

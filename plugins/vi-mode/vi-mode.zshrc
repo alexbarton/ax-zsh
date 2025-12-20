@@ -16,7 +16,9 @@ function _bindkey_all {
 }
 
 _bindkey_all '^[[H' beginning-of-line		# POS1
+_bindkey_all '^[[1~' beginning-of-line
 _bindkey_all '^[[F' end-of-line			# END
+_bindkey_all '^[[4~' end-of-line
 _bindkey_all '^[[3~' delete-char		# DEL
 
 unfunction _bindkey_all

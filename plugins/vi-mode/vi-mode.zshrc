@@ -21,6 +21,22 @@ _bindkey_all '^[[F' end-of-line			# END
 _bindkey_all '^[[4~' end-of-line
 _bindkey_all '^[[3~' delete-char		# DEL
 
+_bindkey_all '^G' send-break
+
+_bindkey_all "^X'" quote-line
+_bindkey_all '^X"' quote-region
+_bindkey_all '^X1' after-first-word
+_bindkey_all '^X=' what-cursor-position
+
+_bindkey_all '^X^B' vi-match-bracket
+_bindkey_all '^X^E' edit-command-line
+_bindkey_all '^X^F' vi-find-next-char
+_bindkey_all '^X^J' vi-join
+_bindkey_all '^X^K' kill-buffer
+_bindkey_all '^X^U' undo
+
+_bindkey_all '^[^[' sudo-command-line
+
 unfunction _bindkey_all
 
 # Insert mode
@@ -32,6 +48,10 @@ bindkey -M viins '^U' backward-kill-line
 bindkey -M viins '^K' kill-line
 
 bindkey -M viins '^[.' insert-last-word
+
+# Visual mode
+
+bindkey -M visual '"' quote-region
 
 # Normal mode (command mode)
 

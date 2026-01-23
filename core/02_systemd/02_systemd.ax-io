@@ -1,0 +1,9 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# 02_systemd.ax-io: Import the systemd user environment
+
+# Try to read the systemd user environment as early as possible when it is
+# available, and set and export all variables which are not already defined:
+systemctl --user show-environment 2>/dev/null | while IFS='=' read k v; do
+	[[ -z "${(P)k}" ]] && export "$k"="$v"
+done
+unset k v

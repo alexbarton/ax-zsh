@@ -80,6 +80,7 @@ export ZSH_CACHE_DIR
 # multiplexer like screen(1) or tmux(1) but (try to) skip this step if this is
 # not the "initial" shell of this session:
 [[ "$SHLVL" -eq 1 ]] || return 0
+[[ -z "$NVIM" ]] || return 0
 [[ -z "$STY" ]] || return 0
 [[ -z "$TMUX" ]] || return 0
 [[ -z "$VIM_TERMINAL" ]] || return 0

@@ -6,6 +6,7 @@
 
 # Check prerequisites ...
 [[ -o interactive ]] || return 91
+[[ -z "$NVIM" ]] || return 91
 [[ -z "$STY" ]] || return 91
 [[ -z "$TMUX" ]] || return 91
 [[ -z "$VIM_TERMINAL" ]] || return 91

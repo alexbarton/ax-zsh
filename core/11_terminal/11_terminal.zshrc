@@ -6,7 +6,7 @@
 # interactive shell.
 
 [[ -n "$AXZSH_DEBUG" ]] && \
-	echo "  TERM='${TERM:-(unset/empty)}' TERM_COLORS='${TERM_COLORS:-(unset/empty)}' TERM_DOWNGRADED_FROM='${TERM_DOWNGRADED_FROM:-(unset/empty)}' ..."
+	echo "  TERM='${TERM:-(unset/empty)}' TERM_INITIAL='${TERM_INITIAL:-(unset/empty)}' TERM_COLORS='${TERM_COLORS:-(unset/empty)}' TERM_DOWNGRADED_FROM='${TERM_DOWNGRADED_FROM:-(unset/empty)}' ..."
 
 # Normally, TERM_INITIAL is set in the zprofile stage; but make sure that it is
 # set, for example in non-login shells!
@@ -62,6 +62,9 @@ if [[ -n "$downgrade" ]]; then
 	(( $+commands[dircolors] )) && eval $(dircolors)
 fi
 unset downgrade initial_term_colors
+
+[[ -n "$AXZSH_DEBUG" ]] && \
+	echo "  TERM='${TERM:-(unset/empty)}' TERM_INITIAL='${TERM_INITIAL:-(unset/empty)}' TERM_COLORS='${TERM_COLORS:-(unset/empty)}' TERM_DOWNGRADED_FROM='${TERM_DOWNGRADED_FROM:-(unset/empty)}'."
 
 # Common helper functions
 

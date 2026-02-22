@@ -1,10 +1,13 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 11_terminal.ax-io: Initialize terminal settings
 
-# Use tset(1) to validate TERM when stdin as a tty. Explicitly set SHELL to
-# /bin/sh to force tset to output sh-compliant commands even when SHELL was not
-# set correctly or for an other shell.
-[[ -t 0 ]] && eval `SHELL=/bin/sh tset -Is -m "dec-vt52:vt52"`
+# Skip further initialization when stdin is not a tty.
+[[ -t 0 ]] || return 0
+
+# Use tset(1) to validate TERM. Explicitly set SHELL to /bin/sh to force tset
+# to output sh-compliant commands even when SHELL was not set correctly or for
+# an other shell.
+eval `SHELL=/bin/sh tset -Is -m "dec-vt52:vt52"`
 
 # Save the initial TERM value:
 [[ -n "$TERM" && -z "$TERM_INITIAL" ]] && export TERM_INITIAL="$TERM"

@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #
 # AX-ZSH: Alex' Modular ZSH Configuration
-# Copyright (c) 2015-2025 Alexander Barton <alex@barton.de>
+# Copyright (c) 2015-2026 Alexander Barton <alex@barton.de>
 #
 
 # Embedded ax-common compatibility functions ...
@@ -378,7 +378,7 @@ function UpgradeAXZSH {
 		set -e
 		cd "$AXZSH"
 		git pull --ff-only || ax_error "Git pull failed!"
-		git log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
+		git -c pager.log=false log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
 	)
 }
 
@@ -396,7 +396,7 @@ function UpgradeForeignPlugins {
 				set -e
 				cd "$dir"
 				git pull --ff-only || ax_error "Git pull failed!"
-				git log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
+				git -c pager.log=false log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
 			)
 		else
 			ax_error "Unknown repository type!"

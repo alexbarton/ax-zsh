@@ -65,6 +65,13 @@ function zle-line-init zle-keymap-select {
 	ins_t=5    # Blinking Bar
 	other_t=1  # Blinking Block
 
+	if [[ "${VIMRUNTIME:-}" = */MacVim.app/* ]]; then
+		# Try to detect MacVim, which seems to only support the block
+		# cursor shape, either blinking or steady.
+		ins_t=1    # Blinking Block
+		other_t=2  # Steady Block
+	fi
+
 	case "${KEYMAP}" in
 	'main' | 'viins')
 		# Use '|' style cursor in main and insert mode:

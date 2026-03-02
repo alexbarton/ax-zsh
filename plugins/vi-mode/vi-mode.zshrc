@@ -62,14 +62,17 @@ bindkey -M vicmd 'k' history-search-backward
 
 # Change cursor shape for different vi modes.
 function zle-line-init zle-keymap-select {
+	ins_t=5    # Blinking Bar
+	other_t=1  # Blinking Block
+
 	case "${KEYMAP}" in
 	'main' | 'viins')
 		# Use '|' style cursor in main and insert mode:
-		echo -ne '\e[5 q'
+		echo -ne "\e[${ins_t} q"
 		;;
 	*)
 		# Use the default (block) cursor otherwise ...
-		echo -ne '\e[1 q'
+		echo -ne "\e[${other_t} q"
 		;;
 	esac
 }

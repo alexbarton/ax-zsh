@@ -20,6 +20,22 @@ function ax_error {
 	ax_msg 2 "$@" >&2
 }
 
+# Helper fumctioms
+
+function Git_Pull {
+	# $1: Working directory
+	(
+		set -e
+		cd "$1"
+		git pull --ff-only || ax_error "Git pull failed!"
+		git -c pager.log=false log \
+			--pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" \
+			ORIG_HEAD..
+	)
+}
+
+# Subcommands
+
 function Version {
 	echo "ax-zsh -- Modular configuration system for the Z shell (ZSH)"
 	echo "Copyright (c) 2015-2025 Alexander Barton <alex@barton.de>."
@@ -374,12 +390,7 @@ function UpgradeAXZSH {
 	fi
 
 	ax_msg - "Upgrading AX-ZSH in \"$AXZSH\" using git(1) ..."
-	(
-		set -e
-		cd "$AXZSH"
-		git pull --ff-only || ax_error "Git pull failed!"
-		git -c pager.log=false log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
-	)
+	Git_Pull "$AXZSH"
 }
 
 function UpgradeForeignPlugins {
@@ -392,12 +403,7 @@ function UpgradeForeignPlugins {
 		name=${dir:t:s/#/\//}
 		if [[ -d "$dir/.git" ]]; then
 			ax_msg - "Upgrading \"$name\" [git] ..."
-			(
-				set -e
-				cd "$dir"
-				git pull --ff-only || ax_error "Git pull failed!"
-				git -c pager.log=false log --pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" ORIG_HEAD..
-			)
+			Git_Pull "$dir"
 		else
 			ax_error "Unknown repository type!"
 		fi

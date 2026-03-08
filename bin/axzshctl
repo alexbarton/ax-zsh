@@ -29,7 +29,7 @@ function Git_Pull {
 		cd "$1"
 		git pull --ff-only || ax_error "Git pull failed!"
 		git -c pager.log=false log \
-			--pretty=format:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" \
+			--pretty=tformat:"%C(yellow)%h %C(blue)%ar %C(green)%an %Creset%s" \
 			ORIG_HEAD..
 	)
 }

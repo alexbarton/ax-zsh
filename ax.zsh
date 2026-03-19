@@ -114,6 +114,7 @@ function axzsh_handle_stage {
 		if [[ -n "$cache_file" && -n "$new_cache_file" && -r "$new_cache_file" ]]; then
 			# Move newly created cache file in place:
 			mv "$new_cache_file" "$cache_file"
+			zcompile "$cache_file"
 		fi
 	fi
 }

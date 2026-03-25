@@ -33,7 +33,7 @@ print -Pn -- "$fg[green]$FX[underline]${TERM:-?}$FX[reset] "
 [[ -n "$TERM_INITIAL" && "$TERM" != "$TERM_INITIAL" ]] && print -Pn -- "<$TERM_INITIAL "
 print -Pn -- "(${COLUMNS:-?}x${LINES:-?})"
 [[ -n "$TERM_PROGRAM" ]] && print -Pn -- "; $fg[green]$TERM_PROGRAM$FX[reset]"
-[[ -n "$$TERM_PROGRAM_VERSION" ]] && print -Pn -- " $TERM_PROGRAM_VERSION"
+[[ -n "$TERM_PROGRAM_VERSION" ]] && print -Pn -- " $TERM_PROGRAM_VERSION"
 print -Pn -- "$FX[reset]"
 echo
 

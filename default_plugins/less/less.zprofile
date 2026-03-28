@@ -16,6 +16,12 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
+# Force groff to use its "legacy" output format, which can be interpreted by
+# less and make use of the LESS_TERMCAP_* variables. This is especially useful
+# when rendering and displaying manual pages, where less can "inject" some
+# colors this way. See grotty(1) and <https://unix.stackexchange.com/a/108840>.
+export GROFF_NO_SGR=1
+
 if (( $+commands[lesspipe] )); then
 	eval "$(lesspipe)"
 elif (( $+commands[lesspipe.sh] )); then

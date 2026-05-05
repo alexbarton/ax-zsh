@@ -58,6 +58,16 @@ bindkey -M visual '"' quote-region
 bindkey -M vicmd 'j' history-search-forward
 bindkey -M vicmd 'k' history-search-backward
 
+# 3rd-party integrations
+
+# zsh-abbr (https://zsh-abbr.olets.dev):
+# Reinitialize zsh-abbr keybindings in case it was initialized _before_ the
+# vi-mode was enabled, because in this case its keybindings are lost!
+if (( $+functions[abbr-expand-and-accept] )); then
+      bindkey -M viins " " abbr-expand-and-insert
+      bindkey -M viins "^ " magic-space
+fi
+
 # VI Mode Environment
 
 # Change cursor shape for different vi modes.

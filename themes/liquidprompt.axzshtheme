@@ -1,0 +1,15 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# liquidprompt.axzshtheme: Enable external "Liquid Prompt" Theme
+# see <https://liquidprompt.readthedocs.io>
+
+for d (
+	~/.liquidprompt
+	~/liquidprompt
+	/usr/local/share/liquidprompt
+	/usr/share/liquidprompt
+); do
+	test -r "$d/liquidprompt.plugin.zsh" || continue
+	. "$d/liquidprompt.plugin.zsh" && return 0
+done
+
+echo "Oops, Liquid Prompt not found, can't enable theme!" >&2

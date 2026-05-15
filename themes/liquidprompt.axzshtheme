@@ -2,14 +2,19 @@
 # liquidprompt.axzshtheme: Enable external "Liquid Prompt" Theme
 # see <https://liquidprompt.readthedocs.io>
 
-for d (
-	~/.liquidprompt
-	~/liquidprompt
-	/usr/local/share/liquidprompt
-	/usr/share/liquidprompt
+for f (
+	~/.liquidprompt/liquidprompt
+	~/liquidprompt/liquidprompt
+	/opt/homebrew/share/liquidprompt
+	/home/linuxbrew/.linuxbrew/share/liquidprompt
+	/usr/local/share/liquidprompt/liquidprompt
+	/usr/share/liquidprompt/liquidprompt
 ); do
-	test -r "$d/liquidprompt.plugin.zsh" || continue
-	. "$d/liquidprompt.plugin.zsh" && return 0
+	test -r "$f" || continue
+	. "$f" || continue
+	unset f
+	return 0
 done
+unset f
 
 echo "Oops, Liquid Prompt not found, can't enable theme!" >&2

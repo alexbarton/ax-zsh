@@ -43,6 +43,7 @@ _axzshctl() {
 				"$AXZSH"/themes/*.axzshtheme(:r:t) \
 				"$AXZSH"/custom_themes/*.axzshtheme(N:r:t) \
 				"$AXZSH"/custom_themes/*.zsh-theme(N:r:t) \
+				"$AXZSH"/repos/*/*prompt.plugin.zsh(N:r:r:t) \
 				"$AXZSH"/repos/*/*.axzshtheme(N:r:t) \
 				"$AXZSH"/repos/*/*.zsh-theme(N:r:t)
 			;;

@@ -361,11 +361,18 @@ function SetTheme {
 			"$AXZSH/repos/"*(N)
 			"$AXZSH/themes"
 		); do
+			local name=${1#*#}
 			if [[ -r "$dname/$1.axzshtheme" ]]; then
 				theme="$dname/$1.axzshtheme"
 				break
 			elif [[ -r "$dname/$1.zsh-theme" ]]; then
 				theme="$dname/$1.zsh-theme"
+				break
+			elif [[ "$1" = *prompt && -r "$dname/${name}.plugin.zsh" ]]; then
+				# Entry point is named like a regular plugin,
+				# not a theme, but the "plugin" name ends
+				# in "*prompt", so assume it is a theme!
+				theme="$dname/${name}.plugin.zsh"
 				break
 			fi
 		done

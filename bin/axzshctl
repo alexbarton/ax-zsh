@@ -326,6 +326,7 @@ function EnableDefaultPlugins {
 
 function SetTheme {
 	local link_name="$AXZSH/active_theme"
+	local theme=""
 
 	# --- Powerlevel10k ---
 	# Remove "instant prompt" configuration, if any ...
@@ -338,11 +339,8 @@ function SetTheme {
 	fi
 
 	if [[ -r "$1" ]]; then
+		# Direct match?
 		theme="$1"
-	elif [[ -r "$AXZSH/custom_themes/$1.axzshtheme" ]]; then
-		theme="$AXZSH/custom_themes/$1.axzshtheme"
-	elif [[ -r "$AXZSH/themes/$1.axzshtheme" ]]; then
-		theme="$AXZSH/themes/$1.axzshtheme"
 	else
 		# Look for theme in specific remote module:
 		for f (
@@ -354,12 +352,14 @@ function SetTheme {
 				break
 			fi
 		done
-
+	fi
+	if [[ -z "$theme" ]]; then
 		# Look for theme inside of installed plugins:
 		for dname (
 			"$AXZSH/custom_themes"
 			"$AXZSH/custom_plugins/"*(N)
 			"$AXZSH/repos/"*(N)
+			"$AXZSH/themes"
 		); do
 			if [[ -r "$dname/$1.axzshtheme" ]]; then
 				theme="$dname/$1.axzshtheme"
@@ -369,12 +369,12 @@ function SetTheme {
 				break
 			fi
 		done
-
 		if [[ -z "$theme" ]]; then
 			ax_error "Theme \"$1\" not found!"
 			return 1
 		fi
 	fi
+
 	ln -fs "$theme" "$link_name" || return 1
 	return $?
 }

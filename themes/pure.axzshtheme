@@ -1,0 +1,9 @@
+# AX-ZSH: Alex' Modular ZSH Configuration
+# pure.axzshtheme: Enable external "Pure" Theme
+# see <https://github.com/sindresorhus/pure>
+
+# Try to auto-load the prompt ...
+autoload -U prompt_pure_setup
+prompt_pure_setup 2>/dev/null && return 0
+
+echo "Oops, "prompt_pure_setup" not found, can't enable theme!" >&2

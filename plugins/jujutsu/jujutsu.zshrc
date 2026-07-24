@@ -18,7 +18,7 @@ jj_prompt_info() {
 	# Try to get and split the commit ID ...
 	declare -a jj_id=($(
 		echo $jj_status \
-		| sed -En 's/^Working copy *: \x1B\[1m\x1B\[[0-9;]*m([a-z0-9]*)\x1B\[[0-9;]*m([a-z0-9]*).*/\1 \2/p'
+		| sed -En 's/^Working copy.*: \x1B\[1m\x1B\[[0-9;]*m([a-z0-9]*)\x1B\[[0-9;]*m([a-z0-9]*).*/\1 \2/p'
 	))
 	[[ -n "$jj_id" ]] || return 1
 

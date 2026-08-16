@@ -12,10 +12,10 @@ fi
 (( $+commands[keychain] )) || return
 
 function axzsh_keychain_update() {
-	if ! eval `keychain --eval --ssh-allow-forwarded --ssh-allow-gpg "$@"` 2>/dev/null; then
+	if ! eval `keychain --eval --ssh-allow-forwarded --ssh-allow-gpg --systemd "$@"` 2>/dev/null; then
 		# Invocation failed! Probably we are using a keychain(1)
 		# version <2.9, let's try to use the old calling convention:
-		eval `keychain --eval --inherit any-once "$@"`
+		eval `keychain --eval --inherit any-once --systemd "$@"`
 	fi
 }
 

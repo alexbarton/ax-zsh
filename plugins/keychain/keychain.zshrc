@@ -12,7 +12,11 @@ fi
 (( $+commands[keychain] )) || return
 
 function axzsh_keychain_update() {
-	eval `keychain --eval --inherit any-once "$@"`
+	if ! eval `keychain --eval --ssh-allow-forwarded --ssh-allow-gpg "$@"` 2>/dev/null; then
+		# Invocation failed! Probably we are using a keychain(1)
+		# version <2.9, let's try to use the old calling convention:
+		eval `keychain --eval --inherit any-once "$@"`
+	fi
 }
 
 [[ "$type" == "zshrc" ]] \

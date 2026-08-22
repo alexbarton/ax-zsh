@@ -1,8 +1,8 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
 # 11_terminal.ax-io: Initialize terminal settings
 
-# Skip further initialization when stdin is not a tty.
-[[ -t 0 ]] || return 0
+# Skip further initialization when stdin or stdout is not a tty.
+[[ -t 0 && -t 1 ]] || return 0
 
 # Use tset(1) to validate TERM. Explicitly set SHELL to /bin/sh to force tset
 # to output sh-compliant commands even when SHELL was not set correctly or for

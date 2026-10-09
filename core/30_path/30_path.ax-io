@@ -21,20 +21,18 @@ typeset -Ux PATH
 _axzsh_setup_path() {
 	# Prepend additional search paths
 	for d (
-		/Developer/usr/bin
+		/Developer/usr/{,s}bin
 		/usr/ucb
-		/usr/pkg/bin
-		/usr/local/bin
-		/usr/local/sbin
+		/usr/pkg/{,s}bin
+		/usr/local/{,s}bin
 		/opt/*/bin(NOn)
 		/opt/*/sbin(NOn)
-		/home/linuxbrew/.linuxbrew/bin
+		/home/linuxbrew/.linuxbrew/{,s}bin
 		~/.gem/ruby/*/bin(NOn)
 		~/.go/bin
 		~/.cargo/bin
-		~/.local/bin
-		~/bin
-		~/sbin
+		~/.local/{,s}bin
+		~/{,s}bin
 		~/Applications
 	); do
 		[[ "$d" = */sbin && $UID -ne 0 ]] && continue

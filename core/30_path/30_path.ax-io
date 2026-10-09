@@ -6,10 +6,15 @@ if [[ -x /usr/libexec/path_helper ]]; then
 	eval "$(/usr/libexec/path_helper)"
 else
 	path=()
-	[[ $UID -eq 0 ]] && path+=(/usr/sbin)
-	path+=(/usr/bin)
-	[[ ! -h /sbin && $UID -eq 0 ]] && path+=(/sbin)
-	[[ ! -h /bin ]] && path+=(/bin)
+	# Prefer /usr/[s]bin over /[s]bin: The /usr hierarchy is assumed to
+	# contain the "more advanced" tools than the / hierarchy.
+	[[ $UID -eq 0 && -e /usr/sbin ]] && path+=(/usr/sbin)
+	[[ -e /usr/bin ]] && path+=(/usr/bin)
+	# Add the toplevel /[s]bin directories, but only if they are not
+	# symlinks: The latter most probably indicates a unified /usr & /
+	# hierarchy and we do not want to have directory content twice.
+	[[ $UID -eq 0 && ! -h /sbin && -e /sbin ]] && path+=(/sbin)
+	[[ ! -h /bin && -e /bin ]] && path+=(/bin)
 fi
 typeset -Ux PATH
 

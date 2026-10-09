@@ -22,6 +22,8 @@ _axzsh_setup_path() {
 	# Prepend additional search paths
 	for d (
 		/Developer/usr/{,s}bin
+		/system/{,s}bin
+		/system/non-packaged/{,s}bin
 		/usr/ucb
 		/usr/pkg/{,s}bin
 		/usr/local/{,s}bin

@@ -265,14 +265,21 @@ fi
 export TERM_COLORS
 
 # Set "CLICOLOR" when there are at least 4 colors available. And try to set
-# CLICOLOR to a sane value, too:
+# COLORTERM to a sane value, too:
 if [[ "${TERM_COLORS:-0}" -ge 4 ]]; then
 	# At least 4 colors ...
 	export CLICOLOR=1
 	if [[ "${TERM_COLORS:-0}" -lt 256 ]]; then
 		COLORTERM="yes"
-	else
-		[[ -z "$COLORTERM" || "$COLORTERM" = "no" ]] && COLORTERM="yes"
+	elif [[ -z "$COLORTERM" || "$COLORTERM" = "no" ]]; then
+		# 256 or more colors, but COLORTERM definitely unset or wrong.
+		# Check LC_TERMINAL, there is no better way to detect this:
+		case "$LC_TERMINAL" in
+		rootshell)
+			COLORTERM="truecolor" ;;
+		*)
+			COLORTERM="yes"
+		esac
 	fi
 	export COLORTERM
 else

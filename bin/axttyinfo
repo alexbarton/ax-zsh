@@ -86,6 +86,13 @@ for key (
 done
 [[ $col -gt 0 ]] && echo
 
+if [[ -n "$TMUX" ]]; then
+	features="$(tmux display -p '#{client_termfeatures}')"
+	printf "tmux features: %s.\n" \
+		"$(print -r -- ${(j:, :)${(oius:,:)features}})" \
+		| fold -s -w $max
+fi
+
 feature_tests="
 Styles:		Normal
 		\033[1mBold\033[0m

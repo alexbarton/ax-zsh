@@ -136,7 +136,12 @@ function NormalizedPluginName {
 }
 
 function EnableAXZSH {
-	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
+	for f (
+		${ZDOTDIR:-$HOME}/.zlogin
+		${ZDOTDIR:-$HOME}/.zlogout
+		${ZDOTDIR:-$HOME}/.zprofile
+		${ZDOTDIR:-$HOME}/.zshrc
+	); do
 		ln -s "$AXZSH/ax.zsh" "$f" \
 			|| ax_error "Failed to create symbolic link for \"$f\"!"
 	done
@@ -147,7 +152,12 @@ function EnableAXZSH {
 }
 
 function DisableAXZSH {
-	for f (~/.zlogin ~/.zlogout ~/.zprofile ~/.zshrc); do
+	for f (
+		${ZDOTDIR:-$HOME}/.zlogin
+		${ZDOTDIR:-$HOME}/.zlogout
+		${ZDOTDIR:-$HOME}/.zprofile
+		${ZDOTDIR:-$HOME}/.zshrc
+	); do
 		if [[ -h "$f" ]]; then
 			rm "$f" || ax_msg 2 "Failed to remove \"$f\"!"
 		elif [[ -e "$f" ]]; then

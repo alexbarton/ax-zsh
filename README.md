@@ -263,7 +263,15 @@ axzshctl update-caches
 
 ### Other `axzshctl` sub-commands
 
-Please run `axzshctl --help` to get a full list of a available sub-commands:
+The following sub-commands are less commonly needed; run `axzshctl --help`
+for the full list of available sub-commands:
+
+* `enable` / `disable` — enable or disable AX-ZSH altogether (manage the
+  `~/.zsh*` symbolic links).
+* `reset-plugins` — reset the active plugins to the default set.
+* `enable-default-plugins` — enable all default plugins.
+* `plugin-help <name>` — show the help text of a plugin, when provided.
+* `version` — show version and setup information.
 
 ```sh
 axzshctl --help

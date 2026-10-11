@@ -20,7 +20,7 @@ while [[ $# -gt 0 ]]; do
 			VERBOSE=1
 			;;
 		*)
-			echo "Usage: ttyinfo [-1] [-f] [-v]" >&2
+			echo "Usage: axttyinfo [-1] [-f] [-v]" >&2
 			exit 1
 	esac
 	shift

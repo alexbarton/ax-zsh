@@ -21,6 +21,10 @@ alias 8='cd ~8 && pwd'
 alias 9='cd ~9 && pwd'
 alias -- -='cd -'
 
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -I"
+
 alias md='mkdir -p'
 alias rd=rmdir
 

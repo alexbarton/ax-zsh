@@ -28,13 +28,17 @@ alias rm="rm -I"
 alias md='mkdir -p'
 alias rd=rmdir
 
+alias dud='du -d 1 -h'
+alias ff='find . -type f -iname'
+
 # Global aliases
 
-alias -g C="| cut -d' '"
+alias -g CA="2>&1 | cat -A"
 alias -g G="| grep -i"
 alias -g H="| head"
 alias -g L="| less"
 alias -g LL="2>&1 | less"
+alias -g NE="2>/dev/null"
 alias -g NUL=">/dev/null 2>&1"
 alias -g 1NUL="1>/dev/null"
 alias -g 2NUL="2>/dev/null"
@@ -44,4 +48,4 @@ alias -g X="| xargs"
 
 # Suffix aliases
 
-alias -s {c,cfg,conf,css,h,html,ini,json,md,me,rc,txt,yml,yaml}="$EDITOR"
+alias -s {asc,c,cc,cfg,conf,cpp,css,cxx,h,hh,html,ini,json,md,me,php,rc,txt,yml,yaml}="$EDITOR"

@@ -3,7 +3,7 @@
 
 function clear_history {
 	local HISTSIZE=0
-	cat /dev/null >"$HISTFILE"
+	: >"$HISTFILE"
 	fc -R
 }
 

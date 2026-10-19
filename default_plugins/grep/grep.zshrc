@@ -23,7 +23,7 @@ elif grep-flag-available "--exclude=.csv"; then
 	grep_options+=" --exclude=$vcs_folders"
 fi
 
-[[ -n "$options" ]] && alias grep="grep${grep_options}"
+[[ -n "$grep_options" ]] && alias grep="grep${grep_options}"
 
 unfunction grep-flag-available
 unset grep_options

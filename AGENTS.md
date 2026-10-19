@@ -43,6 +43,23 @@ authoring conventions: `plugins/README.md`.
 - External GitHub plugins appear in `active_plugins/` as `owner#name`
   symlinks; OhMyZsh plugins are cloned into `repos/@ohmyzsh`.
 
+## Plugin cache
+
+- Plugin code always runs **inside an `axzsh_plugin_init()` function**:
+  without a cache, `ax.zsh` wraps each plugin's code in it, `eval`s it, and
+  appends the same code to `cache/<stage>.cache`, which is then
+  `zcompile`d; later shells just source the cache. Each shell builds it in a
+  private `cache/.build.<stage>.<pid>/` directory and moves it into place
+  atomically, so concurrently starting shells can't garble it.
+- Consequences: plain `typeset` or `local` variables are function-local (use
+  `typeset -g` for globals), `return` ends only that plugin, `$0` is
+  `axzsh_plugin_init` (use `$AXZSH/...` paths, not `${0:A:h}`), and aliases
+  a plugin defines don't apply within that same plugin.
+- `repos/` plugins are not inlined; the cache only records a `source` line,
+  skipped on dumb terminals.
+- The `ax-io` cache starts with `PATH=/usr/bin:/bin` (extended by
+  `30_path`); the full `PATH` is set in the `zprofile` stage by `50_path`.
+
 ## Conventions
 
 - Plugin exit codes, `AXZSH_PLUGIN_CHECK` runs, terminal-capability helpers,

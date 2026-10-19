@@ -43,8 +43,6 @@ function axzsh_handle_stage {
 	[[ -d "$AXZSH/cache" ]] || mkdir -p "$AXZSH/cache"
 	local cache_file="$AXZSH/cache/$type.cache"
 
-	local cat_cmd=${commands[cat]:-cat}
-
 	if [[ -r "$cache_file" ]]; then
 		# Cache file exists, use it!
 		# But when in the "zshrc" stage, make sure that the "zprofile" stage
@@ -57,10 +55,17 @@ function axzsh_handle_stage {
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   - Reading cache file \"$cache_file\" ..."
 		source "$cache_file"
-		(( $+functions[axzsh_plugin_init] )) && unfunction axzsh_plugin_init
 	else
 		# No cache file available.
-		local new_cache_file="$cache_file.NEW"
+		# Build the new cache file in a private per-process directory and
+		# move it into place atomically afterwards, so that concurrently
+		# starting shells can't garble each other's cache files. Use the
+		# same basename as the final cache file, so that "zcompile" embeds
+		# the correct name in the ".zwc" file.
+		local build_dir="$AXZSH/cache/.build.$type.$$"
+		local new_cache_file="$build_dir/$type.cache"
+		command rm -rf "$build_dir"
+		command mkdir "$build_dir" || unset new_cache_file
 
 		# Setup list of plugins to load:
 		local plugin_list
@@ -78,7 +83,9 @@ function axzsh_handle_stage {
 		# Create new cache file:
 		[[ -n "$AXZSH_DEBUG" ]] \
 			&& echo "   (Writing new cache file to \"$new_cache_file\" ...)"
-		if ! printf "# %s\n\n" "$(LC_ALL=C date)" >"$new_cache_file"; then
+		if [[ -z "$new_cache_file" ]] \
+			|| ! printf "# %s\n\n" "$(LC_ALL=C date)" >"$new_cache_file"
+		then
 			unset new_cache_file
 		else
 			# New cache file successfully created ...
@@ -112,11 +119,20 @@ function axzsh_handle_stage {
 		done
 
 		if [[ -n "$cache_file" && -n "$new_cache_file" && -r "$new_cache_file" ]]; then
-			# Move newly created cache file in place:
-			mv "$new_cache_file" "$cache_file"
-			zcompile "$cache_file"
+			# Compile and move newly created cache file in place. Move
+			# the ".zwc" file first: it is never older than its source,
+			# so concurrent readers always see consistent data. Use
+			# "command" to bypass "mv -i" aliases of later stages.
+			if zcompile "$new_cache_file"; then
+				command mv -f "$new_cache_file.zwc" "$cache_file.zwc"
+			else
+				command rm -f "$cache_file.zwc"
+			fi
+			command mv -f "$new_cache_file" "$cache_file"
 		fi
+		command rm -rf "$build_dir"
 	fi
+	(( $+functions[axzsh_plugin_init] )) && unfunction axzsh_plugin_init
 }
 
 # Load plugin code of a given type.
@@ -204,9 +220,10 @@ function axzsh_load_plugin {
 	fi
 
 	if [[ -r "$fname" ]]; then
-		# Read plugin ...
-		[[ -n "$AXZSH_DEBUG" ]] \
-			&& echo "   - $plugin ($type) ..."
+		# Read plugin: wrap its code in an "axzsh_plugin_init()"
+		# function, run it, and append the very same code to the cache
+		# file, so that plugin code always runs the same way, whether
+		# it is read from the cache or not.
 
 		# Note for external ("repo/*") plugins on dumb terminals: These
 		# (modern?) plugins most probably don't expect such a terminal
@@ -215,28 +232,22 @@ function axzsh_load_plugin {
 		# all in that case: this results in reduced/disabled
 		# functionality, but hopefully in readable output ...
 
+		local chunk=$'# BEGIN: '"$fname"$'\naxzsh_plugin_init()\n{\n'
 		case "$fname" in
 			*"/repos/"*)
-				axzsh_is_dumb_terminal || source "$fname"
+				chunk+="[[ -n \"\$AXZSH_DEBUG\" ]] && echo '   - $plugin ($type): \"$fname\" ...'"$'\n'
+				chunk+="axzsh_is_dumb_terminal || source '$fname'"$'\n'
 				;;
 			*)
-				source "$fname"
+				chunk+="[[ -n \"\$AXZSH_DEBUG\" ]] && echo '   - $plugin ($type) ...'"$'\n'
+				chunk+="$(<"$fname")"$'\n'
 		esac
+		chunk+=$'}\naxzsh_plugin_init\n# END: '"$fname"$'\n'
 
-		if [[ -n "$cache_file" ]]; then
-			# Add plugin data to cache
-			printf "# BEGIN: %s\naxzsh_plugin_init()\n{\n" "$fname" >>"$cache_file"
-			case "$fname" in
-				*"/repos/"*)
-					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type): \"$fname\" ...'" >>$cache_file
-					echo "axzsh_is_dumb_terminal || source '$fname'" >>$cache_file
-					;;
-				*)
-					echo "[[ -n \"\$AXZSH_DEBUG\" ]] && echo '     - $plugin ($type, cached) ...'" >>$cache_file
-					"$cat_cmd" "$fname" >>"$cache_file"
-			esac
-			printf "}\naxzsh_plugin_init\n# END: %s\n\n" "$fname" >>"$cache_file"
-		fi
+		eval "$chunk"
+
+		# Add plugin code to cache:
+		[[ -n "$cache_file" ]] && printf '%s\n' "$chunk" >>"$cache_file"
 	fi
 
 	# It is a success, even if only the plugin directory (and no script!)

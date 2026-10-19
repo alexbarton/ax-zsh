@@ -112,11 +112,12 @@ function UpdatePluginCache {
 
 	[[ "$1" = "-v" ]] && echo "Removing AX-ZSH cache files ..."
 	rm -rf \
-		$AXZSH/cache/ax-io.cache \
-		$AXZSH/cache/zlogin.cache \
-		$AXZSH/cache/zlogout.cache \
-		$AXZSH/cache/zprofile.cache \
-		$AXZSH/cache/zshrc.cache \
+		$AXZSH/cache/ax-io.cache{,.zwc} \
+		$AXZSH/cache/zlogin.cache{,.zwc} \
+		$AXZSH/cache/zlogout.cache{,.zwc} \
+		$AXZSH/cache/zprofile.cache{,.zwc} \
+		$AXZSH/cache/zshrc.cache{,.zwc} \
+		$AXZSH/cache/.build.*(N) \
 		|| return 1
 
 	echo "Regenerating AX-ZSH cache ..."

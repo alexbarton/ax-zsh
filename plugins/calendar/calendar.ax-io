@@ -16,7 +16,9 @@ fi
 
 # Check if calendar(1) infos have been shown during last 60 minutes, and if so,
 # don't show them now but return.
-[[ -z `find "$XDG_CACHE_HOME/axzsh_last_calendar" -mmin -60 2>/dev/null` ]] || return 0
+local -a recent
+recent=("$XDG_CACHE_HOME/axzsh_last_calendar"(Nmm-60))
+(( $#recent )) && return 0
 
 tmpfile=$(mktemp "$TMPDIR/calendar.XXXXXX") || return 1
 

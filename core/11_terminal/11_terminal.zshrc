@@ -12,9 +12,15 @@
 # set, for example in non-login shells!
 [[ -n "$TERM_INITIAL" ]] || TERM_INITIAL="$TERM"
 
+# Use the "terminfo" module to query the terminal capabilities without having
+# to call tput(1), when possible. But fall back to tput(1) when this fails, for
+# example for terminals without "colors" capability (tput reports "-1" then).
+zmodload zsh/terminfo 2>/dev/null
+
 # Try to get a value for TERM_COLORS, when it is not yet set. Note: it will be
 # re-detected for the final TERM type later on below!
-[[ -n "$TERM_COLORS" ]] || TERM_COLORS=$(tput colors 2>/dev/null)
+[[ -n "$TERM_COLORS" ]] \
+	|| TERM_COLORS=${terminfo[colors]:-$(tput colors 2>/dev/null)}
 initial_term_colors="$TERM_COLORS"
 
 # VTE based terminals (like GNOME Terminal) support 256 colors, but old(er)
@@ -123,10 +129,12 @@ function axzsh_is_modern_terminal {
 	fi
 	[[ -n "$TERM_DOWNGRADED_FROM" ]] && return 1
 	[[ "$TERM_COLORS" -le 8 ]] && return 1
-	[[ -n "$_axzsh_is_modern_terminal_cache" ]] \
-		&& return $(test "$_axzsh_is_modern_terminal_cache" -eq 0 2>/dev/null)
+	if [[ -n "$_axzsh_is_modern_terminal_cache" ]]; then
+		[[ "$_axzsh_is_modern_terminal_cache" == 0 ]]
+		return
+	fi
 
-	result=1
+	local result=1
 	[[ "$TERM" = cygwin ]] && result=0
 	[[ "$TERM" = foot ]] && result=0
 	[[ "$TERM" = ghostty ]] && result=0
@@ -250,7 +258,7 @@ fi
 # Try to detect the number of supported colors and store it in TERM_COLORS:
 # first by querying the "termcap" database, and if this does not work, some
 # hardcoded defaults.
-TERM_COLORS=$(tput colors 2>/dev/null)
+TERM_COLORS=${terminfo[colors]:-$(tput colors 2>/dev/null)}
 if [[ -z "$TERM_COLORS" ]]; then
 	case "$TERM" in
 		*-256color|xterm-ghostty|xterm-kitty)

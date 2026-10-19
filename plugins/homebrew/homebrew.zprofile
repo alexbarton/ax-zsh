@@ -23,7 +23,9 @@ fi
 # seems to be). Anyway. This can lead to annoying delays spawning new sessions,
 # so use a "cache file" to speed this up.
 _shellenv_cache="$XDG_CACHE_HOME/axzsh_homebrew_shellenv"
-find "$_shellenv_cache" -mmin +1440 -delete 2>/dev/null
+local -a outdated
+outdated=("$_shellenv_cache"(Nmm+1440))
+(( $#outdated )) && command rm -f "$_shellenv_cache"
 if [[ ! -r "$_shellenv_cache" ]]; then
 	# Create new cache file:
 	[[ -n "$AXZSH_DEBUG" ]] && echo '     - (creating new "shellenv cache")'

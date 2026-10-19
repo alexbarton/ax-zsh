@@ -16,7 +16,12 @@ fi
 
 export GPG_TTY=$TTY
 
-if (( $+commands[gpg-connect-agent] )); then
+if [[ -z "$GNUPGHOME" && -S "$XDG_RUNTIME_DIR/gnupg/S.gpg-agent" ]]; then
+	# The agent socket in the default location already exists, either
+	# because the agent is running or because of systemd(1) socket
+	# activation. So there is no need to start the agent here.
+	:
+elif (( $+commands[gpg-connect-agent] )); then
 	# Try to start/connect the agent ...
 	( gpg-connect-agent /bye >/dev/null 2>&1 )
 fi

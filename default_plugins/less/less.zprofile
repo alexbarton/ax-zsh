@@ -22,7 +22,11 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # colors this way. See grotty(1) and <https://unix.stackexchange.com/a/108840>.
 export GROFF_NO_SGR=1
 
-if (( $+commands[lesspipe] )); then
+# Set up the input preprocessor, unless already configured (for example,
+# inherited from a parent shell): this saves the costly call of lesspipe(1).
+if [[ -n "$LESSOPEN" ]]; then
+	:
+elif (( $+commands[lesspipe] )); then
 	eval "$(lesspipe)"
 elif (( $+commands[lesspipe.sh] )); then
 	# Silence lesspipe(1), see <https://github.com/wofr06/lesspipe/issues/21>

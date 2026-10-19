@@ -7,6 +7,7 @@
 
 # Make sure that LANG and LC_MESSAGES are either unset or set to something sane,
 # that is, follow the "xx_ZZ.*" syntax.
+# The result is returned in the REPLY variable (to avoid a subshell).
 fix_locale() {
 	local encoding locale
 
@@ -14,23 +15,24 @@ fix_locale() {
 	encoding="$1:e"
 
 	if [[ -z "$1" || "$locale" =~ '_' || ${#locale%%_*} -ne 2 ]]; then
-		echo "$1"
+		REPLY="$1"
 	else
 		locale="${locale:0:2}_${locale:0:2:u}"
 		[[ -n "$encoding" ]] && locale="$locale.$encoding"
-		echo "$locale"
+		REPLY="$locale"
 	fi
 }
 [[ -n "$AXZSH_DEBUG" ]] && echo "  LANG='${LANG:-(unset/empty)}' LANGUAGE='${LANGUAGE:-(unset/empty)}' LC_MESSAGES='${LC_MESSAGES:-(unset/empty)}'"
-[[ -n "$LANG" ]] && LANG=$(fix_locale "$LANG")
-[[ -n "$LC_MESSAGES" ]] && LANG=$(fix_locale "$LC_MESSAGES")
+local REPLY
+[[ -n "$LANG" ]] && fix_locale "$LANG" && LANG=$REPLY
+[[ -n "$LC_MESSAGES" ]] && fix_locale "$LC_MESSAGES" && LANG=$REPLY
 [[ -n "$AXZSH_DEBUG" ]] && echo "  LANG='${LANG:-(unset/empty)}' LANGUAGE='${LANGUAGE:-(unset/empty)}' LC_MESSAGES='${LC_MESSAGES:-(unset/empty)}' - after fix."
 unfunction fix_locale
 
 # Validate the locale(7) settings in interactive shells and try to mimic the
 # tset(1) behaviour.
 while true; do
-	lc_messages=$(locale 2>/dev/null | grep -F LC_MESSAGES | cut -d'=' -f2)
+	lc_messages=${${(M)${(f)"$(locale 2>/dev/null)"}:#LC_MESSAGES=*}#LC_MESSAGES=}
 	[[ "$lc_messages" = '"C"' && "$LANG" != 'C' && "$LC_ALL" != 'C' ]] && lc_messages=$LANG
 	lc_messages=$lc_messages:gs/\"//
 	locale=$lc_messages:r
@@ -40,7 +42,9 @@ while true; do
 	[[ -n "$encoding" ]] && locale="$locale.$encoding"
 	[[ -z "$LANG$LANGUAGE$LC_ALL$LC_MESSAGES" ]] && unset lc_messages
 
-	if [[ -n "$LANG$LANGUAGE$LC_ALL$LC_MESSAGES" ]] && locale -a 2>/dev/null | grep "^$locale\$" >/dev/null; then
+	if [[ -n "$LANG$LANGUAGE$LC_ALL$LC_MESSAGES" ]] \
+		&& (( ${${(f)"$(locale -a 2>/dev/null)"}[(Ie)$locale]} ))
+	then
 		# The locale setting seems to be valid: one of the LANG,
 		# LANGUAGE, LC_ALL and/or LC_MESSAGES is set and the locale is
 		# included in "locale -a" output. Good!

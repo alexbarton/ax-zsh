@@ -43,6 +43,14 @@ function axzsh_handle_stage {
 	[[ -d "$AXZSH/cache" ]] || mkdir -p "$AXZSH/cache"
 	local cache_file="$AXZSH/cache/$type.cache"
 
+	# Don't expand aliases in AX-ZSH plugin code: neither aliases defined by
+	# plugins loaded earlier, nor (global) aliases of the user. External
+	# plugins and themes are read with alias expansion restored to the
+	# state saved here, see axzsh_load_plugin(). Note: the cache file is
+	# compiled with "zcompile -U" for the same reason.
+	local axzsh_aliases=$options[aliases]
+	setopt no_aliases
+
 	if [[ -r "$cache_file" ]]; then
 		# Cache file exists, use it!
 		# But when in the "zshrc" stage, make sure that the "zprofile" stage
@@ -106,11 +114,15 @@ function axzsh_handle_stage {
 			# This must be done before 99_cleanup is run!
 			if [[ "$plugin:t" == "99_cleanup" && "$type" = "zshrc" ]]; then
 				if [[ -r "$AXZSH_THEME" ]]; then
+					[[ $axzsh_aliases == on ]] && setopt aliases
 					source "$AXZSH_THEME"
+					setopt no_aliases
 					if [[ -n "$new_cache_file" ]]; then
 						# Source the theme in the new cache file:
 						echo "# BEGIN Theme" >>"$new_cache_file"
+						echo '[[ $axzsh_aliases == on ]] && setopt aliases' >>"$new_cache_file"
 						echo 'test -r "$AXZSH_THEME" && source "$AXZSH_THEME"' >>"$new_cache_file"
+						echo 'setopt no_aliases' >>"$new_cache_file"
 						echo "# END Theme" >>"$new_cache_file"
 					fi
 				fi
@@ -123,7 +135,7 @@ function axzsh_handle_stage {
 			# the ".zwc" file first: it is never older than its source,
 			# so concurrent readers always see consistent data. Use
 			# "command" to bypass "mv -i" aliases of later stages.
-			if zcompile "$new_cache_file"; then
+			if zcompile -U "$new_cache_file"; then
 				command mv -f "$new_cache_file.zwc" "$cache_file.zwc"
 			else
 				command rm -f "$cache_file.zwc"
@@ -133,6 +145,7 @@ function axzsh_handle_stage {
 		command rm -rf "$build_dir"
 	fi
 	(( $+functions[axzsh_plugin_init] )) && unfunction axzsh_plugin_init
+	[[ $axzsh_aliases == on ]] && setopt aliases
 }
 
 # Load plugin code of a given type.
@@ -203,7 +216,7 @@ function axzsh_load_plugin {
 		else
 			echo "AX-ZSH plugin type of \"$plugin\" unknown, skipped!" >&2
 			echo "Contents of \"$dname\":" >&2
-			ls -lh "$dname/" >&2
+			command ls -lh "$dname/" >&2
 			return 0
 		fi
 	fi
@@ -236,7 +249,9 @@ function axzsh_load_plugin {
 		case "$fname" in
 			*"/repos/"*)
 				chunk+="[[ -n \"\$AXZSH_DEBUG\" ]] && echo '   - $plugin ($type): \"$fname\" ...'"$'\n'
+				chunk+='[[ $axzsh_aliases == on ]] && setopt aliases'$'\n'
 				chunk+="axzsh_is_dumb_terminal || source '$fname'"$'\n'
+				chunk+='setopt no_aliases'$'\n'
 				;;
 			*)
 				chunk+="[[ -n \"\$AXZSH_DEBUG\" ]] && echo '   - $plugin ($type) ...'"$'\n'

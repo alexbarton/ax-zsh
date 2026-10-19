@@ -53,8 +53,10 @@ authoring conventions: `plugins/README.md`.
   atomically, so concurrently starting shells can't garble it.
 - Consequences: plain `typeset` or `local` variables are function-local (use
   `typeset -g` for globals), `return` ends only that plugin, `$0` is
-  `axzsh_plugin_init` (use `$AXZSH/...` paths, not `${0:A:h}`), and aliases
-  a plugin defines don't apply within that same plugin.
+  `axzsh_plugin_init` (use `$AXZSH/...` paths, not `${0:A:h}`), and no
+  aliases are expanded in plugin code: `ax.zsh` sets `no_aliases` while
+  loading and compiles caches with `zcompile -U`. External (`repos/`)
+  plugins and the theme are sourced with alias expansion restored.
 - `repos/` plugins are not inlined; the cache only records a `source` line,
   skipped on dumb terminals.
 - The `ax-io` cache starts with `PATH=/usr/bin:/bin` (extended by

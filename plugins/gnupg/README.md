@@ -6,6 +6,9 @@ starting a new one.
 
 - `gpg2`: use the same completions than for `gpg`.
 - When `gpg` isn't installed but `gpg2` is, alias it to `gpg`, too.
+- In SSH sessions, set `PINENTRY_USER_DATA="USE_TTY=1"` so that a pinentry
+  wrapper can use the terminal instead of a graphical dialog, for example
+  [pinentry-auto](https://github.com/alexbarton/pinentry-auto).
 
 ### Command Aliases
 

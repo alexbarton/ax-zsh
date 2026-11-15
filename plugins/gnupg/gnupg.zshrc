@@ -16,6 +16,9 @@ fi
 
 export GPG_TTY=$TTY
 
+# Don't use a graphical pinentry program on remote CLI sessions
+[[ -n "$SSH_CONNECTION" ]] && export PINENTRY_USER_DATA="USE_TTY=1"
+
 if [[ -z "$GNUPGHOME" && -S "$XDG_RUNTIME_DIR/gnupg/S.gpg-agent" ]]; then
 	# The agent socket in the default location already exists, either
 	# because the agent is running or because of systemd(1) socket

@@ -24,6 +24,8 @@ _axzshctl() {
 	  'args')
 		case "$words[2]" in
 		  "enable-plugin"|"plugin-help")
+			[[ "$words[2]" == "enable-plugin" && $CURRENT -eq 3 ]] \
+				&& compadd "$@" -- --order
 			compadd "$@" -- \
 				"$AXZSH"/plugins/*(/:t) \
 				"$AXZSH"/custom_plugins/*(N/:t) \
@@ -35,8 +37,8 @@ _axzshctl() {
 			done
 			;;
 		  "disable-plugin")
-			compadd "$@" -- \
-				"$AXZSH"/active_plugins/*(:t:s/#/\\/)
+			local plugins=("$AXZSH"/active_plugins/*(N:t:s/#/\\/))
+			compadd "$@" -- ${plugins#[0-9][0-9]-}
 			;;
 		  "set-theme")
 			compadd "$@" -- "-" \

@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 10-hello.ax-io: Greet the user in the (new) environment
+# hello.ax-io: Greet the user in the (new) environment
 
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 0

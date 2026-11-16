@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 00-newline.ax-io: Print an empty line ...
+# newline.ax-io: Print an empty line ...
 
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92

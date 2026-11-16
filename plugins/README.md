@@ -36,10 +36,12 @@ The script type is auto-detected, in the following order:
 
 ## Load Order
 
-A plugin's position is determined by the **first character** of its directory
-name, then alphabetically within each group. Plugin names must start with a
-letter, a digit, or `@`. `ax.zsh` loads plugins in the following groups, in
-order:
+Enabled plugins are symbolic links in `active_plugins/`, named either
+`<name>` or `<NN>-<name>`, where `NN` is a two-digit load order (`00-99`). A
+plugin's position is determined by the **first character** of this link name
+(of its directory name for `core/` plugins), then alphabetically within each
+group. Link names must start with a letter, a digit, or `@`. `ax.zsh` loads
+plugins in the following groups, in order:
 
 1. `core/` plugins numbered `00-49`: basic setup (terminal, locale,
    environment, prompt, etc.).
@@ -59,6 +61,14 @@ order:
 Only the first digit matters for the position relative to `core/` plugins:
 for example, a plugin numbered `00` still loads after a `core/` plugin
 numbered `40`. The exact number only orders plugins within their group.
+
+The load order of a plugin is set when enabling it, for example
+`axzshctl enable-plugin --order 10 hello`; running this again for an already
+enabled plugin changes its order, and `--order -` removes it. Without
+`--order`, the plugin's default is used: the two-digit number in an optional
+`order` file in its plugin directory, or none at all. Most plugins don't need
+an `order` file; use it only when a plugin must run early or last, for example
+because its output must come first.
 
 ## Terminal Capabilities
 

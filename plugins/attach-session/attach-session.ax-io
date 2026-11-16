@@ -1,5 +1,5 @@
 # AX-ZSH: Alex' Modular ZSH Configuration
-# 99-attach-session: Interactively reattach to a running session.
+# attach-session.ax-io: Interactively reattach to a running session.
 
 # Don't run this plugin on "check-plugins"!
 [[ -z "$AXZSH_PLUGIN_CHECK" ]] || return 92

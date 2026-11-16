@@ -55,6 +55,13 @@ else
 		cp -pRv "$S/$f" "$AXZSH/" || abort
 	done
 
+	ax_msg - "Removing obsolete plugins ..."
+	for p in plugins/00-newline default_plugins/10-hello \
+		plugins/99-attach-session
+	do
+		rm -fr "${AXZSH:?}/$p" || abort
+	done
+
 	ax_msg - "Copying plugins ..."
 	for plugin_type in core default_plugins plugins; do
 		mkdir -p "$AXZSH/$plugin_type" || abort
@@ -99,6 +106,10 @@ if [ ! -d "$AXZSH/active_plugins" ]; then
 	fi
 else
 	ax_msg - "Plugin directory \"$AXZSH/active_plugins\" already exists. Ok."
+	if command -v zsh >/dev/null; then
+		zsh "$AXZSH/bin/axzshctl" update-caches \
+			|| ax_msg 1 "Failed to update caches!"
+	fi
 fi
 
 ax_msg 0 "AX-ZSH setup successfully."

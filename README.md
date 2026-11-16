@@ -225,6 +225,18 @@ axzshctl enable-plugin zdharma-continuum/fast-syntax-highlighting
 axzshctl enable-plugin @ohmyzsh/git @ohmyzsh/tmux
 ```
 
+Plugins are loaded in alphabetical order by default, but you can set a load
+order (`00-99`) when enabling a plugin. Plugins numbered `00-49` load before
+all others, `50-79` after them, and `80-99` even after your local
+configuration. Run this again to change the order of an already enabled
+plugin, or use `--order -` to remove it:
+
+```sh
+axzshctl enable-plugin --order 10 neofetch
+```
+
+See "Load Order" in [plugins/README.md](plugins/README.md) for details.
+
 #### Custom local plugins
 
 You can link custom plugins stored in arbitrary directories using `axzshctl`

@@ -68,8 +68,9 @@ function Usage {
 	echo "  disable"
 	echo "    Disable AX-ZSH altogether."
 	echo
-	echo "  enable-plugin <name|directory> [<name|directory> [...]]"
-	echo "    Enable plugin(s)."
+	echo "  enable-plugin [--order <NN>|-] <name|directory> [<name|directory> [...]]"
+	echo "    Enable plugin(s), optionally at a given load order (00-99), or"
+	echo "    change the order of already enabled plugin(s)."
 	echo "  disable-plugin <name> [<name> [...]]"
 	echo "    Disable plugin(s)."
 	echo "  list-enabled"
@@ -136,6 +137,50 @@ function NormalizedPluginName {
 	fi
 }
 
+# Get the link in "active_plugins" of an enabled plugin, if any, with or
+# without order prefix ("NN-<name>").
+# - $1: Normalized plugin name
+function ActivePluginLink {
+	local link
+	for link (
+		"$AXZSH/active_plugins/$1"(N@)
+		"$AXZSH/active_plugins/"[0-9][0-9]-"$1"(N@)
+	); do
+		print -r -- "$link"
+		return 0
+	done
+	return 1
+}
+
+# Get the default load order of a plugin from its "order" file, if any.
+# - $1: Plugin directory
+function PluginOrder {
+	local order
+	[[ -r "$1/order" ]] || return 1
+	order=$(<"$1/order")
+	[[ "$order" == [0-9][0-9] ]] || return 1
+	print -r -- "$order"
+}
+
+# Migrate links to bundled plugins which have been renamed to drop their
+# order prefix (like "00-newline" to "newline"). The link name, and
+# therefore the load order, stays the same.
+function MigrateActivePlugins {
+	local link target new
+	for link ("$AXZSH/active_plugins/"*(N@)); do
+		target=$(readlink "$link")
+		[[ "${target:h:h:A}" == "${AXZSH:A}" ]] || continue
+		[[ "${target:h:t}" == (plugins|default_plugins) ]] || continue
+		[[ "${target:t}" == [0-9][0-9]-* ]] || continue
+		new="${target:h}/${${target:t}#[0-9][0-9]-}"
+		[[ -d "$new" ]] || continue
+		echo "Migrating plugin \"${target:t}\" to \"${new:t}\" ..."
+		rm "$link" && ln -s "$new" "$link" \
+			|| ax_error "Failed to migrate \"$link\"!"
+	done
+	return 0
+}
+
 function EnableAXZSH {
 	for f (
 		${ZDOTDIR:-$HOME}/.zlogin
@@ -169,14 +214,31 @@ function DisableAXZSH {
 	done
 }
 
+# Enable a plugin.
+# - $1: Load order ("NN"), "-" for none, or empty for the plugin's default
+# - $2: Plugin name, repository, or directory
 function EnablePlugin {
+	local order="$1"
+	shift
 	local plugin=$(NormalizedPluginName "$1")
 	local dir="$AXZSH/active_plugins"
 	local name="$plugin"
+	local link new_link
 
-	if [[ -h "$dir/$plugin" ]]; then
-		ax_msg 1 "Plugin \"$1\" already active!"
-		return 1
+	if link=$(ActivePluginLink "$plugin"); then
+		[[ "$order" == [0-9][0-9] ]] \
+			&& new_link="$dir/$order-${plugin#[0-9][0-9]-}" \
+			|| new_link="$dir/${plugin#[0-9][0-9]-}"
+		if [[ -z "$order" || "$link" == "$new_link" ]]; then
+			ax_msg 1 "Plugin \"$1\" already active!"
+			return 1
+		fi
+		if ! mv "$link" "$new_link"; then
+			ax_error "Failed to rename link!"
+			return 1
+		fi
+		ax_msg 0 "Plugin \"$1\" moved to \"${new_link:t}\"."
+		return 0
 	fi
 
 	# ax.zsh only loads plugins whose names start with a letter, a digit,
@@ -234,6 +296,8 @@ function EnablePlugin {
 		"$AXZSH/core/$plugin"
 	); do
 		[[ ! -d "$dname" ]] && continue
+		[[ -z "$order" ]] && order=$(PluginOrder "$dname")
+		[[ "$order" == [0-9][0-9] ]] && name="$order-$name"
 		mkdir -p "$dir"
 		if ! (
 			cd "$dir" || exit 9
@@ -242,9 +306,15 @@ function EnablePlugin {
 			ax_error "Failed to create link!"
 			return 1
 		fi
-		ax_msg 0 "Plugin \"$1\" enabled."
+		ax_msg 0 "Plugin \"$1\" enabled as \"$name\"."
 		return 0
 	done
+
+	if [[ "$1" =~ "^([0-9][0-9])-([[:alnum:]_.-]+)$" ]]; then
+		# Name with order prefix, like "00-newline":
+		EnablePlugin "${order:-$match[1]}" "$match[2]"
+		return $?
+	fi
 
 	ax_error "Plugin \"$1\" not found!"
 	return 1
@@ -252,7 +322,7 @@ function EnablePlugin {
 
 function DisablePlugin {
 	local plugin=$(NormalizedPluginName "$1")
-	local dir="$AXZSH/active_plugins"
+	local link
 	local r=-1
 
 	# Active theme?
@@ -261,8 +331,8 @@ function DisablePlugin {
 	fi
 
 	# Active plugin?
-	if [[ -h "$dir/$plugin" ]]; then
-		rm "$dir/$plugin"; r=$?
+	if link=$(ActivePluginLink "$plugin"); then
+		rm "$link"; r=$?
 	fi
 
 	if [[ $r -eq -1 ]]; then
@@ -333,13 +403,17 @@ function ResetPlugins {
 function EnableDefaultPlugins {
 	local dir="$AXZSH/active_plugins"
 
+	local plugin name order r=0
+
 	ax_msg - "Activating default plugins ..."
-	mkdir -p "$dir"
-	(
-		cd "$dir" || exit 9
-		ln -sf "$AXZSH/default_plugins/"* "$PWD"
-	)
-	return $?
+	mkdir -p "$dir" || return 1
+	for plugin ("$AXZSH/default_plugins/"*(N/)); do
+		ActivePluginLink "$plugin:t" >/dev/null && continue
+		name="$plugin:t"
+		order=$(PluginOrder "$plugin") && name="$order-$name"
+		ln -s "$plugin" "$dir/$name" || r=1
+	done
+	return $r
 }
 
 function SetTheme {
@@ -456,7 +530,7 @@ function CheckPlugins {
 		plugin=${dir:t}
 
 		# Test if plugin is already enabled
-		if [[ -e "$AXZSH/active_plugins/$plugin" ]]; then
+		if ActivePluginLink "$plugin" >/dev/null; then
 			printf ' \e[1;32m+\e[m "\e[1m%s\e[m" ... ' "${plugin}"
 			enabled=1
 		else
@@ -540,9 +614,18 @@ case "$cmd" in
 		DisableAXZSH
 		;;
 	"enable-plugin")
+		order=""
+		if [[ "$1" == "--order" ]]; then
+			order="$2"
+			shift 2 || Usage
+			if [[ "$order" != ([0-9][0-9]|-) ]]; then
+				ax_error "Invalid order \"$order\": must be two digits (00-99), or \"-\"!"
+				exit 2
+			fi
+		fi
 		[[ $# -gt 0 ]] || Usage
 		for plugin in "$@"; do
-			EnablePlugin "$plugin"
+			EnablePlugin "$order" "$plugin"
 		done
 		UpdatePluginCache
 		;;
@@ -583,10 +666,12 @@ case "$cmd" in
 		[[ $# -eq 0 ]] || Usage
 		UpgradeAXZSH
 		UpgradeForeignPlugins
+		MigrateActivePlugins
 		UpdatePluginCache
 		;;
 	"update-caches")
 		[[ $# -eq 0 ]] || Usage
+		MigrateActivePlugins
 		UpdatePluginCache -v
 		;;
 	"--version"|"version")

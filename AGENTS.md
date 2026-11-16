@@ -42,6 +42,9 @@ authoring conventions: `plugins/README.md`.
   clones), `themes/` (active theme = `active_theme` symlink).
 - External GitHub plugins appear in `active_plugins/` as `owner#name`
   symlinks; OhMyZsh plugins are cloned into `repos/@ohmyzsh`.
+- Links in `active_plugins/` may carry a load order prefix (`NN-<name>`), set
+  by `axzshctl enable-plugin --order NN` or the plugin's `order` file. Plugin
+  directories themselves don't carry numbers (except in `core/`).
 
 ## Plugin cache
 

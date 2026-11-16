@@ -1,4 +1,4 @@
-## 00-newline
+## newline
 
 This is a somewhat "silly" plugin, which is run at the very beginning of the
 initialization sequence and just prints a newline character.

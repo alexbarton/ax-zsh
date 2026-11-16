@@ -179,6 +179,13 @@ function EnablePlugin {
 		return 1
 	fi
 
+	# ax.zsh only loads plugins whose names start with a letter, a digit,
+	# or "@", see "Load Order" in plugins/README.md:
+	if [[ "$name" != [@A-Za-z0-9]* ]]; then
+		ax_error "Invalid plugin name \"$name\": must start with a letter, a digit, or \"@\"!"
+		return 1
+	fi
+
 	if [[ "$1" =~ "^@[[:alnum:]-]+/[[:alnum:]_.+-]+$" ]]; then
 		# GitHub plugin repository (like OhMyZsh)
 		local repo="${1##@}"

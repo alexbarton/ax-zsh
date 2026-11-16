@@ -6,11 +6,18 @@
 
 # Check prerequisites ...
 [[ -o interactive ]] || return 91
+[[ -z "$DVTM" ]] || return 91
+[[ -z "$HC_TERMINAL_SOCKET" ]] || return 91
 [[ -z "$HERDR_ENV" ]] || return 91
+[[ -z "$INSIDE_EMACS" ]] || return 91
 [[ -z "$NVIM" ]] || return 91
+[[ -z "$ORCA_APP_VERSION" ]] || return 91
 [[ -z "$STY" ]] || return 91
+[[ -z "$T3CODE_PROJECT_ROOT" ]] || return 91
 [[ -z "$TMUX" ]] || return 91
+[[ -z "$TUIOS_ENV" ]] || return 91
 [[ -z "$VIM_TERMINAL" ]] || return 91
+[[ -z "$ZELLIJ" ]] || return 91
 
 # Don't do anything when ~/.hushlogin exists ...
 [[ -r ~/.hushlogin ]] && return 0

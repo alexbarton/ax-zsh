@@ -75,7 +75,9 @@ function axzsh_handle_stage {
 		command rm -rf "$build_dir"
 		command mkdir "$build_dir" || unset new_cache_file
 
-		# Setup list of plugins to load:
+		# Setup list of plugins to load. Plugins numbered 80-99 run after
+		# the local configuration (core plugins numbered 80-89), but still
+		# before the theme and cleanup (core plugins numbered 90-99):
 		local plugin_list
 		typeset -U plugin_list
 		plugin_list=(
@@ -84,8 +86,9 @@ function axzsh_handle_stage {
 			"$AXZSH/active_plugins/"[@A-Za-z]*(N)
 			"$AXZSH/core/"[5-7]*
 			"$AXZSH/active_plugins/"[5-7]*(N)
-			"$AXZSH/core/"[8-9]*
+			"$AXZSH/core/"8*
 			"$AXZSH/active_plugins/"[8-9]*(N)
+			"$AXZSH/core/"9*
 		)
 
 		# Create new cache file:

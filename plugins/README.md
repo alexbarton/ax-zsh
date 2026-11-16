@@ -37,25 +37,28 @@ The script type is auto-detected, in the following order:
 ## Load Order
 
 A plugin's position is determined by the **first character** of its directory
-name, then alphabetically within each group. `ax.zsh` loads plugins in the
-following groups, in order:
+name, then alphabetically within each group. Plugin names must start with a
+letter, a digit, or `@`. `ax.zsh` loads plugins in the following groups, in
+order:
 
-- `core/` and `active_plugins/` plugins numbered `00-49`
-- `core/` and `active_plugins/` plugins with letter-initial names
-- `core/` and `active_plugins/` plugins numbered `50-79`
-- `core/` and `active_plugins/` plugins numbered `80-99`
+1. `core/` plugins numbered `00-49`: basic setup (terminal, locale,
+   environment, prompt, etc.).
+2. Plugins numbered `00-49` ("early"): after the basic setup, before regular
+   plugins.
+3. Plugins with letter-initial names ("default"): regular plugins.
+4. `core/` plugins numbered `50-79`: setup that depends on regular plugins.
+5. Plugins numbered `50-79` ("late"): after all regular plugins, but before
+   the local configuration, which can still override them.
+6. `core/` plugins numbered `80-89`: local configuration (`~/.zshrc.local`
+   etc.).
+7. Plugins numbered `80-99` ("last"): after the local configuration, which
+   can't override them. Use this for plugins that perform a final action, not
+   for regular settings.
+8. `core/` plugins numbered `90-99`: theme and cleanup.
 
-The numbering keeps core infrastructure ahead of the plugins relying on it:
-`01_zprofile` through `40_prompt` (terminal, locale, environment and prompt
-setup) load before regular plugins, while `80_local_config`, `90_theme` and
-`99_cleanup` still run after all of them. Within each group, `core/` plugins
-load before `active_plugins/`.
-
-For example, `11_terminal` (a `core/` plugin, which defines the terminal helper
-functions) always loads before `00-newline` (an `active_plugins/` plugin) —
-even though `00` is less than `11` numerically — because within each band all
-`core/` plugins load before `active_plugins/`. Likewise, `git` (letter-initial)
-loads after all `00-49` plugins but before `99_cleanup`.
+Only the first digit matters for the position relative to `core/` plugins:
+for example, a plugin numbered `00` still loads after a `core/` plugin
+numbered `40`. The exact number only orders plugins within their group.
 
 ## Terminal Capabilities
 
